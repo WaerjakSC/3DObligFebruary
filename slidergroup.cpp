@@ -111,6 +111,8 @@ QGroupBox *SliderGroup::createUpGroup(Qt::Orientation orientation)
         upSliders.push_back(new QDoubleSlider(groupBox, orientation, m_Camera->getUp().at(i)));
         upSliders.at(i)->setFocusPolicy(Qt::StrongFocus);
         upSliders.at(i)->setTickPosition(QSlider::TicksBothSides);
+        upSliders.at(i)->setMaximum(10);
+        upSliders.at(i)->setMinimum(-10);
         upNum.push_back(new QLabel(QString::number(upSliders.at(i)->getDoubleValue())));
         upNum.at(i)->setAlignment(Qt::AlignCenter);
     }
