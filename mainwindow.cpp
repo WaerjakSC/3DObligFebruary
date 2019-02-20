@@ -4,6 +4,7 @@
 #include "renderwindow.h"
 #include "slidergroup.h"
 #include <QDebug>
+#include <QGridLayout>
 #include <QSurfaceFormat>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -61,11 +62,57 @@ void MainWindow::init()
     //We put the RenderWindow inside a QWidget so we can put in into a
     //layout that is made in the .ui-file
     mRenderWindowContainer = QWidget::createWindowContainer(mRenderWindow);
+    QHBoxLayout *topBox = new QHBoxLayout;                      // Horizontal Box to contain LookAt sliders and grid
+    QGroupBox *grid = createMatrix(mRenderWindow->getCamera()); // Grid to contain LookAt matrix
+
+    ui->OpenGLLayout->addLayout(topBox);
+    topBox->addWidget(sliders, Qt::AlignTop);
+    topBox->addWidget(grid);
+
+    // Update the lookAt grid with new values each time the camera is moved
+    connect(mRenderWindow->getCamera(), SIGNAL(lookAtChanged()), this, SLOT(updateLabelMatrix()));
+
     //OpenGLLayout is made in the .ui-file!
-    ui->OpenGLLayout->addWidget(sliders, Qt::AlignTop);
     ui->OpenGLLayout->addWidget(mRenderWindowContainer, Qt::AlignBottom);
 
     //sets the keyboard input focus to the RenderWindow when program starts
     // - can be deleted, but then you have to click inside the renderwindow to get the focus
     mRenderWindowContainer->setFocus();
+}
+
+QGroupBox *MainWindow::createMatrix(Camera *cam)
+{
+    QGridLayout *gridBox = new QGridLayout;
+    QGroupBox *hbox = new QGroupBox(tr("LookAt Matrix"));
+    hbox->setAlignment(Qt::AlignCenter);
+    gridBox->setAlignment(Qt::AlignCenter);
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            float vM = cam->getLookMatrix().at(j, i);
+            matrixLabels.push_back(new QLabel(QString::number(vM, 'f', 3)));
+            matrixLabels.at(j + i * 4)->setFrameStyle(QFrame::Box | QFrame::Plain);
+            gridBox->addWidget(matrixLabels.at(j + (i * 4)), i, j);
+        }
+        gridBox->setColumnMinimumWidth(i, 55);
+    }
+    gridBox->setContentsMargins(10, 10, 10, 10);
+    gridBox->setSpacing(13);
+    hbox->setMaximumHeight(170);
+
+    hbox->setLayout(gridBox);
+    return hbox;
+}
+void MainWindow::updateLabelMatrix()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            // Update the labels with 3 decimal precision.
+            matrixLabels.at(j + (i * 4))->setText(QString::number(mRenderWindow->getCamera()->getLookMatrix().at(j, i), 'f', 3));
+        }
+    }
 }
