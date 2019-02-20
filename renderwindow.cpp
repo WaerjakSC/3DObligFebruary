@@ -29,6 +29,7 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     }
 
     mCamera = new Camera;
+    ball = new OctahedronBall(3);
 
     //Make the gameloop timer:
     mRenderTimer = new QTimer(this);
@@ -69,8 +70,9 @@ void RenderWindow::init()
     glEnable(GL_DEPTH_TEST);              //enables depth sorting - must use
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f); //color used in glClear GL_COLOR_BUFFER_BIT
 
-    mShaderProgram = new Shader("../GSOpenGL2019/plainvertex.vert",
-                                "../GSOpenGL2019/plainfragment.frag");
+    // Make sure these two files are in the main folder, or update this if you move them
+    mShaderProgram = new Shader("plainvertex.vert",
+                                "plainfragment.frag");
 
     //Vertex Array Object - VAO
     glGenVertexArrays(1, &mVAO);
@@ -84,10 +86,14 @@ void RenderWindow::init()
 
     glBindVertexArray(0);
 
-    mCamera->Init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
+    // Initialize all the objects in the scene
+    mCamera->init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
+    ball->init(mMatrixUniform);
+
+    // Sets the FOV.
     setFOV(FOV);
+
     glUniformMatrix4fv(mPMatrixUniform, 1, GL_FALSE, mCamera->GetPMatrix()->constData());
-    ball.init(mMatrixUniform);
 }
 
 ///Called each frame - doing the rendering
@@ -99,8 +105,8 @@ void RenderWindow::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(mShaderProgram->getProgram());
 
-    mCamera->Render();
-    ball.draw();
+    mCamera->render();
+    ball->draw();
     calculateFramerate();
     mContext->swapBuffers(this);
 }

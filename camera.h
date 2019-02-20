@@ -16,7 +16,7 @@ class Camera : public QOpenGLFunctions_4_1_Core
 {
 public:
     //    Camera(Vector3d position, Vector3d up, float yaw, float pitch);
-    Camera(const Vector3d &position = Vector3d(0.f, 0.f, -3.f), float pitch = 0.f, float yaw = 0.f);
+    Camera(const Vector3d &position = Vector3d(0.f, 0.f, -4.f), float pitch = 0.f, float yaw = 0.f);
     Matrix4x4 *GetVMatrix() { return &mVMatrix; }
     Matrix4x4 *GetPMatrix() { return &mPMatrix; }
     void setPersp(float fov, float aspectRatio, float zMin, float zMax);
@@ -25,8 +25,8 @@ public:
     void PrintView();
     void lookAt();
 
-    void Init(GLint vMatrixUniform, GLint pMatrixUniform, Shader *shader);
-    void Render();
+    void init(GLint vMatrixUniform, GLint pMatrixUniform, Shader *shader);
+    void render();
 
     Vector3d getViewTarget() const;
     Matrix4x4 getViewRotation() const;

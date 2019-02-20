@@ -8,8 +8,7 @@ namespace jl
 
 Camera::Camera(const Vector3d &position, float pitch, float yaw) : mPosition{position}, mPitch{pitch}, mYaw{yaw}
 {
-    mVMatrix.translate(mPosition);
-    //    mVMatrix.rotate(Vector3d(1, 0, 0), -45);
+    mVMatrix.translate(mPosition); // Place the camera at the desired point in the scene.
     mTimer.start();
 }
 Vector3d Camera::getViewTarget() const
@@ -63,23 +62,23 @@ Vector3d Camera::getUp() const
 {
     return mUp;
 }
+// Set mPMatrix to a 4x4 perspective matrix
 void Camera::setPersp(float fov, float aspectRatio, float zMin, float zMax)
 {
     FOV = fov;
     mPMatrix = Matrix4x4{1.f}.perspective(FOV, aspectRatio, zMin, zMax);
 }
 
-void Camera::Init(GLint vMatrixUniform, GLint pMatrixUniform, Shader *shader)
+void Camera::init(GLint vMatrixUniform, GLint pMatrixUniform, Shader *shader)
 {
     mVMatrixUniform = vMatrixUniform;
     mPMatrixUniform = pMatrixUniform;
     mShaderProgram = shader;
-    //    mVMatrix.translate(0, 0, 2);
 
     initializeOpenGLFunctions();
 }
 
-void Camera::Render()
+void Camera::render()
 {
     //to clear the screen for each redraw
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
