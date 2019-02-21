@@ -73,10 +73,7 @@ void RenderWindow::init()
     glEnable(GL_DEPTH_TEST);              //enables depth sorting - must use
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f); //color used in glClear GL_COLOR_BUFFER_BIT
 
-<<<<<<< HEAD
-=======
     // Make sure these two files are in the main folder, or update this if you move them
->>>>>>> parent of f95fc11... Move ball to create a black hole
     mShaderProgram = new Shader("plainvertex.vert",
                                 "plainfragment.frag");
 
@@ -94,7 +91,7 @@ void RenderWindow::init()
 
     // Initialize all the objects in the scene
     mCamera->init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
-    //    ball->init(mMatrixUniform);
+    ball->init(mMatrixUniform);
     //    sceneOne->init(mMatrixUniform);
     sceneTwo->init(mMatrixUniform);
 
@@ -114,7 +111,7 @@ void RenderWindow::render()
     glUseProgram(mShaderProgram->getProgram());
 
     mCamera->render();
-    //    ball->draw();
+    ball->draw();
     //    sceneOne->draw();
     sceneTwo->draw();
     calculateFramerate();
@@ -193,43 +190,28 @@ void RenderWindow::startOpenGLDebugger()
 
 void RenderWindow::keyPressEvent(QKeyEvent *event)
 {
-<<<<<<< HEAD
     const float SPEED{1.f};
 
-=======
->>>>>>> parent of f95fc11... Move ball to create a black hole
     if (event->key() == Qt::Key_Escape) //Shuts down whole program
     {
         mMainWindow->close();
     }
-<<<<<<< HEAD
 
     switch (event->key())
     {
     case Qt::Key::Key_W:
-        ball.addForward(-SPEED);
+        ball->addForward(-SPEED);
         break;
     case Qt::Key::Key_S:
-        ball.addForward(SPEED);
+        ball->addForward(SPEED);
         break;
     case Qt::Key::Key_A:
-        ball.strafe(-SPEED);
+        ball->strafe(SPEED);
         break;
     case Qt::Key::Key_D:
-        ball.strafe(SPEED);
+        ball->strafe(-SPEED);
         break;
     }
-=======
->>>>>>> parent of f95fc11... Move ball to create a black hole
-    //    // Input keys for simple movement
-    //    if (event->key() == Qt::Key_D)
-    //        mia.move(0.1f, 0, 0);
-    //    if (event->key() == Qt::Key_A)
-    //        mia.move(-0.1f, 0, 0);
-    //    if (event->key() == Qt::Key_W)
-    //        mia.move(0, 0, 0.1f);
-    //    if (event->key() == Qt::Key_S)
-    //        mia.move(0, 0, -0.1f);
 }
 
 void RenderWindow::exposeEvent(QExposeEvent *)

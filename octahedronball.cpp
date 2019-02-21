@@ -35,9 +35,8 @@ void OctahedronBall::addForward(float speed)
 
 void OctahedronBall::strafe(float speed)
 {
-    mMatrix.translate(posVec + mFront ^ Vector3d(0, 1, 0));
-    posVec = posVec + mFront ^ Vector3d(0, 1, 0) * speed;
-    std::cout << "strafe" << posVec;
+    Vector3d velocity = (mFront ^ mUp) * speed;
+    mMatrix.translate(velocity);
 }
 
 //!//! \brief OctahedronBall::~OctahedronBall() virtual destructor
@@ -146,6 +145,7 @@ void OctahedronBall::init(GLint matrixUniform)
 {
     mMatrixUniform = matrixUniform;
     initializeOpenGLFunctions();
+    mMatrix.scale(0.2f, 0.2f, 0.2f);
 
     //Vertex Array Object - VAO
     glGenVertexArrays(1, &mVAO);
@@ -184,6 +184,6 @@ void OctahedronBall::draw()
 {
     glBindVertexArray(mVAO);
     //    mMatrix.rotate(Vector3d(0, 0, 1),10.f);
-    glUniformMatrix4fv(mMatrixUniform, 1, GL_TRUE, mMatrix.constData());
+    glUniformMatrix4fv(mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
     glDrawArrays(GL_TRIANGLES, 0, mVertices.size()); //mVertices.size());
 }
