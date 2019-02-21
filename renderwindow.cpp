@@ -31,6 +31,7 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     mCamera = new Camera(Vector3d(0, 2, -2));
     ball = new OctahedronBall(3);
     sceneOne = new Sceneone;
+    sceneTwo = new Scenetwo;
 
     //Make the gameloop timer:
     mRenderTimer = new QTimer(this);
@@ -90,7 +91,8 @@ void RenderWindow::init()
     // Initialize all the objects in the scene
     mCamera->init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
     //    ball->init(mMatrixUniform);
-    sceneOne->init(mMatrixUniform);
+    //    sceneOne->init(mMatrixUniform);
+    sceneTwo->init(mMatrixUniform);
 
     // Sets the FOV.
     setFOV(FOV);
@@ -109,7 +111,8 @@ void RenderWindow::render()
 
     mCamera->render();
     //    ball->draw();
-    sceneOne->draw();
+    //    sceneOne->draw();
+    sceneTwo->draw();
     calculateFramerate();
     mContext->swapBuffers(this);
 }
