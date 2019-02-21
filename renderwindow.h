@@ -5,7 +5,6 @@
 #include "interactiveobject.h"
 #include "octahedronball.h"
 #include "sceneone.h"
-#include "scenetwo.h"
 #include "trianglesurface.h"
 #include "vertex.h"
 #include "xyz.h"
@@ -58,9 +57,8 @@ private:
 
     float FOV{45.f}; // Field Of View. Need to recalculate projection matrix whenever this changes.
     jl::Camera *mCamera;
-    Sceneone *sceneOne;
-    Scenetwo *sceneTwo;
-    OctahedronBall *ball;
+    OctahedronBall ball;
+    Sceneone ball2;
 
     void setFOV(float FOV = 60.f);
 

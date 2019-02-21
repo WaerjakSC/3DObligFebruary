@@ -2,6 +2,7 @@
 #define VISUALOBJECT_H
 
 #include "vertex.h"
+#include "matrix4x4.h"
 #include <QMatrix4x4>
 #include <QOpenGLFunctions_4_1_Core>
 #include <vector>
@@ -22,7 +23,7 @@ protected:
     GLuint mVAO{0};
     GLuint mVBO{0};
     GLint mMatrixUniform{0};
-    QMatrix4x4 mMatrix;
+    jl::Matrix4x4 mMatrix;
 };
 
 #endif // VISUALOBJECT_H

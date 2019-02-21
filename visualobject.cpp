@@ -1,6 +1,7 @@
 #include "visualobject.h"
 #include <fstream>
 
+
 VisualObject::VisualObject() {}
 VisualObject::~VisualObject()
 {
@@ -41,4 +42,5 @@ void VisualObject::writeFile(std::string filename)
             std::cout << "Unable to open file\n";
         }
     }
-}
+ }
+

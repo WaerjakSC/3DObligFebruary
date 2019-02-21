@@ -1,6 +1,7 @@
 #include "renderwindow.h"
 #include "mainwindow.h"
 #include "shader.h"
+#include "camera.h"
 #include <QDebug>
 #include <QKeyEvent>
 #include <QMatrix4x4>
@@ -28,10 +29,7 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
         qDebug() << "Context could not be made - quitting this application";
     }
 
-    mCamera = new Camera(Vector3d(0, 2, -2));
-    ball = new OctahedronBall(3);
-    sceneOne = new Sceneone;
-    sceneTwo = new Scenetwo;
+    mCamera = new Camera;
 
     //Make the gameloop timer:
     mRenderTimer = new QTimer(this);
@@ -72,9 +70,8 @@ void RenderWindow::init()
     glEnable(GL_DEPTH_TEST);              //enables depth sorting - must use
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f); //color used in glClear GL_COLOR_BUFFER_BIT
 
-    // Make sure these two files are in the main folder, or update this if you move them
-    mShaderProgram = new Shader("plainvertex.vert",
-                                "plainfragment.frag");
+    mShaderProgram = new Shader("../3DObligFebruary-master/plainvertex.vert",
+                                "../3DObligFebruary-master/plainfragment.frag");
 
     //Vertex Array Object - VAO
     glGenVertexArrays(1, &mVAO);
@@ -88,16 +85,11 @@ void RenderWindow::init()
 
     glBindVertexArray(0);
 
-    // Initialize all the objects in the scene
-    mCamera->init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
-    //    ball->init(mMatrixUniform);
-    //    sceneOne->init(mMatrixUniform);
-    sceneTwo->init(mMatrixUniform);
-
-    // Sets the FOV.
+    mCamera->Init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
     setFOV(FOV);
-
     glUniformMatrix4fv(mPMatrixUniform, 1, GL_FALSE, mCamera->GetPMatrix()->constData());
+    ball.init(mMatrixUniform);
+    ball2.init(mMatrixUniform);
 }
 
 ///Called each frame - doing the rendering
@@ -109,10 +101,9 @@ void RenderWindow::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(mShaderProgram->getProgram());
 
-    mCamera->render();
-    //    ball->draw();
-    //    sceneOne->draw();
-    sceneTwo->draw();
+    mCamera->Render();
+    ball.draw();
+    ball2.draw();
     calculateFramerate();
     mContext->swapBuffers(this);
 }
@@ -188,10 +179,27 @@ void RenderWindow::startOpenGLDebugger()
 }
 
 void RenderWindow::keyPressEvent(QKeyEvent *event)
-{
+{   const float SPEED{1.f};
+
     if (event->key() == Qt::Key_Escape) //Shuts down whole program
     {
         mMainWindow->close();
+    }
+
+    switch(event->key()){
+    case Qt::Key::Key_W:
+        ball.addForward(-SPEED);
+        break;
+    case Qt::Key::Key_S:
+        ball.addForward(SPEED);
+        break;
+    case Qt::Key::Key_A:
+        ball.strafe(-SPEED);
+        break;
+    case Qt::Key::Key_D:
+        ball.strafe(SPEED);
+        break;
+
     }
     //    // Input keys for simple movement
     //    if (event->key() == Qt::Key_D)

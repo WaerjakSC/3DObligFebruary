@@ -20,11 +20,23 @@
 //! - 8 comes from the original number of triangles in a regular Octahedron
 //! - n is the recursion level (number of repeated subdivisions)
 //!
-
 OctahedronBall::OctahedronBall(int n) : m_rekursjoner(n), m_indeks(0), VisualObject()
 {
+
     mVertices.reserve(3 * 8 * pow(4, m_rekursjoner));
     oktaederUnitBall();
+}
+
+void OctahedronBall::addForward(float speed){
+    mMatrix.translate(posVec + mFront*speed);
+    posVec = posVec + mFront * speed;
+    std::cout << "up and back" << posVec;
+}
+
+void OctahedronBall::strafe(float speed){
+    mMatrix.translate(posVec + mFront^Vector3d(0,1,0));
+    posVec = posVec +  mFront^Vector3d(0,1,0) * speed;
+    std::cout << "strafe" << posVec;
 }
 
 //!//! \brief OctahedronBall::~OctahedronBall() virtual destructor
@@ -170,7 +182,7 @@ void OctahedronBall::init(GLint matrixUniform)
 void OctahedronBall::draw()
 {
     glBindVertexArray(mVAO);
-    mMatrix.rotate(10.f, QVector3D(0, 0, 1));
+    mMatrix.rotate(Vector3d(0, 0, 1),10.f);
     glUniformMatrix4fv(mMatrixUniform, 1, GL_TRUE, mMatrix.constData());
     glDrawArrays(GL_TRIANGLES, 0, mVertices.size()); //mVertices.size());
 }

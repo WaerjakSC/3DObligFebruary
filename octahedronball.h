@@ -25,5 +25,12 @@ public:
     OctahedronBall(int n = 3);
     void init(GLint matrixUniform);
     void draw();
+    Vector3d mFront = Vector3d(0,0,-1);
+    Vector3d posVec;
+
+
+    void addForward(float speed);
+    void strafe(float speed);
+
 };
 #endif
