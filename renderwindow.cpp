@@ -29,7 +29,10 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
         qDebug() << "Context could not be made - quitting this application";
     }
 
-    mCamera = new Camera;
+    mCamera = new Camera(Vector3d(0, 2, -2));
+    ball = new OctahedronBall(3);
+    sceneOne = new Sceneone;
+    sceneTwo = new Scenetwo;
 
     //Make the gameloop timer:
     mRenderTimer = new QTimer(this);
@@ -70,6 +73,10 @@ void RenderWindow::init()
     glEnable(GL_DEPTH_TEST);              //enables depth sorting - must use
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f); //color used in glClear GL_COLOR_BUFFER_BIT
 
+<<<<<<< HEAD
+=======
+    // Make sure these two files are in the main folder, or update this if you move them
+>>>>>>> parent of f95fc11... Move ball to create a black hole
     mShaderProgram = new Shader("plainvertex.vert",
                                 "plainfragment.frag");
 
@@ -85,11 +92,16 @@ void RenderWindow::init()
 
     glBindVertexArray(0);
 
-    mCamera->Init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
+    // Initialize all the objects in the scene
+    mCamera->init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
+    //    ball->init(mMatrixUniform);
+    //    sceneOne->init(mMatrixUniform);
+    sceneTwo->init(mMatrixUniform);
+
+    // Sets the FOV.
     setFOV(FOV);
+
     glUniformMatrix4fv(mPMatrixUniform, 1, GL_FALSE, mCamera->GetPMatrix()->constData());
-    ball.init(mMatrixUniform);
-    ball2.init(mMatrixUniform);
 }
 
 ///Called each frame - doing the rendering
@@ -101,9 +113,10 @@ void RenderWindow::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(mShaderProgram->getProgram());
 
-    mCamera->Render();
-    ball.draw();
-    ball2.draw();
+    mCamera->render();
+    //    ball->draw();
+    //    sceneOne->draw();
+    sceneTwo->draw();
     calculateFramerate();
     mContext->swapBuffers(this);
 }
@@ -180,12 +193,16 @@ void RenderWindow::startOpenGLDebugger()
 
 void RenderWindow::keyPressEvent(QKeyEvent *event)
 {
+<<<<<<< HEAD
     const float SPEED{1.f};
 
+=======
+>>>>>>> parent of f95fc11... Move ball to create a black hole
     if (event->key() == Qt::Key_Escape) //Shuts down whole program
     {
         mMainWindow->close();
     }
+<<<<<<< HEAD
 
     switch (event->key())
     {
@@ -202,6 +219,8 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
         ball.strafe(SPEED);
         break;
     }
+=======
+>>>>>>> parent of f95fc11... Move ball to create a black hole
     //    // Input keys for simple movement
     //    if (event->key() == Qt::Key_D)
     //        mia.move(0.1f, 0, 0);

@@ -1,19 +1,16 @@
 #include "camera.h"
+#include "mainwindow.h"
 #include "shader.h"
 #include <QTimer>
 #include <QtMath>
-
 namespace jl
 {
 
 Camera::Camera(const Vector3d &position, float pitch, float yaw) : mPosition{position}, mPitch{pitch}, mYaw{yaw}
 {
-
-    mVMatrix.translate(mPosition);
+    mVMatrix.translate(mPosition); // Place the camera at the desired point in the scene.
     mTimer.start();
 }
-
-
 Vector3d Camera::getViewTarget() const
 {
     const float PI = 3.1415927;
@@ -28,27 +25,30 @@ Vector3d Camera::getViewTarget() const
 }
 Matrix4x4 Camera::getViewRotation() const
 {
-    return Matrix4x4::sLookAt(Vector3d(), getViewTarget()).transpose() * Matrix4x4::translation(mPosition);
+    return Matrix4x4::sLookAt(Vector3d(), getViewTarget()).transpose();
 }
 
-Matrix4x4 Camera::getViewMatrix() const
+Matrix4x4 Camera::getLookMatrix() const
 {
-    return mVMatrix;
+    return Matrix4x4::sLookAt(mPosition, mTarget, mUp).transpose();
 }
 
 void Camera::setPosition(float pos, int index)
 {
     mPosition.at(index) = pos;
+    emit lookAtChanged();
 }
 
 void Camera::setTarget(float target, int index)
 {
     mTarget.at(index) = target;
+    emit lookAtChanged();
 }
 
 void Camera::setUp(float up, int index)
 {
     mUp.at(index) = up;
+    emit lookAtChanged();
 }
 
 Vector3d Camera::getPosition() const
@@ -65,29 +65,23 @@ Vector3d Camera::getUp() const
 {
     return mUp;
 }
-
-Vector3d Camera::getRight() const{
-    return mRight;
-}
-
+// Set mPMatrix to a 4x4 perspective matrix
 void Camera::setPersp(float fov, float aspectRatio, float zMin, float zMax)
 {
     FOV = fov;
     mPMatrix = Matrix4x4{1.f}.perspective(FOV, aspectRatio, zMin, zMax);
 }
 
-void Camera::Init(GLint vMatrixUniform, GLint pMatrixUniform, Shader *shader)
+void Camera::init(GLint vMatrixUniform, GLint pMatrixUniform, Shader *shader)
 {
-
     mVMatrixUniform = vMatrixUniform;
     mPMatrixUniform = pMatrixUniform;
     mShaderProgram = shader;
-    //    mVMatrix.translate(0, 0, 2);
 
     initializeOpenGLFunctions();
 }
 
-void Camera::Render()
+void Camera::render()
 {
     //to clear the screen for each redraw
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -107,22 +101,4 @@ void Camera::PrintView()
 {
     std::cout << mVMatrix;
 }
-
-
-
-// Camera movement with WASD
-// direction times magnitude
-void Camera::addForward(float speed){
-  mPosition = mPosition -  (mFront * speed);
-
-}
-
-void Camera::strafe(float speed){
-    Vector3d strafeDirection = mFront^mUp;
-    //strafeDirection.normalize();
-    mPosition = mPosition + (strafeDirection*speed);
-
-
-}
-
 } // namespace jl

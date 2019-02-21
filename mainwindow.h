@@ -1,8 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "camera.h"
+#include <QGroupBox>
+#include <QLabel>
 #include <QMainWindow>
-
+#include <vector>
 class QWidget;
 class RenderWindow;
 
@@ -20,10 +23,14 @@ public:
     ~MainWindow();
 
 private slots:
+    void updateLabelMatrix();
 
 private:
     void init();
     Ui::MainWindow *ui;
+
+    std::vector<QLabel *> matrixLabels;
+    QGroupBox *createMatrix(Camera *cam);
 
     QWidget *mRenderWindowContainer;
     RenderWindow *mRenderWindow;

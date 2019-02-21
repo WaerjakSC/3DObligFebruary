@@ -21,6 +21,7 @@ SOURCES += main.cpp \
     interactiveobject.cpp \
     octahedronball.cpp \
     sceneone.cpp \
+    scenetwo.cpp \
     slidergroup.cpp \
     qdoubleslider.cpp
 
@@ -40,6 +41,7 @@ HEADERS += \
     interactiveobject.h \
     octahedronball.h \
     sceneone.h \
+    scenetwo.h \
     slidergroup.h \
     qdoubleslider.h
 
