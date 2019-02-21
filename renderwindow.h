@@ -5,6 +5,7 @@
 #include "interactiveobject.h"
 #include "octahedronball.h"
 #include "trianglesurface.h"
+#include "scenetwo.h"
 #include "vertex.h"
 #include "xyz.h"
 #include <QElapsedTimer>
@@ -72,6 +73,10 @@ private:
     void calculateFramerate();
 
     void startOpenGLDebugger();
+
+    //Sceneone sceneOne;
+
+    Scenetwo sceneTwo;
 
 protected:
     //The QWindow that we inherit from has these functions to capture

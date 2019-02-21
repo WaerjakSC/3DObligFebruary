@@ -5,7 +5,6 @@
 #include "vector3d.h"
 #include "visualobject.h"
 #include <QElapsedTimer>
-#include <QObject>
 #include <QOpenGLFunctions_4_1_Core>
 
 class Shader;
@@ -13,9 +12,8 @@ class Shader;
 namespace jl
 {
 
-class Camera : public QObject, public QOpenGLFunctions_4_1_Core
+class Camera : public QOpenGLFunctions_4_1_Core
 {
-    Q_OBJECT
 public:
     //    Camera(Vector3d position, Vector3d up, float yaw, float pitch);
     Camera(const Vector3d &position = Vector3d(0.f, 0.f, -4.f), float pitch = 0.f, float yaw = 0.f);
@@ -32,7 +30,7 @@ public:
 
     Vector3d getViewTarget() const;
     Matrix4x4 getViewRotation() const;
-    Matrix4x4 getLookMatrix() const;
+    Matrix4x4 getViewMatrix() const;
 
     void setPosition(float pos, int index);
     void setTarget(float target, int index);
@@ -43,9 +41,6 @@ public:
     Vector3d getTarget() const;
 
     Vector3d getUp() const;
-
-signals:
-    void lookAtChanged();
 
 private:
     Matrix4x4 mVMatrix;

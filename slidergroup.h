@@ -14,7 +14,7 @@ class SliderGroup : public QGroupBox
     Q_OBJECT
 
 public:
-    SliderGroup(Qt::Orientation orientation = Qt::Orientation::Horizontal, const QString &title = "",
+    SliderGroup(Qt::Orientation orientation, const QString &title,
                 QWidget *parent = 0, Camera *cam = 0);
 
 signals:
@@ -28,6 +28,7 @@ public slots:
     void setPosition();
     void setTarget();
     void setUp();
+    void updateLabelMatrix();
 
 private:
     const int MIN_VALUE = -100;
@@ -36,6 +37,8 @@ private:
     Vector3d eye, at, up;
 
     Camera *m_Camera;
+
+    std::vector<QLabel *> matrixLabels;
 
     std::vector<QDoubleSlider *> eyeSliders;
     std::vector<QLabel *> eyeNum;

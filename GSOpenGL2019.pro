@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     octahedronball.cpp \
     sceneone.cpp \
     slidergroup.cpp \
-    qdoubleslider.cpp
+    qdoubleslider.cpp \
+    scenetwo.cpp
 
 HEADERS += \
     renderwindow.h \
@@ -41,7 +42,8 @@ HEADERS += \
     octahedronball.h \
     sceneone.h \
     slidergroup.h \
-    qdoubleslider.h
+    qdoubleslider.h \
+    scenetwo.h
 
 FORMS += \
     mainwindow.ui

@@ -1,8 +1,8 @@
 #include "camera.h"
-#include "mainwindow.h"
 #include "shader.h"
 #include <QTimer>
 #include <QtMath>
+
 namespace jl
 {
 
@@ -28,27 +28,24 @@ Matrix4x4 Camera::getViewRotation() const
     return Matrix4x4::sLookAt(Vector3d(), getViewTarget()).transpose();
 }
 
-Matrix4x4 Camera::getLookMatrix() const
+Matrix4x4 Camera::getViewMatrix() const
 {
-    return Matrix4x4::sLookAt(mPosition, mTarget, mUp).transpose();
+    return mVMatrix;
 }
 
 void Camera::setPosition(float pos, int index)
 {
     mPosition.at(index) = pos;
-    emit lookAtChanged();
 }
 
 void Camera::setTarget(float target, int index)
 {
     mTarget.at(index) = target;
-    emit lookAtChanged();
 }
 
 void Camera::setUp(float up, int index)
 {
     mUp.at(index) = up;
-    emit lookAtChanged();
 }
 
 Vector3d Camera::getPosition() const
