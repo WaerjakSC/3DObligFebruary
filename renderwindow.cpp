@@ -1,7 +1,7 @@
 #include "renderwindow.h"
+#include "camera.h"
 #include "mainwindow.h"
 #include "shader.h"
-#include "camera.h"
 #include <QDebug>
 #include <QKeyEvent>
 #include <QMatrix4x4>
@@ -70,8 +70,8 @@ void RenderWindow::init()
     glEnable(GL_DEPTH_TEST);              //enables depth sorting - must use
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f); //color used in glClear GL_COLOR_BUFFER_BIT
 
-    mShaderProgram = new Shader("../3DObligFebruary-master/plainvertex.vert",
-                                "../3DObligFebruary-master/plainfragment.frag");
+    mShaderProgram = new Shader("plainvertex.vert",
+                                "plainfragment.frag");
 
     //Vertex Array Object - VAO
     glGenVertexArrays(1, &mVAO);
@@ -179,14 +179,16 @@ void RenderWindow::startOpenGLDebugger()
 }
 
 void RenderWindow::keyPressEvent(QKeyEvent *event)
-{   const float SPEED{1.f};
+{
+    const float SPEED{1.f};
 
     if (event->key() == Qt::Key_Escape) //Shuts down whole program
     {
         mMainWindow->close();
     }
 
-    switch(event->key()){
+    switch (event->key())
+    {
     case Qt::Key::Key_W:
         ball.addForward(-SPEED);
         break;
@@ -199,7 +201,6 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
     case Qt::Key::Key_D:
         ball.strafe(SPEED);
         break;
-
     }
     //    // Input keys for simple movement
     //    if (event->key() == Qt::Key_D)

@@ -27,15 +27,16 @@ OctahedronBall::OctahedronBall(int n) : m_rekursjoner(n), m_indeks(0), VisualObj
     oktaederUnitBall();
 }
 
-void OctahedronBall::addForward(float speed){
-    mMatrix.translate(posVec + mFront*speed);
-    posVec = posVec + mFront * speed;
-    std::cout << "up and back" << posVec;
+void OctahedronBall::addForward(float speed)
+{
+    Vector3d velocity = mFront * speed;
+    mMatrix.translate(velocity);
 }
 
-void OctahedronBall::strafe(float speed){
-    mMatrix.translate(posVec + mFront^Vector3d(0,1,0));
-    posVec = posVec +  mFront^Vector3d(0,1,0) * speed;
+void OctahedronBall::strafe(float speed)
+{
+    mMatrix.translate(posVec + mFront ^ Vector3d(0, 1, 0));
+    posVec = posVec + mFront ^ Vector3d(0, 1, 0) * speed;
     std::cout << "strafe" << posVec;
 }
 
@@ -182,7 +183,7 @@ void OctahedronBall::init(GLint matrixUniform)
 void OctahedronBall::draw()
 {
     glBindVertexArray(mVAO);
-    mMatrix.rotate(Vector3d(0, 0, 1),10.f);
+    //    mMatrix.rotate(Vector3d(0, 0, 1),10.f);
     glUniformMatrix4fv(mMatrixUniform, 1, GL_TRUE, mMatrix.constData());
     glDrawArrays(GL_TRIANGLES, 0, mVertices.size()); //mVertices.size());
 }
