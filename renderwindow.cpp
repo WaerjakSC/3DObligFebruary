@@ -1,6 +1,7 @@
 #include "renderwindow.h"
 #include "mainwindow.h"
 #include "shader.h"
+#include "drawings.h"
 #include "scenetwo.h"
 #include <QDebug>
 #include <QKeyEvent>
@@ -186,10 +187,17 @@ void RenderWindow::startOpenGLDebugger()
 
 void RenderWindow::keyPressEvent(QKeyEvent *event)
 {
+
     if (event->key() == Qt::Key_Escape) //Shuts down whole program
     {
         mMainWindow->close();
     }
+    if (event->key() == Qt::Key_E)
+    {
+        qDebug() << "E clicked, door should open or close.";
+    }
+
+
     //    // Input keys for simple movement
     //    if (event->key() == Qt::Key_D)
     //        mia.move(0.1f, 0, 0);

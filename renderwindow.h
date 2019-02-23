@@ -6,6 +6,7 @@
 #include "octahedronball.h"
 #include "trianglesurface.h"
 #include "scenetwo.h"
+#include "drawings.h"
 #include "vertex.h"
 #include "xyz.h"
 #include <QElapsedTimer>
@@ -77,6 +78,8 @@ private:
     //Sceneone sceneOne;
 
     Scenetwo sceneTwo;
+
+    friend class Scenetwo;
 
 protected:
     //The QWindow that we inherit from has these functions to capture

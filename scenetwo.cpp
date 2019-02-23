@@ -2,7 +2,13 @@
 
 Scenetwo::Scenetwo()
 {
-    // Ground
+    drawFloor();
+    drawHouse();
+    drawDoor();
+}
+
+void Scenetwo::drawFloor()
+{
     mVertices.push_back(Vertex{-1, -0.8, 1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{-1, -0.8, -1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{1, -0.8, -1, 0, 0.3, 0.5});
@@ -10,7 +16,10 @@ Scenetwo::Scenetwo()
     mVertices.push_back(Vertex{-1, -0.8, 1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{1, -0.8, 1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{1, -0.8, -1, 0, 0.3, 0.5});
+}
 
+void Scenetwo::drawHouse()
+{
     // Left Wall
     mVertices.push_back(Vertex{-0.8, -0.8, 0.8, 1, 0.5, 0.5});
     mVertices.push_back(Vertex{-0.8, 0.1, 0.8, 1, 0.5, 0.5});
@@ -65,15 +74,6 @@ Scenetwo::Scenetwo()
     mVertices.push_back(Vertex{-0.1, 0.1, -0.8, 1, 0.5, 0.5});
     mVertices.push_back(Vertex{0.1, -0.4, -0.8, 1, 0.5, 0.5});
 
-    // Door
-    mVertices.push_back(Vertex{-0.1, -0.4, -0.8, 0.1, 0, 0.1});
-    mVertices.push_back(Vertex{-0.1, -0.8, -0.8, 0.1, 0, 0.1});
-    mVertices.push_back(Vertex{0.1, -0.8, -0.8, 0.1, 0, 0.1});
-
-    mVertices.push_back(Vertex{0.1, -0.4, -0.8, 0.1, 0, 0.1});
-    mVertices.push_back(Vertex{-0.1, -0.4, -0.8, 0.1, 0, 0.1});
-    mVertices.push_back(Vertex{0.1, -0.8, -0.8, 0.1, 0, 0.1});
-
     // Upper front wall
     mVertices.push_back(Vertex{-0.8, 0.1, -0.8, 1, 0.5, 0.5});
     mVertices.push_back(Vertex{0, 0.1, -0.8, 1, 0.5, 0.5});
@@ -109,6 +109,48 @@ Scenetwo::Scenetwo()
     mVertices.push_back(Vertex{0.9, 0, 0.9, 0.1, 0.1, 0.1});
     mVertices.push_back(Vertex{0, 0.9, 0.9, 0.1, 0.1, 0.1});
     mVertices.push_back(Vertex{0, 0.9, -0.9, 0.1, 0.1, 0.1});
+
+}
+
+void Scenetwo::isDoorOpen(unsigned char key)
+{
+    switch(key)
+    {
+    case 'e':
+    case 'E':
+        doorOpen = true;
+        qDebug() << "door is open is:" << doorOpen;
+        break;
+
+    }
+}
+
+void Scenetwo::drawDoor()
+{
+    if (doorOpen == false)
+    {
+        xPos1 = -0.1;
+        xPos2 = 0.1;
+
+        zPos1 = -0.8;
+        zPos2 = -0.8;
+    }
+    else if (doorOpen == true)
+    {
+        xPos1 = -0.1;
+        xPos2 = -0.1;
+
+        zPos1 = -0.6;
+        zPos2 = -0.8;
+    }
+
+    mVertices.push_back(Vertex{xPos1, -0.4, zPos1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{xPos1, -0.8, zPos1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{xPos2, -0.8, zPos2, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{xPos2, -0.4, zPos2, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{xPos1, -0.4, zPos1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{xPos2, -0.8, zPos2, 0.1, 0, 0.1});
 }
 
 void Scenetwo::init(GLint matrixUniform)
