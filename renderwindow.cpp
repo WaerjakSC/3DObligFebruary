@@ -211,6 +211,9 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
     case Qt::Key::Key_D:
         gameInstance->getPawn()->strafe(-SPEED);
         break;
+    case Qt::Key::Key_F:
+        gameInstance->switchLevels();
+        break;
     }
 }
 

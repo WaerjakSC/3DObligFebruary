@@ -16,6 +16,8 @@ public:
     void init(GLint matrixUniform);
     OctahedronBall *getPawn();
 
+    void switchLevels();
+
 private:
     OctahedronBall *ball;
 

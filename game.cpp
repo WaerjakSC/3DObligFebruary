@@ -47,6 +47,14 @@ OctahedronBall *Game::getPawn()
     return ball;
 }
 
+void Game::switchLevels()
+{
+    currentLevel++;
+    if (currentLevel == levels.size())
+        currentLevel = 0;
+    // Do extra stuff here to reset the ball etc.
+}
+
 void Game::DoCollisions()
 {
     for (GameObject *level : levels) // just checking against the main scene atm
