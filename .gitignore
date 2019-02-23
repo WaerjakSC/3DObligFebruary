@@ -65,3 +65,4 @@ CMakeLists.txt.user*
 *.exe
 *.Debug
 *.Release
+*.user
