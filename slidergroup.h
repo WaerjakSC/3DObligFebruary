@@ -33,7 +33,7 @@ private:
     const int MIN_VALUE = -100;
     const int MAX_VALUE = 100;
 
-    Vector3d eye, at, up;
+    Vector3D eye, at, up;
 
     Camera *m_Camera;
 

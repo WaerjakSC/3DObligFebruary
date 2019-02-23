@@ -6,26 +6,26 @@
 namespace jl
 {
 
-Camera::Camera(const Vector3d &position, float pitch, float yaw) : mPosition{position}, mPitch{pitch}, mYaw{yaw}
+Camera::Camera(const Vector3D &position, float pitch, float yaw) : mPosition{position}, mPitch{pitch}, mYaw{yaw}
 {
     mVMatrix.translate(mPosition); // Place the camera at the desired point in the scene.
     mTimer.start();
 }
-Vector3d Camera::getViewTarget() const
+Vector3D Camera::getViewTarget() const
 {
     const float PI = 3.1415927;
     float radians = (PI / 180); // From degrees to radians for sine/cosine
     float radPitch = mPitch * radians;
     float radYaw = mYaw * radians;
 
-    return Vector3d{
+    return Vector3D{
         cosf(radPitch) * cosf(radYaw),
         sinf(radPitch),
         cosf(radPitch) * sinf(radYaw)};
 }
 Matrix4x4 Camera::getViewRotation() const
 {
-    return Matrix4x4::sLookAt(Vector3d(), getViewTarget()).transpose();
+    return Matrix4x4::sLookAt(Vector3D(), getViewTarget()).transpose();
 }
 
 Matrix4x4 Camera::getLookMatrix() const
@@ -51,22 +51,22 @@ void Camera::setUp(float up, int index)
     emit lookAtChanged();
 }
 
-Vector3d Camera::getPosition() const
+Vector3D Camera::getPosition() const
 {
     return mPosition;
 }
 
-Vector3d Camera::getTarget() const
+Vector3D Camera::getTarget() const
 {
     return mTarget;
 }
 
-Vector3d Camera::getUp() const
+Vector3D Camera::getUp() const
 {
     return mUp;
 }
 // Set mPMatrix to a 4x4 perspective matrix
-void Camera::setPersp(float fov, float aspectRatio, float zMin, float zMax)
+void Camera::SetPersp(float fov, float aspectRatio, float zMin, float zMax)
 {
     FOV = fov;
     mPMatrix = Matrix4x4{1.f}.perspective(FOV, aspectRatio, zMin, zMax);

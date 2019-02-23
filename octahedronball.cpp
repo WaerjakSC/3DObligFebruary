@@ -20,7 +20,7 @@
 //! - 8 comes from the original number of triangles in a regular Octahedron
 //! - n is the recursion level (number of repeated subdivisions)
 //!
-OctahedronBall::OctahedronBall(int n) : m_rekursjoner(n), m_indeks(0), VisualObject()
+OctahedronBall::OctahedronBall(int n) : VisualObject(), m_rekursjoner(n), m_indeks(0)
 {
 
     mVertices.reserve(3 * 8 * pow(4, m_rekursjoner));
@@ -29,13 +29,13 @@ OctahedronBall::OctahedronBall(int n) : m_rekursjoner(n), m_indeks(0), VisualObj
 
 void OctahedronBall::addForward(float speed)
 {
-    Vector3d velocity = mFront * speed;
+    Vector3D velocity = mFront * speed;
     mMatrix.translate(velocity);
 }
 
 void OctahedronBall::strafe(float speed)
 {
-    Vector3d velocity = (mFront ^ mUp) * speed;
+    Vector3D velocity = (mFront ^ mUp) * speed;
     mMatrix.translate(velocity);
 }
 

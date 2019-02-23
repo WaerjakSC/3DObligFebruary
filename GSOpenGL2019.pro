@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     sceneone.cpp \
     scenetwo.cpp \
     slidergroup.cpp \
-    qdoubleslider.cpp
+    qdoubleslider.cpp \
+    gameobject.cpp
 
 HEADERS += \
     renderwindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     sceneone.h \
     scenetwo.h \
     slidergroup.h \
-    qdoubleslider.h
+    qdoubleslider.h \
+    gameobject.h
 
 FORMS += \
     mainwindow.ui

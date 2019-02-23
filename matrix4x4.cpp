@@ -26,9 +26,9 @@ Matrix4x4::Matrix4x4(const Matrix4x4 &mat)
     }
 }
 
-Matrix4x4::Matrix4x4(const Vector4d &vA, const Vector4d &vB, const Vector4d &vC, const Vector4d &vD)
+Matrix4x4::Matrix4x4(const Vector4D &vA, const Vector4D &vB, const Vector4D &vC, const Vector4D &vD)
 {
-    std::vector<Vector4d> vecs{vA, vB, vC, vD};
+    std::vector<Vector4D> vecs{vA, vB, vC, vD};
     for (unsigned int column{0}; column < vecs.size(); column++)
     {
         std::vector<float> arrCopy{vecs.at(column).arr()};
@@ -49,7 +49,7 @@ Matrix4x4::Matrix4x4(const std::array<float, MATRIX_SIZE> &numbers)
     }
 }
 // Initialize an identity matrix multiplied by float id
-Matrix4x4::Matrix4x4(float id) : Matrix4x4(Vector4d{id}, Vector4d{0.f, id}, Vector4d{0.f, 0.f, id}, Vector4d{0.f, 0.f, 0.f, 1.f})
+Matrix4x4::Matrix4x4(float id) : Matrix4x4(Vector4D{id}, Vector4D{0.f, id}, Vector4D{0.f, 0.f, id}, Vector4D{0.f, 0.f, 0.f, 1.f})
 {
 }
 Matrix4x4::~Matrix4x4()
@@ -123,6 +123,11 @@ float Matrix4x4::at(unsigned int iOne, unsigned int iTwo) const
 {
     return matrix[iOne][iTwo];
 }
+
+float &Matrix4x4::at(unsigned int indexOne, unsigned int indexTwo)
+{
+    return matrix[indexOne][indexTwo];
+}
 void Matrix4x4::LU() // LU-factorization
 {
     float det = determinant(matrix, 4);
@@ -148,9 +153,9 @@ void Matrix4x4::LU() // LU-factorization
     }
 }
 
-Vector4d Matrix4x4::solve(Vector4d &vec4) const
+Vector4D Matrix4x4::solve(Vector4D &vec4) const
 {
-    Vector4d x;
+    Vector4D x;
     for (int k = 0; k < MATRIX_COLUMNS; k++)
     {
         for (int i = k + 1; i < MATRIX_ROWS; i++)
@@ -177,10 +182,10 @@ void Matrix4x4::scale(float xScale, float yScale, float zScale) // Scale by the 
 }
 Matrix4x4 Matrix4x4::transpose()
 {
-    Vector4d params[4];
+    Vector4D params[4];
     for (unsigned int row{0}; row < 4; row++)
     {
-        params[row] = Vector4d{matrix[0][row], matrix[1][row], matrix[2][row], matrix[3][row]};
+        params[row] = Vector4D{matrix[0][row], matrix[1][row], matrix[2][row], matrix[3][row]};
     }
     return Matrix4x4{params[0], params[1], params[2], params[3]};
 }
@@ -293,7 +298,7 @@ void Matrix4x4::rotate(float angle, float x, float y, float z)
     rot.matrix[3][3] = 1.0f;
     *this = *this * rot;
 }
-Matrix4x4 &Matrix4x4::rotate(const Vector3d &vec, float angle)
+Matrix4x4 &Matrix4x4::rotate(const Vector3D &vec, float angle)
 {
     if (angle == 0.0f)
         return *this;
@@ -327,19 +332,19 @@ Matrix4x4 &Matrix4x4::rotate(const Vector3d &vec, float angle)
         {
             if (vec.getZ() == 1.0f) // [0.0, 0.0, 1.0]
             {
-                Matrix4x4 elMatrixZ(Vector4d{cosa, sina},
-                                    Vector4d{-sina, cosa},
-                                    Vector4d{0, 0, 1},
-                                    Vector4d{0, 0, 0, 1});
+                Matrix4x4 elMatrixZ(Vector4D{cosa, sina},
+                                    Vector4D{-sina, cosa},
+                                    Vector4D{0, 0, 1},
+                                    Vector4D{0, 0, 0, 1});
                 return *this = *this * elMatrixZ;
             }
         }
         else if (vec.getZ() == 0.0f) // [0.0, 1.0, 0.0]
         {
-            Matrix4x4 elMatrixY(Vector4d{cosa, 0, -sina},
-                                Vector4d{0, 1},
-                                Vector4d{sina, 0, cosa},
-                                Vector4d{0, 0, 0, 1});
+            Matrix4x4 elMatrixY(Vector4D{cosa, 0, -sina},
+                                Vector4D{0, 1},
+                                Vector4D{sina, 0, cosa},
+                                Vector4D{0, 0, 0, 1});
             return *this = *this * elMatrixY;
         }
         else
@@ -350,10 +355,10 @@ Matrix4x4 &Matrix4x4::rotate(const Vector3d &vec, float angle)
     }
     else if (vec.getX() == 1.0f && vec.getY() == 0.0f && vec.getZ() == 0.0f)
     {
-        Matrix4x4 elMatrixX(Vector4d{1},
-                            Vector4d{0, cosa, sina},
-                            Vector4d{0, -sina, cosa},
-                            Vector4d{0, 0, 0, 1});
+        Matrix4x4 elMatrixX(Vector4D{1},
+                            Vector4D{0, cosa, sina},
+                            Vector4D{0, -sina, cosa},
+                            Vector4D{0, 0, 0, 1});
         return *this = *this * elMatrixX;
     }
     else
@@ -371,21 +376,21 @@ Matrix4x4 &Matrix4x4::translate(float xDir, float yDir, float zDir)
     // Multiply matrix by translation matrix
     return *this = *this * translate;
 }
-Matrix4x4 &Matrix4x4::translate(Vector3d vec)
+Matrix4x4 &Matrix4x4::translate(Vector3D vec)
 {
     // Create translation matrix
     Matrix4x4 translate{{1.f}, {0.f, 1.f}, {0.f, 0.f, 1.f}, {vec.getX(), vec.getY(), vec.getZ(), 1.f}};
     // Multiply matrix by translation matrix
     return *this = *this * translate;
 }
-Matrix4x4 Matrix4x4::lookAt(const Vector3d &eye, const Vector3d &at, const Vector3d &up)
+Matrix4x4 Matrix4x4::lookAt(const Vector3D &eye, const Vector3D &at, const Vector3D &up)
 {
     Matrix4x4 M(1);
-    Vector3d v = up;
+    Vector3D v = up;
     v.normalize();         // y-akse i kameraframe
-    Vector3d n = eye - at; // (from - to)
+    Vector3D n = eye - at; // (from - to)
     n.normalize();         // z-akse i kameraframe
-    Vector3d u = v ^ n;    // cross of up and forward(eye-at)
+    Vector3D u = v ^ n;    // cross of up and forward(eye-at)
     u.normalize();         // x-akse i kameraframe
     v = n ^ u;             // final up
     v.normalize();
@@ -402,21 +407,21 @@ Matrix4x4 Matrix4x4::lookAt(const Vector3d &eye, const Vector3d &at, const Vecto
 
     return *this * M; // *this * M
 }
-Matrix4x4 Matrix4x4::sLookAt(const Vector3d &eye, const Vector3d &at, const Vector3d &up)
+Matrix4x4 Matrix4x4::sLookAt(const Vector3D &eye, const Vector3D &at, const Vector3D &up)
 {
-    Vector3d finalUp = up;
+    Vector3D finalUp = up;
     finalUp.normalize();                                 // y-akse i kameraframe
-    Vector3d direction = (eye - at).normalized();        // (from - to)
-    Vector3d right = (finalUp ^ direction).normalized(); // cross of up and forward(eye-at)
+    Vector3D direction = (eye - at).normalized();        // (from - to)
+    Vector3D right = (finalUp ^ direction).normalized(); // cross of up and forward(eye-at)
     finalUp = (direction ^ right).normalized();          // final up
-    Vector3d dotProd = Vector3d(-(right * eye), -(finalUp * eye), -(direction * eye));
-    return Matrix4x4{Vector4d(right, dotProd.getX()), Vector4d(finalUp, dotProd.getY()), Vector4d(direction, dotProd.getZ()), Vector4d(0, 0, 0, 1)};
+    Vector3D dotProd = Vector3D(-(right * eye), -(finalUp * eye), -(direction * eye));
+    return Matrix4x4{Vector4D(right, dotProd.getX()), Vector4D(finalUp, dotProd.getY()), Vector4D(direction, dotProd.getZ()), Vector4D(0, 0, 0, 1)};
 }
 
-Matrix4x4 Matrix4x4::translation(const Vector4d &v)
+Matrix4x4 Matrix4x4::translation(const Vector4D &v)
 {
-    Vector4d temp = Vector4d(v.getX(), v.getY(), v.getZ(), 1.f);
-    return Matrix4x4{Vector4d{1.f}, Vector4d{0.f, 1.f}, Vector4d{0.f, 0.f, 1.f}, temp};
+    Vector4D temp = Vector4D(v.getX(), v.getY(), v.getZ(), 1.f);
+    return Matrix4x4{Vector4D{1.f}, Vector4D{0.f, 1.f}, Vector4D{0.f, 0.f, 1.f}, temp};
 }
 void Matrix4x4::frustum(float left, float right, float bottom, float top, float near, float far)
 {
@@ -490,7 +495,7 @@ Matrix4x4 Matrix4x4::operator+(const Matrix4x4 &mat)
     return m;
 }
 
-Vector4d Matrix4x4::operator*(const Vector4d &v) const
+Vector4D Matrix4x4::operator*(const Vector4D &v) const
 {
     std::vector<float> tempVec;
     tempVec.push_back(v.getX());
@@ -502,7 +507,7 @@ Vector4d Matrix4x4::operator*(const Vector4d &v) const
     {
         arr[i] = tempVec.at(i) * matrix[i][0] + tempVec.at(i) * matrix[i][1] + tempVec.at(i) * matrix[i][2] + tempVec.at(i) * matrix[i][3];
     }
-    Vector4d temp(arr[0], arr[1], arr[2], arr[3]);
+    Vector4D temp(arr[0], arr[1], arr[2], arr[3]);
     return temp;
 }
 
@@ -513,8 +518,8 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4 &m) const
     {
         for (unsigned int row{0}; row < MATRIX_ROWS; row++)
         {
-            Vector4d a{matrix[0][row], matrix[1][row], matrix[2][row], matrix[3][row]};
-            Vector4d b{m.matrix[col][0], m.matrix[col][1], m.matrix[col][2], m.matrix[col][3]};
+            Vector4D a{matrix[0][row], matrix[1][row], matrix[2][row], matrix[3][row]};
+            Vector4D b{m.matrix[col][0], m.matrix[col][1], m.matrix[col][2], m.matrix[col][3]};
             params.at(col * 4 + row) = a * b;
         }
     }

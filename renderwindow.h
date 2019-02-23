@@ -2,7 +2,6 @@
 #define RENDERWINDOW_H
 
 #include "camera.h"
-#include "interactiveobject.h"
 #include "octahedronball.h"
 #include "sceneone.h"
 #include "scenetwo.h"
@@ -17,6 +16,7 @@
 
 class QOpenGLContext;
 class Shader;
+class GameObject;
 class MainWindow;
 
 /// This inherits from QWindow to get access to the Qt functionality and
@@ -61,6 +61,7 @@ private:
     Sceneone *sceneOne;
     Scenetwo *sceneTwo;
     OctahedronBall *ball;
+    GameObject *object;
 
     void setFOV(float FOV = 60.f);
 

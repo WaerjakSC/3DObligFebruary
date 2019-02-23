@@ -5,27 +5,27 @@
 
 namespace jl
 {
-class Vector3d
+class Vector3D
 {
 public:
-    Vector3d(float a = 0.0f, float b = 0.0f, float c = 0.0) // Constructor
+    Vector3D(float a = 0.0f, float b = 0.0f, float c = 0.0) // Constructor
         : x(a), y(b), z(c)
     {
     }
 
-    const Vector3d &operator=(const Vector3d &v); // Assignment
-    Vector3d operator+(const Vector3d &v) const;  // Addition
-    Vector3d operator-(const Vector3d &v) const;  // Subtraction
-    float operator*(const Vector3d &v) const;     // Dot product
-    Vector3d operator^(const Vector3d &v) const;  // Cross product
+    const Vector3D &operator=(const Vector3D &v); // Assignment
+    Vector3D operator+(const Vector3D &v) const;  // Addition
+    Vector3D operator-(const Vector3D &v) const;  // Subtraction
+    float operator*(const Vector3D &v) const;     // Dot product
+    Vector3D operator^(const Vector3D &v) const;  // Cross product
     float length() const;                         // return length
     void normalize();                             // Normalize to unit length
-    Vector3d operator*(float c) const;            // Scaling
+    Vector3D operator*(float c) const;            // Scaling
 
     float size();
 
-    friend std::ostream &operator<<(std::ostream &out, const Vector3d &c);
-    friend std::istream &operator>>(std::istream &in, Vector3d &point);
+    friend std::ostream &operator<<(std::ostream &out, const Vector3D &c);
+    friend std::istream &operator>>(std::istream &in, Vector3D &point);
     // Overload stream operators << and >>. Let the vector look like (1.0, 2.0, 3.0) when stored
     // on a text file.
     void setXYZ(float &X, float &Y, float &Z);
@@ -42,7 +42,7 @@ public:
 
     void setZ(float value);
 
-    Vector3d normalized();
+    Vector3D normalized();
 
     float &at(unsigned int index);
     float at(unsigned int index) const;
@@ -52,7 +52,7 @@ private:
     float y;
     float z;
 };
-std::ostream &operator<<(std::ostream &out, const Vector3d &c);
-std::istream &operator>>(std::istream &in, Vector3d &point);
+std::ostream &operator<<(std::ostream &out, const Vector3D &c);
+std::istream &operator>>(std::istream &in, Vector3D &point);
 } // namespace jl
 #endif // VECTOR3D_H

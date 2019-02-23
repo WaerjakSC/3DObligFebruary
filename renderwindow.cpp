@@ -1,5 +1,6 @@
 #include "renderwindow.h"
 #include "camera.h"
+#include "gameobject.h"
 #include "mainwindow.h"
 #include "shader.h"
 #include <QDebug>
@@ -29,10 +30,11 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
         qDebug() << "Context could not be made - quitting this application";
     }
 
-    mCamera = new Camera(Vector3d(0, 2, -2));
+    mCamera = new Camera(Vector3D(0, 2, -2));
     ball = new OctahedronBall(3);
     sceneOne = new Sceneone;
     sceneTwo = new Scenetwo;
+    object = new GameObject;
 
     //Make the gameloop timer:
     mRenderTimer = new QTimer(this);
@@ -93,7 +95,8 @@ void RenderWindow::init()
     mCamera->init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
     ball->init(mMatrixUniform);
     //    sceneOne->init(mMatrixUniform);
-    sceneTwo->init(mMatrixUniform);
+    //    sceneTwo->init(mMatrixUniform);
+    object->init(mMatrixUniform);
 
     // Sets the FOV.
     setFOV(FOV);
@@ -111,9 +114,10 @@ void RenderWindow::render()
     glUseProgram(mShaderProgram->getProgram());
 
     mCamera->render();
-    ball->draw();
+    //    ball->draw();
     //    sceneOne->draw();
-    sceneTwo->draw();
+    //    sceneTwo->draw();
+    object->draw();
     calculateFramerate();
     mContext->swapBuffers(this);
 }
@@ -122,7 +126,7 @@ void RenderWindow::setFOV(float FOV)
 {
     if (mCamera != nullptr)
     {
-        mCamera->setPersp(FOV, 4.0 / 3.0, 0.1f, 10.f);
+        mCamera->SetPersp(FOV, 4.0 / 3.0, 0.1f, 10.f);
     }
 }
 //The way this is set up is that we start the clock before doing the draw call,

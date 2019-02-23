@@ -68,7 +68,6 @@ void TriangleSurface::init(GLint shader)
 
 void TriangleSurface::draw()
 {
-    //    mMatrix.rotate(2.f, 0.f, 1.0, 0.f);
     glBindVertexArray(mVAO);
     glUniformMatrix4fv(mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
     glDrawArrays(GL_TRIANGLES, 0, mVertices.size());

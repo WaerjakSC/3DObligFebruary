@@ -8,45 +8,45 @@
 namespace jl
 {
 
-Vector4d::Vector4d(Vector3d vec3, float d)
+Vector4D::Vector4D(Vector3D vec3, float d)
 {
     x = vec3.getX();
     y = vec3.getY();
     z = vec3.getZ();
     w = d;
 }
-Vector3d Vector4d::vec3ToVec4(Vector4d vec4)
+Vector3D Vector4D::vec3ToVec4(Vector4D vec4)
 {
-    Vector3d vec3(vec4.x, vec4.y, vec4.z);
+    Vector3D vec3(vec4.x, vec4.y, vec4.z);
     return vec3;
 }
 
-std::vector<float> Vector4d::arr() const
+std::vector<float> Vector4D::arr() const
 {
     return std::vector<float>{x, y, z, w};
 }
 
-float Vector4d::getX() const
+float Vector4D::getX() const
 {
     return x;
 }
 
-float Vector4d::getY() const
+float Vector4D::getY() const
 {
     return y;
 }
 
-float Vector4d::getZ() const
+float Vector4D::getZ() const
 {
     return z;
 }
 
-float Vector4d::getW() const
+float Vector4D::getW() const
 {
     return w;
 }
 
-float &Vector4d::at(unsigned int index)
+float &Vector4D::at(unsigned int index)
 {
     switch (index)
     {
@@ -64,7 +64,7 @@ float &Vector4d::at(unsigned int index)
     }
 }
 
-float Vector4d::at(unsigned int index) const
+float Vector4D::at(unsigned int index) const
 {
     switch (index)
     {
@@ -80,11 +80,11 @@ float Vector4d::at(unsigned int index) const
         return x;
     }
 }
-float Vector4d::size()
+float Vector4D::size()
 {
     return 4;
 }
-float &Vector4d::operator[](int i)
+float &Vector4D::operator[](int i)
 {
     x = array[0];
     y = array[1];
@@ -93,7 +93,7 @@ float &Vector4d::operator[](int i)
     return array[i];
 }
 
-const Vector4d &Vector4d::operator=(const Vector4d &v) // Assignment
+const Vector4D &Vector4D::operator=(const Vector4D &v) // Assignment
 {
     x = v.x;
     y = v.y;
@@ -102,35 +102,35 @@ const Vector4d &Vector4d::operator=(const Vector4d &v) // Assignment
     return *this;
 }
 
-Vector4d Vector4d::operator+(const Vector4d &v) const
+Vector4D Vector4D::operator+(const Vector4D &v) const
 {
-    Vector4d temp(x + v.x, y + v.y, z + v.z, w + v.w);
+    Vector4D temp(x + v.x, y + v.y, z + v.z, w + v.w);
     return temp;
 }
 
-Vector4d Vector4d::operator-(const Vector4d &v) const
+Vector4D Vector4D::operator-(const Vector4D &v) const
 {
-    Vector4d temp(x - v.x, y - v.y, z - v.z, w - v.w);
+    Vector4D temp(x - v.x, y - v.y, z - v.z, w - v.w);
     return temp;
 }
 
-float Vector4d::operator*(const Vector4d &v) const // Dot Product
+float Vector4D::operator*(const Vector4D &v) const // Dot Product
 {
     return x * v.x + y * v.y + z * v.z + w * v.w;
 }
-Vector4d Vector4d::operator*(float c) const // Scaling
+Vector4D Vector4D::operator*(float c) const // Scaling
 {
-    Vector4d temp(x * c, y * c, z * c, w * c);
+    Vector4D temp(x * c, y * c, z * c, w * c);
     return temp;
 }
 
-float Vector4d::length() const
+float Vector4D::length() const
 {
     float length;
     return length = sqrtf(x * x + y * y + z * z);
 }
 
-void Vector4d::normalize()
+void Vector4D::normalize()
 {
     float magnitude = length();
     if (magnitude != 0.0f)
@@ -142,7 +142,7 @@ void Vector4d::normalize()
     }
 }
 
-std::istream &operator>>(std::istream &is, Vector4d &point)
+std::istream &operator>>(std::istream &is, Vector4D &point)
 {
     // Trenger fire temporære variabler som kun skal lese inn parenteser og komma
     char dum, dum2, dum3, dum4, dum5;
@@ -151,7 +151,7 @@ std::istream &operator>>(std::istream &is, Vector4d &point)
     return is;
 }
 
-std::ostream &operator<<(std::ostream &out, const Vector4d &c)
+std::ostream &operator<<(std::ostream &out, const Vector4D &c)
 {
     // fixed and setprecision forces output to have one decimal.
     out << std::fixed << "(" << std::setprecision(1) << c.x << ", " << c.y << ", " << c.z << ", " << c.w << ")\n"; // actual output done here

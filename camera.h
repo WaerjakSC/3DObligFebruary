@@ -18,19 +18,19 @@ class Camera : public QObject, public QOpenGLFunctions_4_1_Core
     Q_OBJECT
 public:
     //    Camera(Vector3d position, Vector3d up, float yaw, float pitch);
-    Camera(const Vector3d &position = Vector3d(0.f, 0.f, -4.f), float pitch = 0.f, float yaw = 0.f);
+    Camera(const Vector3D &position = Vector3D(0.f, 0.f, -4.f), float pitch = 0.f, float yaw = 0.f);
     Matrix4x4 *GetVMatrix() { return &mVMatrix; }
     Matrix4x4 *GetPMatrix() { return &mPMatrix; }
-    void setPersp(float fov, float aspectRatio, float zMin, float zMax);
+    void SetPersp(float fov, float aspectRatio, float zMin, float zMax);
 
     void PrintProj();
     void PrintView();
-    void lookAt();
+    void LookAt();
 
     void init(GLint vMatrixUniform, GLint pMatrixUniform, Shader *shader);
     void render();
 
-    Vector3d getViewTarget() const;
+    Vector3D getViewTarget() const;
     Matrix4x4 getViewRotation() const;
     Matrix4x4 getLookMatrix() const;
 
@@ -38,11 +38,11 @@ public:
     void setTarget(float target, int index);
     void setUp(float up, int index);
 
-    Vector3d getPosition() const;
+    Vector3D getPosition() const;
 
-    Vector3d getTarget() const;
+    Vector3D getTarget() const;
 
-    Vector3d getUp() const;
+    Vector3D getUp() const;
 
 signals:
     void lookAtChanged();
@@ -51,7 +51,7 @@ private:
     Matrix4x4 mVMatrix;
     Matrix4x4 mPMatrix;
     OctahedronBall *ball;
-    Vector3d mPosition, mUp = Vector3d(0, 1, 0), mTarget = Vector3d(0, 0, 0);
+    Vector3D mPosition, mUp = Vector3D(0, 1, 0), mTarget = Vector3D(0, 0, 0);
     GLint mVMatrixUniform{0}, mPMatrixUniform{0};
     std::vector<VisualObject *> *mRenderQueue;
     Shader *mShaderProgram;

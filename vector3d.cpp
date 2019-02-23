@@ -8,50 +8,50 @@
 namespace jl
 {
 
-void Vector3d::setXYZ(float &X, float &Y, float &Z)
+void Vector3D::setXYZ(float &X, float &Y, float &Z)
 {
     X = x;
     Y = y;
     Z = z;
 }
 
-float Vector3d::getX() const
+float Vector3D::getX() const
 {
     return x;
 }
 
-float Vector3d::getY() const
+float Vector3D::getY() const
 {
     return y;
 }
 
-float Vector3d::getZ() const
+float Vector3D::getZ() const
 {
     return z;
 }
 
-void Vector3d::setX(float value)
+void Vector3D::setX(float value)
 {
     x = value;
 }
 
-void Vector3d::setY(float value)
+void Vector3D::setY(float value)
 {
     y = value;
 }
 
-void Vector3d::setZ(float value)
+void Vector3D::setZ(float value)
 {
     z = value;
 }
 
-float Vector3d::length() const
+float Vector3D::length() const
 {
     float length;
     return length = sqrtf(x * x + y * y + z * z);
 }
 
-void Vector3d::normalize()
+void Vector3D::normalize()
 {
     float magnitude = length();
     if (magnitude != 0.0f)
@@ -61,12 +61,12 @@ void Vector3d::normalize()
         z /= magnitude;
     }
 }
-Vector3d Vector3d::normalized()
+Vector3D Vector3D::normalized()
 {
     float magnitude = length();
-    return Vector3d(x / magnitude, y / magnitude, z / magnitude);
+    return Vector3D(x / magnitude, y / magnitude, z / magnitude);
 }
-const Vector3d &Vector3d::operator=(const Vector3d &v) // Assignment
+const Vector3D &Vector3D::operator=(const Vector3D &v) // Assignment
 {
     x = v.x;
     y = v.y;
@@ -74,43 +74,43 @@ const Vector3d &Vector3d::operator=(const Vector3d &v) // Assignment
     return *this;
 }
 
-Vector3d Vector3d::operator+(const Vector3d &v) const
+Vector3D Vector3D::operator+(const Vector3D &v) const
 {
-    Vector3d temp(x + v.x, y + v.y, z + v.z);
+    Vector3D temp(x + v.x, y + v.y, z + v.z);
     return temp;
 }
 
-Vector3d Vector3d::operator-(const Vector3d &v) const
+Vector3D Vector3D::operator-(const Vector3D &v) const
 {
-    Vector3d temp(x - v.x, y - v.y, z - v.z);
+    Vector3D temp(x - v.x, y - v.y, z - v.z);
     return temp;
 }
 
-float Vector3d::operator*(const Vector3d &v) const // Dot Product
+float Vector3D::operator*(const Vector3D &v) const // Dot Product
 {
     return x * v.x + y * v.y + z * v.z;
 }
-Vector3d Vector3d::operator*(float c) const // Scaling
+Vector3D Vector3D::operator*(float c) const // Scaling
 {
-    Vector3d temp(x * c, y * c, z * c);
+    Vector3D temp(x * c, y * c, z * c);
     return temp;
 }
 
-float Vector3d::size()
+float Vector3D::size()
 {
     return 3;
 }
 
-Vector3d Vector3d::operator^(const Vector3d &v) const // Cross Product
+Vector3D Vector3D::operator^(const Vector3D &v) const // Cross Product
 {
     float crossX = y * v.z - z * v.y;
     float crossY = z * v.x - x * v.z;
     float crossZ = x * v.y - y * v.x;
-    Vector3d temp(crossX, crossY, crossZ);
+    Vector3D temp(crossX, crossY, crossZ);
 
     return temp;
 }
-std::istream &operator>>(std::istream &is, Vector3d &point)
+std::istream &operator>>(std::istream &is, Vector3D &point)
 {
     // Trenger fire temporære variabler som kun skal lese inn parenteser og komma
     char dum, dum2, dum3, dum4;
@@ -119,14 +119,14 @@ std::istream &operator>>(std::istream &is, Vector3d &point)
     return is;
 }
 
-std::ostream &operator<<(std::ostream &out, const Vector3d &c)
+std::ostream &operator<<(std::ostream &out, const Vector3D &c)
 {
     // fixed and setprecision forces output to have one decimal.
     out << std::fixed << "(" << std::setprecision(1) << c.x << ", " << c.y << ", " << c.z << ")\n"; // actual output done here
     // (1.0, 2.0, 3.0)
     return out; // return std::ostream so we can chain calls to operator<<
 }
-float &Vector3d::at(unsigned int index)
+float &Vector3D::at(unsigned int index)
 {
     switch (index)
     {
@@ -142,7 +142,7 @@ float &Vector3d::at(unsigned int index)
     }
 }
 
-float Vector3d::at(unsigned int index) const
+float Vector3D::at(unsigned int index) const
 {
     switch (index)
     {
@@ -156,7 +156,7 @@ float Vector3d::at(unsigned int index) const
         return x;
     }
 }
-void Vector3d::setXYZ2(int i, float xyz)
+void Vector3D::setXYZ2(int i, float xyz)
 {
     switch (i)
     {

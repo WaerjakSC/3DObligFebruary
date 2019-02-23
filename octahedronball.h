@@ -10,7 +10,7 @@ class Vertex;
 
 //typedef gs2019::Vector3d Vec3;
 
-typedef Vector3d Vec3;
+typedef Vector3D Vec3;
 
 class OctahedronBall : public VisualObject
 {
@@ -25,8 +25,8 @@ public:
     OctahedronBall(int n = 3);
     void init(GLint matrixUniform);
     void draw();
-    Vector3d mFront = Vector3d(0, 0, -1), mUp = Vector3d(0, 1, 0);
-    Vector3d posVec;
+    Vec3 mFront = Vec3(0, 0, -1), mUp = Vec3(0, 1, 0);
+    Vec3 posVec;
 
     void addForward(float speed);
     void strafe(float speed);
