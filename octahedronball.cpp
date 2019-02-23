@@ -1,4 +1,5 @@
 #include "octahedronball.h"
+#include "gameobject.h"
 #include <iostream>
 #include <sstream>
 
@@ -20,23 +21,25 @@
 //! - 8 comes from the original number of triangles in a regular Octahedron
 //! - n is the recursion level (number of repeated subdivisions)
 //!
-OctahedronBall::OctahedronBall(int n) : VisualObject(), m_rekursjoner(n), m_indeks(0)
+OctahedronBall::OctahedronBall(int n, float radius)
+    : GameObject(Vec3(0, radius, 0), Vec3(1, 1, 1)),
+      m_rekursjoner(n), m_indeks(0), mRadius(radius)
 {
-
+    setIsMovable(true);
     mVertices.reserve(3 * 8 * pow(4, m_rekursjoner));
     oktaederUnitBall();
 }
 
 void OctahedronBall::addForward(float speed)
 {
-    Vector3D velocity = mFront * speed;
-    mMatrix.translate(velocity);
+    mVelocity = mFront * speed;
+    mMatrix.translate(mVelocity);
 }
 
 void OctahedronBall::strafe(float speed)
 {
-    Vector3D velocity = (mFront ^ mUp) * speed;
-    mMatrix.translate(velocity);
+    mVelocity = (mFront ^ mUp) * speed;
+    mMatrix.translate(mVelocity);
 }
 
 //!//! \brief OctahedronBall::~OctahedronBall() virtual destructor
@@ -57,20 +60,31 @@ void OctahedronBall::strafe(float speed)
 //! lagTriangel() creates vertex data for a triangle's 3 vertices. This is done in the
 //! final step of recursion.
 //!
+
+Vec3 OctahedronBall::velocity() const
+{
+    return mVelocity;
+}
+
+void OctahedronBall::move(const Vec3 &velocity)
+{
+    mMatrix.translate(velocity);
+}
+// added a radius modifier, super messy though, should probably do it in a different way
 void OctahedronBall::lagTriangel(const Vec3 &v1, const Vec3 &v2, const Vec3 &v3)
 {
     Vertex v{};
 
-    v.set_xyz(v1.getX(), v1.getY(), v1.getZ());    // koordinater v.x = v1.x, v.y=v1.y, v.z=v1.z
-    v.set_normal(v1.getX(), v1.getY(), v1.getZ()); // rgb
-                                                   // v.set_st(0.0f, 0.0f);            // kan utelates
+    v.set_xyz(v1.getX() * mRadius, v1.getY() * mRadius, v1.getZ() * mRadius);    // koordinater v.x = v1.x, v.y=v1.y, v.z=v1.z
+    v.set_normal(v1.getX() * mRadius, v1.getY() * mRadius, v1.getZ() * mRadius); // rgb
+                                                                                 // v.set_st(0.0f, 0.0f);            // kan utelates
     mVertices.push_back(v);
-    v.set_xyz(v2.getX(), v2.getY(), v2.getZ());
-    v.set_normal(v2.getX(), v2.getY(), v2.getZ());
+    v.set_xyz(v2.getX() * mRadius, v2.getY() * mRadius, v2.getZ() * mRadius);
+    v.set_normal(v2.getX() * mRadius, v2.getY() * mRadius, v2.getZ() * mRadius);
     // v.set_st(1.0f, 0.0f);
     mVertices.push_back(v);
-    v.set_xyz(v3.getX(), v3.getY(), v3.getZ());
-    v.set_normal(v3.getX(), v3.getY(), v3.getZ());
+    v.set_xyz(v3.getX() * mRadius, v3.getY() * mRadius, v3.getZ() * mRadius);
+    v.set_normal(v3.getX() * mRadius, v3.getY() * mRadius, v3.getZ() * mRadius);
     // v.set_st(0.5f, 1.0f);
     mVertices.push_back(v);
 }
@@ -143,28 +157,8 @@ void OctahedronBall::oktaederUnitBall()
 //!
 void OctahedronBall::init(GLint matrixUniform)
 {
-    mMatrixUniform = matrixUniform;
-    initializeOpenGLFunctions();
-    mMatrix.scale(0.2f, 0.2f, 0.2f);
-
-    //Vertex Array Object - VAO
-    glGenVertexArrays(1, &mVAO);
-    glBindVertexArray(mVAO);
-
-    //Vertex Buffer Object to hold vertices - VBO
-    glGenBuffers(1, &mVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-
-    glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(Vertex), mVertices.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)0);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)(3 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
-
-    glBindVertexArray(0);
+    GameObject::init(matrixUniform); // Run the base gameobject init
+    // Any additional changes under or above GameObject::init
 }
 
 //!
@@ -182,8 +176,10 @@ void OctahedronBall::init(GLint matrixUniform)
 //!
 void OctahedronBall::draw()
 {
-    glBindVertexArray(mVAO);
-    //    mMatrix.rotate(Vector3d(0, 0, 1),10.f);
-    glUniformMatrix4fv(mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
-    glDrawArrays(GL_TRIANGLES, 0, mVertices.size()); //mVertices.size());
+    GameObject::draw();
+}
+
+float OctahedronBall::radius() const
+{
+    return mRadius;
 }

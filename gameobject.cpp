@@ -1,59 +1,12 @@
 #include "gameobject.h"
 
-GameObject::GameObject()
-{ // Plane
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 0.5, 1, 1});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 0.5, 1, 1});
-    mVertices.push_back(Vertex{0.8, 0, -0.8, 0.5, 1, 1});
-
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 0.5, 1, 1});
-    mVertices.push_back(Vertex{0.8, 0, 0.8, 0.5, 1, 1});
-    mVertices.push_back(Vertex{0.8, 0, -0.8, 0.5, 1, 1});
-
-    // Left Wall
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 1, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 1, 0});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 0, 1, 1});
-
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0.4, -0.8, 1, 1, 0});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 0, 1, 1});
-
-    // Right Wall
-    mVertices.push_back(Vertex{0.8, 0, 0.8, 1, 1, 0});
-    mVertices.push_back(Vertex{0.8, 0.4, 0.8, 1, 0, 1});
-    mVertices.push_back(Vertex{0.8, 0, -0.8, 0, 1, 1});
-
-    mVertices.push_back(Vertex{0.8, 0.4, 0.8, 1, 1, 0});
-    mVertices.push_back(Vertex{0.8, 0.4, -0.8, 1, 0, 1});
-    mVertices.push_back(Vertex{0.8, 0, -0.8, 0, 1, 1});
-
-    // Back Wall
-    mVertices.push_back(Vertex{0.8, 0, 0.8, 0, 0, 1});
-    mVertices.push_back(Vertex{0.8, 0.4, 0.8, 0, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 0, 0, 1});
-
-    mVertices.push_back(Vertex{0.8, 0.4, 0.8, 0, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 0, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 0, 0, 1});
-
-    // Front Wall
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 1, 0, 0});
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 0});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 1, 0, 0});
-
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 0});
-    mVertices.push_back(Vertex{-0.8, 0.4, -0.8, 1, 0, 0});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 1, 0, 0});
-}
-
-bool GameObject::CheckCollisions(const GameObject &first, const GameObject &second)
+GameObject::GameObject(Vec3 position, Vec3 scale, Vec3 rotateAxis, float angles, bool movable)
+    : VisualObject(), mPosition(position), mScale(scale), IsMovable(movable)
 {
-    Vec3 center(first.position() + first.radius());
-    Vec3 otherCenter(second.position() + second.radius());
-    Vec3 distance = center - otherCenter;
-
-    return distance.length() < radius();
+    // Perform initial transformations
+    mMatrix.translate(mPosition);
+    mMatrix.rotate(rotateAxis, angles);
+    mMatrix.scale(mScale.getX(), mScale.getY(), mScale.getZ());
 }
 
 void GameObject::init(GLint matrixUniform)
@@ -82,8 +35,11 @@ void GameObject::init(GLint matrixUniform)
 }
 void GameObject::draw()
 {
+    if (IsMovable) // No need to call this function if the object won't ever be moved
+    {
+        UpdateTRS(); // Called every frame but could probably be called only when explicitly moved if not a character/pawn
+    }
     glBindVertexArray(mVAO);
-    UpdateTRS(); // Called every frame but could probably be called only when explicitly moved if not a character/pawn
     glUniformMatrix4fv(mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
     glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
 }
@@ -98,10 +54,11 @@ Vec3 GameObject::scale() const
     return mScale;
 }
 
-float GameObject::radius() const
+void GameObject::setIsMovable(bool value)
 {
-    return mRadius;
+    IsMovable = value;
 }
+
 /**
  * @brief GameObject::UpdateTRS
  * Finds and updates the position, scale and rotation of the object.

@@ -1,5 +1,6 @@
 #include "renderwindow.h"
 #include "camera.h"
+#include "game.h"
 #include "gameobject.h"
 #include "mainwindow.h"
 #include "shader.h"
@@ -31,10 +32,7 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     }
 
     mCamera = new Camera(Vector3D(0, 2, -2));
-    ball = new OctahedronBall(3);
-    sceneOne = new Sceneone;
-    sceneTwo = new Scenetwo;
-    object = new GameObject;
+    gameInstance = new Game;
 
     //Make the gameloop timer:
     mRenderTimer = new QTimer(this);
@@ -91,12 +89,11 @@ void RenderWindow::init()
 
     glBindVertexArray(0);
 
-    // Initialize all the objects in the scene
+    // Initialize camera and game instance
     mCamera->init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
-    ball->init(mMatrixUniform);
-    //    sceneOne->init(mMatrixUniform);
+    gameInstance->init(mMatrixUniform);
     //    sceneTwo->init(mMatrixUniform);
-    object->init(mMatrixUniform);
+    //    object->init(mMatrixUniform);
 
     // Sets the FOV.
     setFOV(FOV);
@@ -114,10 +111,9 @@ void RenderWindow::render()
     glUseProgram(mShaderProgram->getProgram());
 
     mCamera->render();
-    //    ball->draw();
-    //    sceneOne->draw();
+    gameInstance->Tick();
     //    sceneTwo->draw();
-    object->draw();
+    //    object->draw();
     calculateFramerate();
     mContext->swapBuffers(this);
 }
@@ -194,7 +190,7 @@ void RenderWindow::startOpenGLDebugger()
 
 void RenderWindow::keyPressEvent(QKeyEvent *event)
 {
-    const float SPEED{1.f};
+    const float SPEED{0.2f};
 
     if (event->key() == Qt::Key_Escape) //Shuts down whole program
     {
@@ -204,16 +200,16 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
     switch (event->key())
     {
     case Qt::Key::Key_W:
-        ball->addForward(-SPEED);
+        gameInstance->getPawn()->addForward(-SPEED);
         break;
     case Qt::Key::Key_S:
-        ball->addForward(SPEED);
+        gameInstance->getPawn()->addForward(SPEED);
         break;
     case Qt::Key::Key_A:
-        ball->strafe(SPEED);
+        gameInstance->getPawn()->strafe(SPEED);
         break;
     case Qt::Key::Key_D:
-        ball->strafe(-SPEED);
+        gameInstance->getPawn()->strafe(-SPEED);
         break;
     }
 }

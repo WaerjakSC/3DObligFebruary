@@ -1,14 +1,12 @@
 #ifndef SCENEONE_H
 #define SCENEONE_H
 
+#include "gameobject.h"
 #include "visualobject.h"
 
-class Sceneone : public VisualObject
+class Sceneone : public GameObject
 {
 public:
     Sceneone();
-
-    void init(GLint matrixUniform) override;
-    void draw() override;
 };
 #endif // SCENEONE_H

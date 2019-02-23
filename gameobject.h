@@ -9,22 +9,24 @@ typedef Vector3D Vec3;
 class GameObject : public VisualObject
 {
 public:
-    GameObject();
-    bool CheckCollisions(const GameObject &first, const GameObject &second);
+    GameObject(Vec3 position = Vec3(0, 0, 0),
+               Vec3 scale = Vec3(1, 1, 1),
+               Vec3 rotateAxis = Vec3(0, 0, 0), float angles = 0,
+               bool movable = false);
     Vec3 GetForwardVector();
     Vec3 GetEulerRotation() const;
-    void init(GLint matrixUniform);
-    void draw();
+    virtual void init(GLint matrixUniform);
+    virtual void draw();
 
     Vec3 position() const;
 
     Vec3 scale() const;
 
-    float radius() const;
+    void setIsMovable(bool value);
 
 private:
     Vec3 mPosition, mScale, mRotation;
-    float mRadius;
+    bool IsMovable;
     void UpdateTRS();
 };
 

@@ -17,6 +17,7 @@
 class QOpenGLContext;
 class Shader;
 class GameObject;
+class Game;
 class MainWindow;
 
 /// This inherits from QWindow to get access to the Qt functionality and
@@ -58,10 +59,9 @@ private:
 
     float FOV{45.f}; // Field Of View. Need to recalculate projection matrix whenever this changes.
     jl::Camera *mCamera;
-    Sceneone *sceneOne;
     Scenetwo *sceneTwo;
-    OctahedronBall *ball;
     GameObject *object;
+    Game *gameInstance;
 
     void setFOV(float FOV = 60.f);
 

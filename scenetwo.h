@@ -1,15 +1,12 @@
 #ifndef SCENETWO_H
 #define SCENETWO_H
 
-#include "visualobject.h"
+#include "gameobject.h"
 
-class Scenetwo : public VisualObject
+class Scenetwo : public GameObject
 {
 public:
     Scenetwo();
-
-    void init(GLint matrixUniform) override;
-    void draw() override;
 };
 
 #endif // SCENETWO_H
