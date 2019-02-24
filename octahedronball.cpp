@@ -33,18 +33,6 @@ OctahedronBall::OctahedronBall(int n, float radius, Game *game)
     collisionPackage = new CollisionPacket;
 }
 
-void OctahedronBall::addForward(float speed)
-{
-    mVelocity = mFront * speed;
-    collideAndSlide(mVelocity);
-}
-
-void OctahedronBall::strafe(float speed)
-{
-    mVelocity = (mFront ^ mUp) * speed;
-    collideAndSlide(mVelocity);
-}
-
 //!//! \brief OctahedronBall::~OctahedronBall() virtual destructor
 //!
 //OctahedronBall::~OctahedronBall()
@@ -152,7 +140,8 @@ void OctahedronBall::oktaederUnitBall()
 
 void OctahedronBall::MoveTo(Vector3D velocity)
 {
-    mMatrix.translate(velocity);
+    Vec3 newVel = velocity - position();
+    mMatrix.translate(newVel);
 }
 
 //!
@@ -211,8 +200,10 @@ void OctahedronBall::collideAndSlide(const Vec3 &vel /*, const Vec3 &gravity*/)
     collisionRecursionDepth = 0;
 
     Vec3 finalPosition = collideWithWorld(eSpacePosition, eSpaceVelocity);
-    finalPosition = finalPosition * collisionPackage->eRadius;
-
+    for (int i = 0; i < 3; i++)
+    {
+        finalPosition.at(i) = finalPosition.at(i) * collisionPackage->eRadius.at(i);
+    }
     // Do the final movement here
     MoveTo(finalPosition);
 }
@@ -281,6 +272,17 @@ Vec3 OctahedronBall::collideWithWorld(const Vec3 &pos, const Vec3 &vel)
     return collideWithWorld(newBasePoint, newVelocityVector);
 }
 
+void OctahedronBall::addForward(float speed)
+{
+    mVelocity = mFront * speed;
+    collideAndSlide(mVelocity);
+}
+
+void OctahedronBall::strafe(float speed)
+{
+    mVelocity = (mFront ^ mUp) * speed;
+    collideAndSlide(mVelocity);
+}
 float OctahedronBall::radius() const
 {
     return mRadius;

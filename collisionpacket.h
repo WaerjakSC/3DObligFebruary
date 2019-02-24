@@ -7,7 +7,7 @@ class CollisionPacket
 {
 public:
     CollisionPacket();
-    Vec3 eRadius = Vec3(1, 1, 1);
+    Vec3 eRadius = Vec3(0.2, 0.2, 0.2);
 
     // Information about the move being requested: (in R3)
     Vec3 R3Velocity;

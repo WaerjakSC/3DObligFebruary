@@ -28,7 +28,8 @@ PLANE::PLANE(const Vec3 &p1, const Vec3 &p2, const Vec3 &p3)
 bool PLANE::isFrontFacingTo(const Vec3 &direction) const
 {
     double dot = normal * direction;
-    return (dot <= 0);
+    //    return (dot <= 0);
+    return true; // for now just assume it's always front facing since I can't figure out what makes it do that in openGL
 }
 
 double PLANE::signedDistanceTo(const Vec3 &point) const

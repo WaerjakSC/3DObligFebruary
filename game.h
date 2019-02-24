@@ -8,6 +8,7 @@ class Sceneone;
 class OctahedronBall;
 class CollisionPacket;
 class Collision;
+
 class Game
 {
 public:

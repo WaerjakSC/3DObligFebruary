@@ -8,7 +8,7 @@
 #include "scenetwo.h"
 Game::Game()
 {
-    ball = new OctahedronBall(3, 0.2);
+    ball = new OctahedronBall(3, 0.2, this);
     // Move these plus the gameObjects vector into the levels class once we get more objects.
     levels.push_back(new Sceneone);
     sceneOne = new Sceneone;
@@ -19,19 +19,20 @@ void Game::CheckCollisions(CollisionPacket *collisionPackage)
 {
     // Currently checks all the triangles of sceneOne against
     // the current position of the player...
-    // For some reason I can't transfer the vertices from sceneOne to Game?
-    // No clue what's wrong, this is driving me insane.
-    eSpaceTriangle = sceneOne->sceneTriangles; // <-- the offending function/problem
+    eSpaceTriangle = sceneOne->getSceneTriangles();
 
     // Convert the triangle points into ellipsoid space (aka the character collider's local space)
-    for (int i = 0; i < 3; i++)
+    for (unsigned int i = 0; i < eSpaceTriangle.size() - 1; i++)
     {
         eSpaceTriangle.at(i).at(0) = eSpaceTriangle.at(i).at(0) / collisionPackage->eRadius.at(0);
         eSpaceTriangle.at(i).at(1) = eSpaceTriangle.at(i).at(1) / collisionPackage->eRadius.at(1);
         eSpaceTriangle.at(i).at(2) = eSpaceTriangle.at(i).at(2) / collisionPackage->eRadius.at(2);
     }
-    collision->checkTriangle(collisionPackage, eSpaceTriangle.at(0),
-                             eSpaceTriangle.at(1), eSpaceTriangle.at(2));
+    for (int i = 0; i < 10; i++)
+    {
+        collision->checkTriangle(collisionPackage, eSpaceTriangle.at(i * 3),
+                                 eSpaceTriangle.at((i * 3) + 1), eSpaceTriangle.at((i * 3) + 2));
+    }
 }
 
 void Game::init(GLint matrixUniform)

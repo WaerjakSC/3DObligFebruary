@@ -10,9 +10,10 @@ class Sceneone : public GameObject
 {
 public:
     Sceneone();
-    std::vector<Vector3D> sceneTriangles;
     void init(GLint matrixUniform) override;
+    std::vector<Vector3D> getSceneTriangles() const;
 
 private:
+    std::vector<Vector3D> sceneTriangles;
 };
 #endif // SCENEONE_H

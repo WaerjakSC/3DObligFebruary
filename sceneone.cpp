@@ -54,7 +54,7 @@ void Sceneone::init(GLint matrixUniform)
     // SceneTriangles contains 10 std::vectors of type Vector3D.
     // These std::vectors all contain exactly 3 objects,
     // each std::vector constitutes one triangle.
-    for (unsigned int i = 0; i < (mVertices.size() / 10) - 1; i++)
+    for (unsigned int i = 0; i < 10; i++)
     {
         for (unsigned int j = 0; j < 3; j++)
         {
@@ -65,4 +65,9 @@ void Sceneone::init(GLint matrixUniform)
             sceneTriangles.push_back(Vector3D(tempVec));
         }
     }
+}
+
+std::vector<Vector3D> Sceneone::getSceneTriangles() const
+{
+    return sceneTriangles;
 }
