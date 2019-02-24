@@ -42,5 +42,10 @@ void VisualObject::writeFile(std::string filename)
             std::cout << "Unable to open file\n";
         }
     }
- }
+}
+
+std::vector<Vertex> VisualObject::vertices() const
+{
+    return mVertices;
+}
 

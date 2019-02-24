@@ -1,4 +1,5 @@
 #include "vector3d.h"
+#include "vector4d.h"
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -7,7 +8,9 @@
 
 namespace jl
 {
-
+Vector3D::Vector3D(Vector4D vec) : x(vec.getX()), y(vec.getY()), z(vec.getZ())
+{
+}
 void Vector3D::setXYZ(float &X, float &Y, float &Z)
 {
     X = x;
@@ -72,6 +75,7 @@ Vector3D Vector3D::normalized()
     float magnitude = length();
     return Vector3D(x / magnitude, y / magnitude, z / magnitude);
 }
+
 const Vector3D &Vector3D::operator=(const Vector3D &v) // Assignment
 {
     x = v.x;

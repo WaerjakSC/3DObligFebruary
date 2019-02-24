@@ -40,3 +40,27 @@ std::istream &operator>>(std::istream &is, Vertex &v)
     is >> dum >> v.m_uv[0] >> dum2 >> v.m_uv[1] >> dum3;
     return is;
 }
+float Vertex::at(unsigned int index) const
+{
+    switch (index)
+    {
+    case 0:
+        return m_xyz[0];
+    case 1:
+        return m_xyz[1];
+    case 2:
+        return m_xyz[2];
+    case 3:
+        return m_normal[0];
+    case 4:
+        return m_normal[1];
+    case 5:
+        return m_normal[2];
+    case 6:
+        return m_uv[0];
+    case 7:
+        return m_uv[1];
+    default:
+        return 0;
+    }
+}

@@ -11,12 +11,26 @@ Game::Game()
     ball = new OctahedronBall(3, 0.2);
     // Move these plus the gameObjects vector into the levels class once we get more objects.
     levels.push_back(new Sceneone);
+    sceneOne = new Sceneone;
     levels.push_back(new Scenetwo);
     collision = new Collision;
 }
-bool Game::CheckCollisions(CollisionPacket *collisionPackage)
+void Game::CheckCollisions(CollisionPacket *collisionPackage)
 {
-    collision->checkTriangle(collisionPackage);
+    // Currently checks all the triangles of sceneOne against
+    // the current position of the player...
+    // For some reason I can't transfer the vertices from sceneOne to Game?
+    // No clue what's wrong, this is driving me insane.
+
+    // Convert the triangle points into ellipsoid space (aka the character collider's local space)
+    for (int i = 0; i < 3; i++)
+    {
+        eSpaceTriangle.at(i).at(0) = eSpaceTriangle.at(i).at(0) / collisionPackage->eRadius.at(0);
+        eSpaceTriangle.at(i).at(1) = eSpaceTriangle.at(i).at(1) / collisionPackage->eRadius.at(1);
+        eSpaceTriangle.at(i).at(2) = eSpaceTriangle.at(i).at(2) / collisionPackage->eRadius.at(2);
+    }
+    collision->checkTriangle(collisionPackage, eSpaceTriangle.at(0),
+                             eSpaceTriangle.at(1), eSpaceTriangle.at(2));
 }
 
 void Game::init(GLint matrixUniform)
@@ -26,10 +40,11 @@ void Game::init(GLint matrixUniform)
     ball->init(mMatrixUniform);
     for (GameObject *object : gameObjects)
         object->init(mMatrixUniform);
-    for (GameObject *level : levels)
-    {
-        level->init(mMatrixUniform);
-    }
+    //    for (GameObject *level : levels)
+    //    {
+    //        level->init(mMatrixUniform);
+    //    }
+    sceneOne->init(mMatrixUniform);
 }
 
 void Game::Tick()
@@ -37,7 +52,12 @@ void Game::Tick()
     for (GameObject *object : gameObjects)
         object->draw();
     ball->draw();
-    levels[currentLevel]->draw();
+    //    levels[currentLevel]->draw();
+    sceneOne->draw();
+
+    // Should probably call collideAndSlide from here or ball's own draw function, and update velocity dynamically
+    // So that you can implement continuous motion and friction, i.e. moving and taking a split second to stop,
+    // Or being moved by something and rolling a distance.
 }
 
 OctahedronBall *Game::getPawn()

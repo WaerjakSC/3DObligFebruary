@@ -14,6 +14,8 @@ public:
     void set_normal(float r, float b, float g);
     void set_uv(float u, float v);
 
+    float at(unsigned int index) const;
+
 private:
     float m_xyz[3];    // position i 3D
     float m_normal[3]; // normal in 3D or rgb colors

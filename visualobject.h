@@ -1,8 +1,8 @@
 #ifndef VISUALOBJECT_H
 #define VISUALOBJECT_H
 
-#include "vertex.h"
 #include "matrix4x4.h"
+#include "vertex.h"
 #include <QMatrix4x4>
 #include <QOpenGLFunctions_4_1_Core>
 #include <vector>
@@ -17,6 +17,8 @@ public:
 
     void readFile(std::string filnavn);
     void writeFile(std::string filename);
+
+    std::vector<Vertex> vertices() const;
 
 protected:
     std::vector<Vertex> mVertices;

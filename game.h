@@ -12,16 +12,18 @@ class Game
 {
 public:
     Game();
-    bool CheckCollisions(CollisionPacket *collisionPackage);
+    void CheckCollisions(CollisionPacket *collisionPackage);
 
     void Tick();
     void init(GLint matrixUniform);
     OctahedronBall *getPawn();
 
     void switchLevels();
+    std::vector<Vector3D> eSpaceTriangle;
 
 private:
     OctahedronBall *ball;
+    Sceneone *sceneOne;
 
     Collision *collision;
     std::vector<GameObject *> levels;

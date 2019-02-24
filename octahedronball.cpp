@@ -36,13 +36,14 @@ OctahedronBall::OctahedronBall(int n, float radius, Game *game)
 void OctahedronBall::addForward(float speed)
 {
     mVelocity = mFront * speed;
-    mMatrix.translate(mVelocity);
+    gameInst->CheckCollisions(collisionPackage);
+    //    collideAndSlide(mVelocity);
 }
 
 void OctahedronBall::strafe(float speed)
 {
     mVelocity = (mFront ^ mUp) * speed;
-    mMatrix.translate(mVelocity);
+    collideAndSlide(mVelocity);
 }
 
 //!//! \brief OctahedronBall::~OctahedronBall() virtual destructor
@@ -69,10 +70,6 @@ Vec3 OctahedronBall::velocity() const
     return mVelocity;
 }
 
-void OctahedronBall::move(const Vec3 &velocity)
-{
-    mMatrix.translate(velocity);
-}
 // added a radius modifier, super messy though, should probably do it in a different way
 void OctahedronBall::lagTriangel(const Vec3 &v1, const Vec3 &v2, const Vec3 &v3)
 {
@@ -154,6 +151,11 @@ void OctahedronBall::oktaederUnitBall()
     subDivide(v5, v1, v4, m_rekursjoner);
 }
 
+void OctahedronBall::MoveTo(Vector3D velocity)
+{
+    mMatrix.translate(velocity);
+}
+
 //!
 //! \brief OctahedronBall::initVertexBufferObjects() calls glGenBuffers(), glBindBuffer() and glBufferdata()
 //! for using later use of glDrawArrays()
@@ -187,7 +189,7 @@ void OctahedronBall::draw()
  * @param vel
  * @param gravity
  */
-void OctahedronBall::collideAndSlide(const Vec3 &vel, const Vec3 &gravity)
+void OctahedronBall::collideAndSlide(const Vec3 &vel /*, const Vec3 &gravity*/)
 {
     // Do collision detection:
     collisionPackage->R3Position = position();
@@ -213,7 +215,7 @@ void OctahedronBall::collideAndSlide(const Vec3 &vel, const Vec3 &gravity)
     finalPosition = finalPosition * collisionPackage->eRadius;
 
     // Do the final movement here
-    // MoveTo(FinalPosition);
+    MoveTo(finalPosition);
 }
 
 Vec3 OctahedronBall::collideWithWorld(const Vec3 &pos, const Vec3 &vel)

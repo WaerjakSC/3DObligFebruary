@@ -5,6 +5,8 @@
 
 namespace jl
 {
+class Vector4D;
+
 class Vector3D
 {
 public:
@@ -12,6 +14,7 @@ public:
         : x(a), y(b), z(c)
     {
     }
+    Vector3D(Vector4D vec);
 
     const Vector3D &operator=(const Vector3D &v); // Assignment
     Vector3D operator+(const Vector3D &v) const;  // Addition
