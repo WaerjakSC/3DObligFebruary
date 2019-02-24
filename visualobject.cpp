@@ -1,7 +1,6 @@
 #include "visualobject.h"
 #include <fstream>
 
-
 VisualObject::VisualObject() {}
 VisualObject::~VisualObject()
 {
@@ -43,9 +42,3 @@ void VisualObject::writeFile(std::string filename)
         }
     }
 }
-
-std::vector<Vertex> VisualObject::vertices() const
-{
-    return mVertices;
-}
-

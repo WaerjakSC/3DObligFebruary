@@ -12,7 +12,6 @@ public:
     Sceneone();
     std::vector<Vector3D> sceneTriangles;
     void init(GLint matrixUniform) override;
-    void saveSceneTriangles();
 
 private:
 };

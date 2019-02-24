@@ -18,8 +18,6 @@ public:
     void readFile(std::string filnavn);
     void writeFile(std::string filename);
 
-    std::vector<Vertex> vertices() const;
-
 protected:
     std::vector<Vertex> mVertices;
     GLuint mVAO{0};
