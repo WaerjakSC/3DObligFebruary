@@ -38,7 +38,6 @@ void Game::Tick()
         object->draw();
     ball->draw();
     levels[currentLevel]->draw();
-    DoCollisions();
 }
 
 OctahedronBall *Game::getPawn()
@@ -55,15 +54,4 @@ void Game::switchLevels()
     if (currentLevel == levels.size())
         currentLevel = 0;
     // Do extra stuff here to reset the ball etc.
-}
-
-void Game::DoCollisions()
-{
-    for (GameObject *level : levels) // just checking against the main scene atm
-        if (CheckCollisions(*ball, *level))
-        {
-            qDebug() << "Collision";
-            // Very rudimentary collision detection/resolution
-            ball->move(ball->velocity() * -0.5); // Move the ball in the opposite direction it just moved from
-        }
 }

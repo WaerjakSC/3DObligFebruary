@@ -26,7 +26,6 @@ private:
     Collision *collision;
     std::vector<GameObject *> levels;
     std::vector<GameObject *> gameObjects;
-    void DoCollisions();
     int currentLevel{0};
 
     // OpenGL stuff
