@@ -1,4 +1,6 @@
 #include "game.h"
+#include "collision.h"
+#include "collisionpacket.h"
 #include "gameobject.h"
 #include "levels.h"
 #include "octahedronball.h"
@@ -10,14 +12,11 @@ Game::Game()
     // Move these plus the gameObjects vector into the levels class once we get more objects.
     levels.push_back(new Sceneone);
     levels.push_back(new Scenetwo);
+    collision = new Collision;
 }
-bool Game::CheckCollisions(const OctahedronBall &first, const GameObject &second)
+bool Game::CheckCollisions(CollisionPacket *collisionPackage)
 {
-    Vec3 center(first.position().getX() + first.radius(), 0, first.position().getZ() + first.radius());
-    Vec3 otherCenter(Vec3(0, 0, 1) /* + second.radius()*/);
-    Vec3 distance = center - otherCenter;
-
-    return distance.length() < first.radius();
+    collision->checkTriangle(collisionPackage);
 }
 
 void Game::init(GLint matrixUniform)
@@ -46,7 +45,10 @@ OctahedronBall *Game::getPawn()
 {
     return ball;
 }
-
+/**
+ * @brief Game::switchLevels switches between the two levels.
+ * Should also reset the ball and any other objects, preferably with two separate level instances
+ */
 void Game::switchLevels()
 {
     currentLevel++;

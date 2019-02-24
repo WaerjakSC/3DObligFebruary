@@ -51,6 +51,12 @@ float Vector3D::length() const
     return length = sqrtf(x * x + y * y + z * z);
 }
 
+float Vector3D::squaredlLength() const
+{
+    float length = sqrtf(x * x + y * y + z * z);
+    return length * length;
+}
+
 void Vector3D::normalize()
 {
     float magnitude = length();
@@ -99,6 +105,13 @@ Vector3D Vector3D::operator*(float c) const // Scaling
 float Vector3D::size()
 {
     return 3;
+}
+
+void Vector3D::setLength(float desiredLength)
+{
+    x = desiredLength / 3;
+    y = desiredLength / 3;
+    z = desiredLength / 3;
 }
 
 Vector3D Vector3D::operator^(const Vector3D &v) const // Cross Product

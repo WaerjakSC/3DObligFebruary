@@ -6,11 +6,13 @@
 
 class Sceneone;
 class OctahedronBall;
+class CollisionPacket;
+class Collision;
 class Game
 {
 public:
     Game();
-    bool CheckCollisions(const OctahedronBall &ball, const GameObject &second);
+    bool CheckCollisions(CollisionPacket *collisionPackage);
 
     void Tick();
     void init(GLint matrixUniform);
@@ -21,6 +23,7 @@ public:
 private:
     OctahedronBall *ball;
 
+    Collision *collision;
     std::vector<GameObject *> levels;
     std::vector<GameObject *> gameObjects;
     void DoCollisions();

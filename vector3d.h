@@ -19,11 +19,13 @@ public:
     float operator*(const Vector3D &v) const;     // Dot product
     Vector3D operator^(const Vector3D &v) const;  // Cross product
     float length() const;                         // return length
+    float squaredlLength() const;                 // Squared length
     void normalize();                             // Normalize to unit length
     Vector3D operator*(float c) const;            // Scaling
 
     float size();
 
+    void setLength(float desiredLength);
     friend std::ostream &operator<<(std::ostream &out, const Vector3D &c);
     friend std::istream &operator>>(std::istream &in, Vector3D &point);
     // Overload stream operators << and >>. Let the vector look like (1.0, 2.0, 3.0) when stored

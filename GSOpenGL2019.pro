@@ -26,7 +26,11 @@ SOURCES += main.cpp \
     qdoubleslider.cpp \
     gameobject.cpp \
     game.cpp \
-    levels.cpp
+    levels.cpp \
+    collision.cpp \
+    jmath.cpp \
+    collisionpacket.cpp \
+    plane.cpp
 
 HEADERS += \
     renderwindow.h \
@@ -49,7 +53,11 @@ HEADERS += \
     qdoubleslider.h \
     gameobject.h \
     game.h \
-    levels.h
+    levels.h \
+    collision.h \
+    jmath.h \
+    collisionpacket.h \
+    plane.h
 
 FORMS += \
     mainwindow.ui

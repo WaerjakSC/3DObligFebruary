@@ -1,8 +1,10 @@
 #include "octahedronball.h"
+#include "collisionpacket.h"
+#include "game.h"
 #include "gameobject.h"
+#include "plane.h"
 #include <iostream>
 #include <sstream>
-
 //! \param n - the recursion level (default is 0 which makes the original Octahedron)
 //!
 //! The number of (duplicated) vertices are calculated based on the parameter n - the recursion level.
@@ -21,13 +23,14 @@
 //! - 8 comes from the original number of triangles in a regular Octahedron
 //! - n is the recursion level (number of repeated subdivisions)
 //!
-OctahedronBall::OctahedronBall(int n, float radius)
+OctahedronBall::OctahedronBall(int n, float radius, Game *game)
     : GameObject(Vec3(0, radius, 0), Vec3(1, 1, 1)),
-      m_rekursjoner(n), m_indeks(0), mRadius(radius)
+      m_rekursjoner(n), m_indeks(0), gameInst(game), mRadius(radius)
 {
     setIsMovable(true);
     mVertices.reserve(3 * 8 * pow(4, m_rekursjoner));
     oktaederUnitBall();
+    collisionPackage = new CollisionPacket;
 }
 
 void OctahedronBall::addForward(float speed)
@@ -177,6 +180,104 @@ void OctahedronBall::init(GLint matrixUniform)
 void OctahedronBall::draw()
 {
     GameObject::draw();
+}
+/**
+ * @brief OctahedronBall::collideAndSlide Run this every time you move
+ * with desired velocity gained from MoveForward/Strafe
+ * @param vel
+ * @param gravity
+ */
+void OctahedronBall::collideAndSlide(const Vec3 &vel, const Vec3 &gravity)
+{
+    // Do collision detection:
+    collisionPackage->R3Position = position();
+    collisionPackage->R3Velocity = vel;
+
+    // Calculate position and velocity in eSpace
+    Vec3 eSpacePosition;
+    Vec3 eSpaceVelocity;
+    // Using a change of basis wherein eRadius is the radius of the ellipsoid
+    // The simplified formula for multiplying each vector V with eRadius is
+    // (1/x,  1/y, 1/z) * V
+    // Or V / (x,y,z)
+    for (int i = 0; i < 3; i++)
+    {
+        eSpacePosition.at(i) = collisionPackage->R3Position.at(i) / collisionPackage->eRadius.at(i);
+        eSpaceVelocity.at(i) = collisionPackage->R3Velocity.at(i) / collisionPackage->eRadius.at(i);
+    }
+
+    // Iterate until we have our final position.
+    collisionRecursionDepth = 0;
+
+    Vec3 finalPosition = collideWithWorld(eSpacePosition, eSpaceVelocity);
+    finalPosition = finalPosition * collisionPackage->eRadius;
+
+    // Do the final movement here
+    // MoveTo(FinalPosition);
+}
+
+Vec3 OctahedronBall::collideWithWorld(const Vec3 &pos, const Vec3 &vel)
+{
+    float unitScale = unitsPerMeter / 100.0f;
+    float veryCloseDistance = 0.005 * unitScale;
+
+    // do we need to worry?
+    if (collisionRecursionDepth > 5)
+        return pos;
+    // OK, we need to worry:
+    collisionPackage->velocity = vel;
+    collisionPackage->normalizedVelocity = vel;
+    collisionPackage->normalizedVelocity.normalize();
+    collisionPackage->basePoint = pos;
+    collisionPackage->foundCollision = false;
+
+    // Check for collision (calls the collision routines)
+    gameInst->CheckCollisions(collisionPackage);
+
+    if (!collisionPackage->foundCollision)
+    {
+        return pos + vel;
+    }
+
+    // *** Collision occurred ***
+
+    // The original destination point
+    Vec3 destinationPoint = pos + vel;
+    Vec3 newBasePoint = pos;
+
+    // only update if we are not already very close
+    // and if so we only move very close to intersection... not to the exact spot.
+    if (collisionPackage->nearestDistance >= veryCloseDistance)
+    {
+        Vec3 V = vel;
+        V.setLength(collisionPackage->nearestDistance - veryCloseDistance);
+        // Adjust polygon intersection point (so sliding
+        // plane will be unaffected by the fact that we move slightly less than collision tells us)
+        V.normalize();
+        collisionPackage->intersectionPoint = collisionPackage->intersectionPoint - (V * veryCloseDistance);
+    }
+    // Determine the sliding plane
+    Vec3 slidePlaneOrigin = collisionPackage->intersectionPoint;
+    Vec3 slidePlaneNormal = newBasePoint - collisionPackage->intersectionPoint;
+    slidePlaneNormal.normalize();
+    PLANE slidingPlane(slidePlaneOrigin, slidePlaneNormal);
+
+    Vec3 newDestinationPoint = destinationPoint -
+                               slidePlaneNormal *
+                                   slidingPlane.signedDistanceTo(destinationPoint);
+
+    // Generate the slide vector, which will become our new velocity vector for the next iteration
+    Vec3 newVelocityVector = newDestinationPoint - collisionPackage->intersectionPoint;
+
+    // Recurse:
+
+    // Don't recurse if the new velocity is very small
+    if (newVelocityVector.length() < veryCloseDistance)
+    {
+        return newBasePoint;
+    }
+    collisionRecursionDepth++;
+    return collideWithWorld(newBasePoint, newVelocityVector);
 }
 
 float OctahedronBall::radius() const
