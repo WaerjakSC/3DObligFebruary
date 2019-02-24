@@ -36,8 +36,7 @@ OctahedronBall::OctahedronBall(int n, float radius, Game *game)
 void OctahedronBall::addForward(float speed)
 {
     mVelocity = mFront * speed;
-    gameInst->CheckCollisions(collisionPackage);
-    //    collideAndSlide(mVelocity);
+    collideAndSlide(mVelocity);
 }
 
 void OctahedronBall::strafe(float speed)

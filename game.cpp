@@ -21,6 +21,7 @@ void Game::CheckCollisions(CollisionPacket *collisionPackage)
     // the current position of the player...
     // For some reason I can't transfer the vertices from sceneOne to Game?
     // No clue what's wrong, this is driving me insane.
+    eSpaceTriangle = sceneOne->sceneTriangles; // <-- the offending function/problem
 
     // Convert the triangle points into ellipsoid space (aka the character collider's local space)
     for (int i = 0; i < 3; i++)
