@@ -26,6 +26,10 @@ public:
     Matrix4x4(const Matrix4x4 &mat);
     Matrix4x4(const std::array<float, MATRIX_SIZE> &numbers);
     ~Matrix4x4();
+    Matrix4x4(float x1, float y1, float z1, float w1,
+              float x2, float y2, float z2, float w2,
+              float x3, float y3, float z3, float w3,
+              float x4, float y4, float z4, float w4);
 
     // Returns const pointer to the underlying array
     const float *constData() { return *matrix; }
@@ -68,6 +72,7 @@ public:
     // In/Out overloading
     friend std::ostream &operator<<(std::ostream &out, const Matrix4x4 &c);
     friend std::istream &operator>>(std::istream &in, Matrix4x4 &point);
+    friend class Scenetwo;
 };
 std::ostream &operator<<(std::ostream &out, const Matrix4x4 &c);
 std::istream &operator>>(std::istream &in, Matrix4x4 &point);

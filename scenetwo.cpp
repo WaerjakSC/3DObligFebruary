@@ -1,17 +1,22 @@
 #include "scenetwo.h"
+#include "matrix4x4.h"
+#include <cmath>
+
+namespace jl
+{
 
 Scenetwo::Scenetwo()
 {
     drawFloor();
     //drawHouse();
-    //drawTable();
-    //drawDoor();
+    drawTable();
+    drawDoor();
 }
 
 // Change to a function of 2 variables!
 void Scenetwo::drawFloor()
 {
-    /*
+
     mVertices.push_back(Vertex{-1, -0.8, 1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{-1, -0.8, -1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{1, -0.8, -1, 0, 0.3, 0.5});
@@ -19,7 +24,7 @@ void Scenetwo::drawFloor()
     mVertices.push_back(Vertex{-1, -0.8, 1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{1, -0.8, 1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{1, -0.8, -1, 0, 0.3, 0.5});
-    */
+
 
 }
 
@@ -262,6 +267,42 @@ void Scenetwo::drawTable()
     mVertices.push_back(Vertex{0.09, -0.8, 0.09, 0.1, 0, 0.1});
 }
 
+void Scenetwo::openDoor()
+{
+    if(doorOpen == false)
+    {
+        dmOne.matrix[0][1] = -0.4;
+        dmOne.matrix[0][1] = -0.8;
+        dmOne.matrix[0][1] = -0.8;
+        dmTwo.matrix[0][1] = -0.4;
+        dmTwo.matrix[0][1] = -0.4;
+        dmTwo.matrix[0][1] = -0.8;
+        doorOpen = true;
+    }
+    else if(doorOpen == true)
+    {
+        dmOne.matrix[0][1] = 0;
+        dmOne.matrix[0][1] = -0.4;
+        dmOne.matrix[0][1] = -0.4;
+        dmTwo.matrix[0][1] = 0;
+        dmTwo.matrix[0][1] = 0;
+        dmTwo.matrix[0][1] = -0.4;
+        doorOpen = false;
+    }
+}
+
+void Scenetwo::drawDoor()
+{
+    mVertices.push_back(Vertex{dmOne.matrix[0][0], dmOne.matrix[0][1], dmOne.matrix[0][2], 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{dmOne.matrix[1][0], dmOne.matrix[1][1], dmOne.matrix[1][2], 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{dmOne.matrix[2][0], dmOne.matrix[2][1], dmOne.matrix[2][2], 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{dmTwo.matrix[0][0], dmTwo.matrix[0][1], dmTwo.matrix[0][2], 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{dmTwo.matrix[1][0], dmTwo.matrix[1][1], dmTwo.matrix[1][2], 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{dmTwo.matrix[2][0], dmTwo.matrix[2][1], dmTwo.matrix[2][2], 0.1, 0, 0.1});
+}
+
+/*
 void Scenetwo::isDoorOpen(unsigned char key)
 {
     switch(key)
@@ -300,7 +341,7 @@ void Scenetwo::drawDoor()
     mVertices.push_back(Vertex{xPos2, -0.4, zPos2, 0.1, 0, 0.1});
     mVertices.push_back(Vertex{xPos1, -0.4, zPos1, 0.1, 0, 0.1});
     mVertices.push_back(Vertex{xPos2, -0.8, zPos2, 0.1, 0, 0.1});
-}
+}*/
 
 void Scenetwo::init(GLint matrixUniform)
 {
@@ -339,3 +380,5 @@ void Scenetwo::draw()
     glUniformMatrix4fv(mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
     glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
 }
+
+} // end namespace.
