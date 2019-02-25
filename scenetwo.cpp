@@ -3,12 +3,15 @@
 Scenetwo::Scenetwo()
 {
     drawFloor();
-    drawHouse();
-    drawDoor();
+    //drawHouse();
+    //drawTable();
+    //drawDoor();
 }
 
+// Change to a function of 2 variables!
 void Scenetwo::drawFloor()
 {
+    /*
     mVertices.push_back(Vertex{-1, -0.8, 1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{-1, -0.8, -1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{1, -0.8, -1, 0, 0.3, 0.5});
@@ -16,6 +19,8 @@ void Scenetwo::drawFloor()
     mVertices.push_back(Vertex{-1, -0.8, 1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{1, -0.8, 1, 0, 0.3, 0.5});
     mVertices.push_back(Vertex{1, -0.8, -1, 0, 0.3, 0.5});
+    */
+
 }
 
 void Scenetwo::drawHouse()
@@ -112,6 +117,151 @@ void Scenetwo::drawHouse()
 
 }
 
+
+void Scenetwo::drawTable()
+{
+    // Top plate
+    mVertices.push_back(Vertex{-0.1, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.6, 0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.1, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.6, -0.1, 0.1, 0, 0.1});
+
+    // Bottom left leg (-x/-z)
+    mVertices.push_back(Vertex{-0.1, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, -0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.1, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, -0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.1, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, -0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.09, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, -0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.09, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, -0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.1, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, -0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.09, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, -0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.09, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, -0.09, 0.1, 0, 0.1});
+
+    // Bottom Right leg (+x/-z)
+    mVertices.push_back(Vertex{0.1, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, -0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.1, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, -0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.1, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, -0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.09, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, -0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.09, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, -0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.1, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, -0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.09, -0.6, -0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, -0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.09, -0.6, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, -0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, -0.09, 0.1, 0, 0.1});
+
+    // Top left leg (-x/+z)
+    mVertices.push_back(Vertex{-0.1, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, 0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.1, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, 0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.1, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, 0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.09, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, 0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.09, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, 0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.1, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.1, -0.8, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, 0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.09, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, 0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{-0.09, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{-0.09, -0.8, 0.09, 0.1, 0, 0.1});
+
+    // Top right leg (+x/+z)
+    mVertices.push_back(Vertex{0.1, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, 0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.1, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, 0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.1, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, 0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.09, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, 0.1, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.09, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, 0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.1, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.1, -0.8, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, 0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.09, -0.6, 0.09, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, 0.09, 0.1, 0, 0.1});
+
+    mVertices.push_back(Vertex{0.09, -0.6, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, 0.1, 0.1, 0, 0.1});
+    mVertices.push_back(Vertex{0.09, -0.8, 0.09, 0.1, 0, 0.1});
+}
+
 void Scenetwo::isDoorOpen(unsigned char key)
 {
     switch(key)
@@ -119,7 +269,6 @@ void Scenetwo::isDoorOpen(unsigned char key)
     case 'e':
     case 'E':
         doorOpen = true;
-        qDebug() << "door is open is:" << doorOpen;
         break;
 
     }

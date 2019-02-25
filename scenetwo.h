@@ -10,8 +10,9 @@ public:
     Scenetwo();
     void drawFloor();
     void drawHouse();
-    void drawDoor();
+    void drawTable();
     void isDoorOpen(unsigned char key);
+    void drawDoor();
 
     void init(GLint matrixUniform) override;
     void draw() override;
