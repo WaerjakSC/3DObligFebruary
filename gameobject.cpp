@@ -1,14 +1,42 @@
 #include "gameobject.h"
 
-GameObject::GameObject(Vec3 position, Vec3 scale, Vec3 rotateAxis, float angles, bool movable)
-    : VisualObject(), mPosition(position), mScale(scale), IsMovable(movable)
+GameObject::GameObject(std::vector<Vertex> vertices, Vec3 position, Vec3 scale, Vec3 rotateAxis,
+                       float angles)
+    : VisualObject(), mPosition(position), mScale(scale)
 {
+    // Get the vertices of the object
+    mVertices = vertices;
+    // Should probably also save each set of 3 vertices
+    // into a Vector3D for recovery later.
     // Perform initial transformations
     mMatrix.translate(mPosition);
     mMatrix.rotate(rotateAxis, angles);
     mMatrix.scale(mScale.getX(), mScale.getY(), mScale.getZ());
+    // Save all the triangles of the object
+    // ObjectTriangles contains (vertices.size() / 3) amount of std::vectors
+    // of type Vector3D.
+    // Each Vector3D constitutes the three points of a single triangle.
+    if (vertices.size() % 3 == 0)
+    {
+        // vertices should always be divisible by 3 since it's a collection of triangles.
+        for (unsigned int i = 0; i < vertices.size() / 3; i++)
+        {
+            for (unsigned int j = 0; j < 3; j++)
+            {
+                // Temporarily transform into Vector4D for multiplication with model matrix
+                Vector4D tempVec = Vector3D(mVertices.at(j + i * 3).at(0),
+                                            mVertices.at(j + i * 3).at(1),
+                                            mVertices.at(j + i * 3).at(2));
+                // (Hopefully) convert the vector into scene space
+                tempVec = mMatrix * tempVec;
+                objectTriangles.push_back(Vector3D(tempVec));
+            }
+        }
+    }
+    else
+        qDebug() << "Something went wrong, "
+                    "the object doesn't have the required amount of vertices!";
 }
-// In this class I should also take a Vertex vector for filling mVertices
 void GameObject::init(GLint matrixUniform)
 {
     mMatrixUniform = matrixUniform;
@@ -43,7 +71,30 @@ void GameObject::draw()
     glUniformMatrix4fv(mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
     glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
 }
+void GameObject::move(Vec3 distanceToMove)
+{
+    mMatrix.translate(distanceToMove);
+    // Update the object's variables with the new values.
+    UpdateTRS();
+}
+void GameObject::rotate(Vec3 axis, float angle)
+{
+    mMatrix.rotate(axis, angle);
+    // Update the object's variables with the new values.
+    UpdateTRS();
+}
 
+void GameObject::scale(Vec3 newScale)
+{
+    mMatrix.scale(newScale);
+    // Update the object's variables with the new values.
+    UpdateTRS();
+}
+
+std::vector<Vector3D> GameObject::getObjectTriangles() const
+{
+    return objectTriangles;
+}
 Vec3 GameObject::position() const
 {
     return mPosition;
@@ -126,3 +177,4 @@ Vec3 GameObject::GetEulerRotation() const
     }
     return euler;
 }
+// SetEulerRotation()?

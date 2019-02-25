@@ -38,6 +38,7 @@ public:
     Vector4D solve(Vector4D &vec4) const;
 
     void scale(float xScale, float yScale, float zScale);
+    void scale(Vector3D newScale);
 
     Matrix4x4 &rotate(const Vector3D &vec, float angle); // Rotate the angle (return as angle, not radians)
     void rotate(float angle, float x, float y, float z);

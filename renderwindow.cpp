@@ -92,7 +92,6 @@ void RenderWindow::init()
     // Initialize camera and game instance
     mCamera->init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
     gameInstance->init(mMatrixUniform);
-    //    sceneTwo->init(mMatrixUniform);
     //    object->init(mMatrixUniform);
 
     // Sets the FOV.
@@ -214,6 +213,9 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
     case Qt::Key::Key_F:
         gameInstance->switchLevels();
         break;
+    case Qt::Key::Key_E:
+        qDebug() << "E clicked, door should open or close.";
+        //        sceneTwo->Door.openDoor();
     }
 }
 

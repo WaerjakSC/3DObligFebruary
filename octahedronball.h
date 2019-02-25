@@ -12,7 +12,7 @@ class CollisionPacket;
 class Game;
 typedef Vector3D Vec3;
 
-class OctahedronBall : public GameObject
+class OctahedronBall
 {
 private:
     int m_rekursjoner;
@@ -22,6 +22,8 @@ private:
     float mRadius;
     CollisionPacket *collisionPackage;
     int collisionRecursionDepth;
+    GameObject *thisObject;
+    std::vector<Vertex> mVertices;
     const float unitsPerMeter = 100.0f;
 
     void lagTriangel(const Vec3 &v1, const Vec3 &v2, const Vec3 &v3);

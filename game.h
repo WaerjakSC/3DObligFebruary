@@ -25,9 +25,9 @@ public:
 private:
     OctahedronBall *ball;
     Sceneone *sceneOne;
+    Scenetwo *sceneTwo;
 
     Collision *collision;
-    std::vector<GameObject *> levels;
     std::vector<GameObject *> gameObjects;
     int currentLevel{0};
 

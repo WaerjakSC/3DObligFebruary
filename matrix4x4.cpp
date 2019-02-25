@@ -194,14 +194,29 @@ Vector4D Matrix4x4::solve(Vector4D &vec4) const
     }
     return x;
 }
-
-void Matrix4x4::scale(float xScale, float yScale, float zScale) // Scale by the XYZ values
+// Scale by the XYZ values
+void Matrix4x4::scale(float xScale, float yScale, float zScale)
 {
     for (unsigned int i = 0; i < MATRIX_COLUMNS; i++)
     {
         matrix[i][0] = matrix[i][0] * xScale;
         matrix[i][1] = matrix[i][1] * yScale;
         matrix[i][2] = matrix[i][2] * zScale;
+    }
+}
+
+/**
+ * @brief Matrix4x4::scale Overloaded version to take Vector3D instead of
+ * 3 separate floats
+ * @param newScale
+ */
+void Matrix4x4::scale(Vector3D newScale)
+{
+    for (unsigned int i = 0; i < MATRIX_COLUMNS; i++)
+    {
+        matrix[i][0] = matrix[i][0] * newScale.getX();
+        matrix[i][1] = matrix[i][1] * newScale.getY();
+        matrix[i][2] = matrix[i][2] * newScale.getZ();
     }
 }
 Matrix4x4 Matrix4x4::transpose()

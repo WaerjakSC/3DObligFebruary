@@ -59,7 +59,6 @@ private:
 
     float FOV{45.f}; // Field Of View. Need to recalculate projection matrix whenever this changes.
     jl::Camera *mCamera;
-    Scenetwo *sceneTwo;
     GameObject *object;
     Game *gameInstance;
 

@@ -1,73 +1,116 @@
 #include "sceneone.h"
-Sceneone::Sceneone() : GameObject(Vec3(0, 0, 0), Vec3(2, 1, 2))
+Sceneone::Sceneone()
 {
-    // Plane
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 0.5, 1, 1});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 0.5, 1, 1});
-    mVertices.push_back(Vertex{0.8, 0, -0.8, 0.5, 1, 1});
+    plane = new GameObject(drawPlane());
+    rWall = new GameObject(drawRightWall());
+    lWall = new GameObject(drawLeftWall());
+    fWall = new GameObject(drawFrontWall());
+    bWall = new GameObject(drawBackWall());
+    objects.push_back(plane);
+    objects.push_back(rWall);
+    objects.push_back(lWall);
+    objects.push_back(fWall);
+    objects.push_back(bWall);
+}
 
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 0.5, 1, 1});
-    mVertices.push_back(Vertex{0.8, 0, 0.8, 0.5, 1, 1});
-    mVertices.push_back(Vertex{0.8, 0, -0.8, 0.5, 1, 1});
-
-    // Left Wall
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 1, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 1, 0});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 0, 1, 1});
-
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0.4, -0.8, 1, 1, 0});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 0, 1, 1});
-
-    // Right Wall
-    mVertices.push_back(Vertex{0.8, 0, 0.8, 1, 1, 0});
-    mVertices.push_back(Vertex{0.8, 0.4, 0.8, 1, 0, 1});
-    mVertices.push_back(Vertex{0.8, 0, -0.8, 0, 1, 1});
-
-    mVertices.push_back(Vertex{0.8, 0.4, 0.8, 1, 1, 0});
-    mVertices.push_back(Vertex{0.8, 0.4, -0.8, 1, 0, 1});
-    mVertices.push_back(Vertex{0.8, 0, -0.8, 0, 1, 1});
-
-    // Back Wall
-    mVertices.push_back(Vertex{0.8, 0, 0.8, 0, 0, 1});
-    mVertices.push_back(Vertex{0.8, 0.4, 0.8, 0, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 0, 0, 1});
-
-    mVertices.push_back(Vertex{0.8, 0.4, 0.8, 0, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 0, 0, 1});
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 0, 0, 1});
-
-    // Front Wall
-    mVertices.push_back(Vertex{-0.8, 0, 0.8, 1, 0, 0});
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 0});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 1, 0, 0});
-
-    mVertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 0});
-    mVertices.push_back(Vertex{-0.8, 0.4, -0.8, 1, 0, 0});
-    mVertices.push_back(Vertex{-0.8, 0, -0.8, 1, 0, 0});
+Sceneone::~Sceneone()
+{
+    delete plane;
+    delete rWall;
+    delete lWall;
+    delete fWall;
+    delete bWall;
 }
 
 void Sceneone::init(GLint matrixUniform)
 {
-    GameObject::init(matrixUniform);
-    // Save all the triangles in the scene
-    // SceneTriangles contains 10 std::vectors of type Vector3D.
-    // These std::vectors all contain exactly 3 objects,
-    // each std::vector constitutes one triangle.
-    for (unsigned int i = 0; i < 10; i++)
-    {
-        for (unsigned int j = 0; j < 3; j++)
-        {
-            // Temporarily transform into Vector4D for multiplication with model matrix
-            Vector4D tempVec = Vector3D(mVertices.at(j + i * 3).at(0), mVertices.at(j + i * 3).at(1), mVertices.at(j + i * 3).at(2));
-            // (Hopefully) convert the vector into scene space
-            tempVec = mMatrix * tempVec;
-            sceneTriangles.push_back(Vector3D(tempVec));
-        }
-    }
+    plane->init(matrixUniform);
+    rWall->init(matrixUniform);
+    lWall->init(matrixUniform);
+    fWall->init(matrixUniform);
+    bWall->init(matrixUniform);
+}
+
+void Sceneone::draw()
+{
+    plane->draw();
+    rWall->draw();
+    lWall->draw();
+    fWall->draw();
+    bWall->draw();
 }
 
 std::vector<Vector3D> Sceneone::getSceneTriangles() const
 {
     return sceneTriangles;
+}
+
+std::vector<Vertex> Sceneone::drawPlane()
+{
+    std::vector<Vertex> vertices;
+    // Plane
+    vertices.push_back(Vertex{-0.8, 0, 0.8, 0.5, 1, 1});
+    vertices.push_back(Vertex{-0.8, 0, -0.8, 0.5, 1, 1});
+    vertices.push_back(Vertex{0.8, 0, -0.8, 0.5, 1, 1});
+
+    vertices.push_back(Vertex{-0.8, 0, 0.8, 0.5, 1, 1});
+    vertices.push_back(Vertex{0.8, 0, 0.8, 0.5, 1, 1});
+    vertices.push_back(Vertex{0.8, 0, -0.8, 0.5, 1, 1});
+    return vertices;
+}
+
+std::vector<Vertex> Sceneone::drawRightWall()
+{
+    std::vector<Vertex> vertices;
+    // Right Wall
+    vertices.push_back(Vertex{0.8, 0, 0.8, 1, 1, 0});
+    vertices.push_back(Vertex{0.8, 0.4, 0.8, 1, 0, 1});
+    vertices.push_back(Vertex{0.8, 0, -0.8, 0, 1, 1});
+
+    vertices.push_back(Vertex{0.8, 0.4, 0.8, 1, 1, 0});
+    vertices.push_back(Vertex{0.8, 0.4, -0.8, 1, 0, 1});
+    vertices.push_back(Vertex{0.8, 0, -0.8, 0, 1, 1});
+    return vertices;
+}
+
+std::vector<Vertex> Sceneone::drawLeftWall()
+{
+    std::vector<Vertex> vertices;
+    // Left Wall
+    vertices.push_back(Vertex{-0.8, 0, 0.8, 1, 0, 1});
+    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 1, 0});
+    vertices.push_back(Vertex{-0.8, 0, -0.8, 0, 1, 1});
+
+    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 1});
+    vertices.push_back(Vertex{-0.8, 0.4, -0.8, 1, 1, 0});
+    vertices.push_back(Vertex{-0.8, 0, -0.8, 0, 1, 1});
+    return vertices;
+}
+
+std::vector<Vertex> Sceneone::drawBackWall()
+{
+    std::vector<Vertex> vertices;
+    // Back Wall
+    vertices.push_back(Vertex{0.8, 0, 0.8, 0, 0, 1});
+    vertices.push_back(Vertex{0.8, 0.4, 0.8, 0, 0, 1});
+    vertices.push_back(Vertex{-0.8, 0, 0.8, 0, 0, 1});
+
+    vertices.push_back(Vertex{0.8, 0.4, 0.8, 0, 0, 1});
+    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 0, 0, 1});
+    vertices.push_back(Vertex{-0.8, 0, 0.8, 0, 0, 1});
+    return vertices;
+}
+
+std::vector<Vertex> Sceneone::drawFrontWall()
+{
+    std::vector<Vertex> vertices;
+    // Front Wall
+    vertices.push_back(Vertex{-0.8, 0, 0.8, 1, 0, 0});
+    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 0});
+    vertices.push_back(Vertex{-0.8, 0, -0.8, 1, 0, 0});
+
+    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 0});
+    vertices.push_back(Vertex{-0.8, 0.4, -0.8, 1, 0, 0});
+    vertices.push_back(Vertex{-0.8, 0, -0.8, 1, 0, 0});
+    return vertices;
 }

@@ -24,13 +24,13 @@
 //! - n is the recursion level (number of repeated subdivisions)
 //!
 OctahedronBall::OctahedronBall(int n, float radius, Game *game)
-    : GameObject(Vec3(0, radius, 0), Vec3(1, 1, 1)),
+    : /*GameObject(mVertices, Vec3(0, radius, 0), Vec3(1, 1, 1)),*/
       m_rekursjoner(n), m_indeks(0), gameInst(game), mRadius(radius)
 {
-    setIsMovable(true);
     mVertices.reserve(3 * 8 * pow(4, m_rekursjoner));
     oktaederUnitBall();
     collisionPackage = new CollisionPacket;
+    thisObject = new GameObject(mVertices, Vec3(0, radius, 0), Vec3(1, 1, 1));
 }
 
 //!//! \brief OctahedronBall::~OctahedronBall() virtual destructor
@@ -140,8 +140,8 @@ void OctahedronBall::oktaederUnitBall()
 
 void OctahedronBall::MoveTo(Vector3D velocity)
 {
-    Vec3 newVel = velocity - position();
-    mMatrix.translate(newVel);
+    Vec3 newVel = velocity - thisObject->position();
+    thisObject->move(newVel);
 }
 
 //!
@@ -150,26 +150,12 @@ void OctahedronBall::MoveTo(Vector3D velocity)
 //!
 void OctahedronBall::init(GLint matrixUniform)
 {
-    GameObject::init(matrixUniform); // Run the base gameobject init
+    thisObject->init(matrixUniform);
     // Any additional changes under or above GameObject::init
 }
-
-//!
-//! \brief OctahedronBall::draw() draws a ball using glDrawArrays()
-//! \param positionAttribute    vertex shader variable for position
-//! \param normalAttribute      vertex shader variable for normal or color
-//! \param textureAttribute     vertex shader variable for texture coordinates (optional)
-//!
-//! draw()
-//! - glBindBuffer()
-//! - glVertexAttribPointer()
-//! - glBindTexture()
-//! - glVertexAttribPointer()
-//! - glDrawArrays() with GL_TRIANGLES
-//!
 void OctahedronBall::draw()
 {
-    GameObject::draw();
+    thisObject->draw();
 }
 /**
  * @brief OctahedronBall::collideAndSlide Run this every time you move
@@ -180,7 +166,7 @@ void OctahedronBall::draw()
 void OctahedronBall::collideAndSlide(const Vec3 &vel /*, const Vec3 &gravity*/)
 {
     // Do collision detection:
-    collisionPackage->R3Position = position();
+    collisionPackage->R3Position = thisObject->position();
     collisionPackage->R3Velocity = vel;
 
     // Calculate position and velocity in eSpace
