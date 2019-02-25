@@ -195,7 +195,7 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_E)
     {
         qDebug() << "E clicked, door should open or close.";
-        sceneTwo.openDoor();
+        sceneTwo.Door.openDoor();
     }
 
 

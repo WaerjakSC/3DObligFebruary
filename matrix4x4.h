@@ -72,7 +72,7 @@ public:
     // In/Out overloading
     friend std::ostream &operator<<(std::ostream &out, const Matrix4x4 &c);
     friend std::istream &operator>>(std::istream &in, Matrix4x4 &point);
-    friend class Scenetwo;
+    friend class door;
 };
 std::ostream &operator<<(std::ostream &out, const Matrix4x4 &c);
 std::istream &operator>>(std::istream &in, Matrix4x4 &point);

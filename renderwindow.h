@@ -6,7 +6,7 @@
 #include "octahedronball.h"
 #include "trianglesurface.h"
 #include "scenetwo.h"
-#include "drawings.h"
+#include "door.h"
 #include "vertex.h"
 #include "xyz.h"
 #include <QElapsedTimer>
@@ -78,6 +78,10 @@ private:
     //Sceneone sceneOne;
 
     Scenetwo sceneTwo;
+
+    door Door;
+
+
 
     friend class Scenetwo;
 
