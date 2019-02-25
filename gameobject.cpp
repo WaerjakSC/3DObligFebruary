@@ -8,7 +8,7 @@ GameObject::GameObject(Vec3 position, Vec3 scale, Vec3 rotateAxis, float angles,
     mMatrix.rotate(rotateAxis, angles);
     mMatrix.scale(mScale.getX(), mScale.getY(), mScale.getZ());
 }
-
+// In this class I should also take a Vertex vector for filling mVertices
 void GameObject::init(GLint matrixUniform)
 {
     mMatrixUniform = matrixUniform;

@@ -14,7 +14,31 @@ Matrix4x4::Matrix4x4(float xyzw[4][4])
         }
     }
 }
+Matrix4x4::Matrix4x4(float x1, float y1, float z1, float w1,
+                     float x2, float y2, float z2, float w2,
+                     float x3, float y3, float z3, float w3,
+                     float x4, float y4, float z4, float w4)
+{
+    matrix[0][0] = x1;
+    matrix[0][1] = y1;
+    matrix[0][2] = z1;
+    matrix[0][3] = w1;
 
+    matrix[1][0] = x2;
+    matrix[1][1] = y2;
+    matrix[1][2] = z2;
+    matrix[1][3] = w2;
+
+    matrix[2][0] = x3;
+    matrix[2][1] = y3;
+    matrix[2][2] = z3;
+    matrix[2][3] = w3;
+
+    matrix[3][0] = x4;
+    matrix[3][1] = y4;
+    matrix[3][2] = z4;
+    matrix[3][3] = w4;
+}
 Matrix4x4::Matrix4x4(const Matrix4x4 &mat)
 {
     for (unsigned int col{0}; col < MATRIX_COLUMNS; ++col)
