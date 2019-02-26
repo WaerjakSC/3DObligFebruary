@@ -49,7 +49,9 @@ public:
 
 signals:
     void lookAtChanged();
-    void lookAtChanged(Vec3 value);
+    void posChanged(Vec3 value);
+    void tarChanged(Vec3 value);
+    void upChanged(Vec3 value);
 
 private:
     Matrix4x4 mVMatrix;

@@ -87,7 +87,7 @@ void Game::switchLevels()
     }
     else
     {
-        ball->MoveTo(Vec3(0, -7, -2));
+        ball->MoveTo(Vec3(0, -2.8, 2));
         currentLevel++;
     }
 

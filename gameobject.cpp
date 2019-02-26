@@ -92,12 +92,10 @@ void GameObject::scale(Vec3 newScale)
     // Update the object's variables with the new values.
     UpdateTRS();
 }
-
+// Resets the object to (0,0,0) in world coordinates
 void GameObject::resetPosition()
 {
-    // This really doesn't work but whatever :)))
-    if (position().length() > 0.1)
-        mMatrix.translate(-position().getX(), -position().getY(), -position().getZ());
+    mMatrix.setToIdentity();
 }
 
 TriangleArray GameObject::getTriangles() const

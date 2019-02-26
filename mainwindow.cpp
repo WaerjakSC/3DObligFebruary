@@ -1,8 +1,8 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-
 #include "renderwindow.h"
 #include "slidergroup.h"
+#include "ui_mainwindow.h"
+#include "vector3d.h"
 #include <QDebug>
 #include <QGridLayout>
 #include <QSurfaceFormat>

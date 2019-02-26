@@ -36,6 +36,9 @@ SliderGroup::SliderGroup(Qt::Orientation orientation, const QString &title, QWid
     //    setMaximumWidth(600);
     setMinimumSize(600, 180);
     setLayout(grid);
+    connect(cam, SIGNAL(posChanged(Vec3)), this, SLOT(setPosSliders(Vec3)));
+    connect(cam, SIGNAL(tarChanged(Vec3)), this, SLOT(setTarSliders(Vec3)));
+    connect(cam, SIGNAL(upChanged(Vec3)), this, SLOT(setUpSliders(Vec3)));
 }
 QGroupBox *SliderGroup::createEyeGroup(Qt::Orientation orientation)
 {
@@ -155,21 +158,21 @@ void SliderGroup::setUp()
 }
 void SliderGroup::setPosSliders(Vec3 newValue)
 {
-    eyeSliders.at(0)->setValue(newValue.getX());
-    eyeSliders.at(1)->setValue(newValue.getY());
-    eyeSliders.at(2)->setValue(newValue.getZ());
+    eyeSliders.at(0)->setValue(newValue.getX() * 10);
+    eyeSliders.at(1)->setValue(newValue.getY() * 10);
+    eyeSliders.at(2)->setValue(newValue.getZ() * 10);
 }
 
 void SliderGroup::setTarSliders(Vec3 newValue)
 {
-    atSliders.at(0)->setValue(newValue.getX());
-    atSliders.at(1)->setValue(newValue.getY());
-    atSliders.at(2)->setValue(newValue.getZ());
+    atSliders.at(0)->setValue(newValue.getX() * 10);
+    atSliders.at(1)->setValue(newValue.getY() * 10);
+    atSliders.at(2)->setValue(newValue.getZ() * 10);
 }
 
 void SliderGroup::setUpSliders(Vec3 newValue)
 {
-    upSliders.at(0)->setValue(newValue.getX());
-    upSliders.at(1)->setValue(newValue.getY());
-    upSliders.at(2)->setValue(newValue.getZ());
+    upSliders.at(0)->setValue(newValue.getX() * 10);
+    upSliders.at(1)->setValue(newValue.getY() * 10);
+    upSliders.at(2)->setValue(newValue.getZ() * 10);
 }

@@ -53,19 +53,19 @@ void Camera::setUp(float up, int index)
 void Camera::setPosition(Vec3 vec)
 {
     mPosition = vec;
-    emit lookAtChanged();
+    emit posChanged(vec);
 }
 
 void Camera::setTarget(Vec3 vec)
 {
     mTarget = vec;
-    emit lookAtChanged();
+    emit tarChanged(vec);
 }
 
 void Camera::setUp(Vec3 vec)
 {
     mUp = vec;
-    emit lookAtChanged();
+    emit upChanged(vec);
 }
 Vector3D Camera::getPosition() const
 {
