@@ -17,6 +17,7 @@ typedef jl::Vector3D Vec3;
  */
 class Game
 {
+    Q_OBJECT
 public:
     Game();
     void CheckCollisions(CollisionPacket *collisionPackage);

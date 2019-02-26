@@ -1,6 +1,6 @@
 #include "gameobject.h"
 
-GameObject::GameObject(TriangleArray triangles, std::string actorName, Vec3 position, Vec3 scale, Vec3 rotateAxis,
+GameObject::GameObject(TriangleArray triangles, QString actorName, Vec3 position, Vec3 scale, Vec3 rotateAxis,
                        float angles)
     : VisualObject(), mPosition(position), mScale(scale), name(actorName)
 {
@@ -96,11 +96,18 @@ void GameObject::scale(Vec3 newScale)
 void GameObject::resetPosition()
 {
     mMatrix.setToIdentity();
+    mMatrix.scale(mScale);
+    UpdateTRS();
 }
 
 TriangleArray GameObject::getTriangles() const
 {
     return objectTriangles;
+}
+
+QString GameObject::getName() const
+{
+    return name;
 }
 
 Vec3 GameObject::position() const

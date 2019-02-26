@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QSurfaceFormat>
+#include <QTabWidget>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -62,12 +63,16 @@ void MainWindow::init()
     //We put the RenderWindow inside a QWidget so we can put in into a
     //layout that is made in the .ui-file
     mRenderWindowContainer = QWidget::createWindowContainer(mRenderWindow);
-    QHBoxLayout *topBox = new QHBoxLayout;                      // Horizontal Box to contain LookAt sliders and grid
+    QHBoxLayout *topBox = new QHBoxLayout; // Horizontal Box to contain LookAt sliders and grid
+    QWidget *firstTab = new QWidget;
     QGroupBox *grid = createMatrix(mRenderWindow->getCamera()); // Grid to contain LookAt matrix
-
-    ui->OpenGLLayout->addLayout(topBox);
+    QTabWidget *tabs = new QTabWidget;
+    firstTab->setLayout(topBox);
     topBox->addWidget(sliders, Qt::AlignTop);
     topBox->addWidget(grid);
+
+    tabs->addTab(firstTab, QString("LookAt"));
+    ui->OpenGLLayout->addWidget(tabs);
 
     // Update the lookAt grid with new values each time the camera is moved
     connect(mRenderWindow->getCamera(), SIGNAL(lookAtChanged()), this, SLOT(updateLabelMatrix()));

@@ -30,7 +30,8 @@ SOURCES += main.cpp \
     collision.cpp \
     jmath.cpp \
     collisionpacket.cpp \
-    plane.cpp
+    plane.cpp \
+    objectselect.cpp
 
 HEADERS += \
     renderwindow.h \
@@ -57,7 +58,8 @@ HEADERS += \
     collision.h \
     jmath.h \
     collisionpacket.h \
-    plane.h
+    plane.h \
+    objectselect.h
 
 FORMS += \
     mainwindow.ui

@@ -38,11 +38,13 @@ public:
 
     Vec3 getTriangle(int triangle, int point);
 
+    QString getName() const;
+
 private:
     Vec3 mPosition, mScale, mRotation;
     TriangleArray objectTriangles;
     bool IsMovable;
-    std::string name = "no name";
+    QString name = "no name";
 
     void UpdateTRS();
 };
