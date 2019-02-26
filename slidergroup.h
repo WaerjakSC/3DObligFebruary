@@ -24,6 +24,9 @@ public slots:
     //    void setValue(int value);
     //    void setMinimum(int value);
     //    void setMaximum(int value);
+    void setPosSliders(Vec3 newValue);
+    void setTarSliders(Vec3 newValue);
+    void setUpSliders(Vec3 newValue);
 
     void setPosition();
     void setTarget();

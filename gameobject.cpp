@@ -10,9 +10,10 @@ GameObject::GameObject(TriangleArray triangles, std::string actorName, Vec3 posi
     mVertices = objectTriangles.getVertices();
 
     // Perform initial transformations
-    mMatrix.translate(mPosition);
-    mMatrix.rotate(rotateAxis, angles);
-    mMatrix.scale(mScale.getX(), mScale.getY(), mScale.getZ());
+    this->scale(scale);
+    rotate(rotateAxis, angles);
+    move(position);
+
     // Save all the triangles of the object
     // ObjectTriangles contains (vertices.size() / 3) amount of std::vectors
     // of type Vector3D.
@@ -90,6 +91,13 @@ void GameObject::scale(Vec3 newScale)
     mMatrix.scale(newScale);
     // Update the object's variables with the new values.
     UpdateTRS();
+}
+
+void GameObject::resetPosition()
+{
+    // This really doesn't work but whatever :)))
+    if (position().length() > 0.1)
+        mMatrix.translate(-position().getX(), -position().getY(), -position().getZ());
 }
 
 TriangleArray GameObject::getTriangles() const

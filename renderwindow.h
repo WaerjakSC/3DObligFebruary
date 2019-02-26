@@ -43,7 +43,6 @@ private slots:
 
 private:
     void init();
-    std::vector<Vertex> m_Vertices;
 
     float w, h;
     QOpenGLContext *mContext;
@@ -59,7 +58,6 @@ private:
 
     float FOV{45.f}; // Field Of View. Need to recalculate projection matrix whenever this changes.
     jl::Camera *mCamera;
-    GameObject *object;
     Game *gameInstance;
 
     void setFOV(float FOV = 60.f);

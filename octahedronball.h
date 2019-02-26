@@ -25,24 +25,26 @@ private:
     GameObject *thisObject;
     std::vector<Vertex> mVertices;
     TriangleArray triArray;
-    const float unitsPerMeter = 0.10f;
+    //    const float unitsPerMeter = 0.10f;
 
     void lagTriangel(const Vec3 &v1, const Vec3 &v2, const Vec3 &v3);
     void subDivide(const Vec3 &a, const Vec3 &b, const Vec3 &c, int n);
     void oktaederUnitBall();
-    Vec3 collideWithWorld(const Vec3 &pos, const Vec3 &vel);
-    void collideAndSlide(const Vec3 &vel /*, const Vec3 &gravity*/);
-    void MoveTo(Vec3 velocity);
 
+    //    Deprecated collision functions:
+    //    Vec3 collideWithWorld(const Vec3 &pos, const Vec3 &vel);
+    //    void collideAndSlide(const Vec3 &vel /*, const Vec3 &gravity*/);
 public:
     OctahedronBall(int n = 3, float radius = 1, Game *game = nullptr);
     void init(GLint matrixUniform);
     void draw();
 
+    void MoveTo(Vec3 velocity);
     void addForward(float speed);
     void strafe(float speed);
     Vec3 velocity() const;
     float radius() const;
     Vec3 position();
+    void ResetPos();
 };
 #endif

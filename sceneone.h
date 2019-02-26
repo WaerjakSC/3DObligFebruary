@@ -15,6 +15,7 @@ public:
     void draw();
     TriangleArray getSceneTriangles() const;
     std::vector<GameObject *> objects;
+    void openDoor();
 
 private:
     TriangleArray sceneTriangles;
@@ -23,6 +24,9 @@ private:
     TriangleArray drawLeftWall();
     TriangleArray drawBackWall();
     TriangleArray drawFrontWall();
-    GameObject *plane, *rWall, *lWall, *bWall, *fWall;
+    TriangleArray drawDoor();
+
+    GameObject *plane, *rWall, *lWall, *bWall, *fWall, *door;
+    bool doorOpen = false;
 };
 #endif // SCENEONE_H

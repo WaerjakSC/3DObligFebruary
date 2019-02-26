@@ -4,6 +4,8 @@
 #include "gameobject.h"
 #include "levels.h"
 #include "vector3d.h"
+#include <QTimer>
+
 class Sceneone;
 class OctahedronBall;
 class CollisionPacket;
@@ -23,13 +25,14 @@ public:
     void init(GLint matrixUniform);
     OctahedronBall *getPawn();
     TriangleArray eSpaceTriangle;
-
+    Sceneone *sceneOne;
+    Scenetwo *sceneTwo;
     void switchLevels();
+
+    int getCurrentLevel() const;
 
 private:
     OctahedronBall *ball;
-    Sceneone *sceneOne;
-    Scenetwo *sceneTwo;
 
     Collision *collision;
     std::vector<GameObject *> gameObjects;

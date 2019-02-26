@@ -31,7 +31,7 @@ RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
         qDebug() << "Context could not be made - quitting this application";
     }
 
-    mCamera = new Camera(Vector3D(0, 2, -2));
+    mCamera = new Camera(Vector3D(0, 5, -5));
     gameInstance = new Game;
 
     //Make the gameloop timer:
@@ -92,7 +92,6 @@ void RenderWindow::init()
     // Initialize camera and game instance
     mCamera->init(mVMatrixUniform, mPMatrixUniform, mShaderProgram);
     gameInstance->init(mMatrixUniform);
-    //    object->init(mMatrixUniform);
 
     // Sets the FOV.
     setFOV(FOV);
@@ -111,8 +110,7 @@ void RenderWindow::render()
 
     mCamera->render();
     gameInstance->Tick();
-    //    sceneTwo->draw();
-    //    object->draw();
+
     calculateFramerate();
     mContext->swapBuffers(this);
 }
@@ -220,10 +218,20 @@ void RenderWindow::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key::Key_F:
         gameInstance->switchLevels();
+        switch (gameInstance->getCurrentLevel())
+        {
+        case 0:
+            mCamera->setPosition(Vector3D(0, 5, -5));
+            mCamera->setTarget(Vector3D(0, 0, 0));
+            break;
+        case 1:
+            mCamera->setPosition(Vector3D(1.3, 1.8, -2.8));
+            mCamera->setTarget(Vector3D(0, -1, 0));
+        }
         break;
     case Qt::Key::Key_E:
         qDebug() << "E clicked, door should open or close.";
-        //        sceneTwo->Door.openDoor();
+        gameInstance->sceneOne->openDoor();
     }
 }
 

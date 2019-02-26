@@ -5,6 +5,20 @@
 
 class Scenetwo
 {
+public:
+    Scenetwo();
+    ~Scenetwo();
+    TriangleArray drawFloor();
+    TriangleArray drawHouse();
+    TriangleArray drawTable();
+    TriangleArray drawDoor();
+    std::vector<GameObject *> objects;
+    TriangleArray getSceneTriangles() const;
+
+    void init(GLint matrixUniform);
+    void draw();
+    void openDoor();
+
 private:
     //    float xPos1{0};
     //    float xPos2{0};
@@ -13,17 +27,7 @@ private:
     bool doorOpen{false};
     //    char key;
     GameObject *floor, *house, *table, *door;
-
-public:
-    Scenetwo();
-    std::vector<Vertex> drawFloor();
-    std::vector<Vertex> drawHouse();
-    std::vector<Vertex> drawTable();
-    std::vector<Vertex> drawDoor();
-
-    void init(GLint matrixUniform);
-    void draw();
-    void openDoor();
+    TriangleArray sceneTriangles;
 };
 
 #endif // SCENETWO_H

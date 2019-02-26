@@ -38,6 +38,9 @@ public:
     void setTarget(float target, int index);
     void setUp(float up, int index);
 
+    void setPosition(Vec3 vec);
+    void setTarget(Vec3 vec);
+    void setUp(Vec3 vec);
     Vector3D getPosition() const;
 
     Vector3D getTarget() const;
@@ -46,6 +49,7 @@ public:
 
 signals:
     void lookAtChanged();
+    void lookAtChanged(Vec3 value);
 
 private:
     Matrix4x4 mVMatrix;

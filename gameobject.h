@@ -32,6 +32,7 @@ public:
     void move(Vec3 distanceToMove);
     void rotate(Vec3 axis, float angle);
     void scale(Vec3 newScale);
+    void resetPosition();
 
     TriangleArray getTriangles() const;
 

@@ -1,4 +1,5 @@
 #include "slidergroup.h"
+#include "vector3d.h"
 #include <QBoxLayout>
 #include <QGridLayout>
 #include <QPushButton>
@@ -25,6 +26,11 @@ SliderGroup::SliderGroup(Qt::Orientation orientation, const QString &title, QWid
         connect(eyeSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setPosition()));
         connect(atSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setTarget()));
         connect(upSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setUp()));
+
+        // I'll do this later. Need to update the eye, at and up sliders if the values are changed outside of them
+        //        connect(cam, SIGNAL(cam->lookAtChanged(Vector3D)), eyeSliders.at(i), SLOT(setPosSliders(Vector3D)));
+        //        connect(cam, SIGNAL(cam->lookAtChanged(Vector3D)), atSliders.at(i), SLOT(setTarSliders(Vector3D)));
+        //        connect(cam, SIGNAL(cam->lookAtChanged(Vector3D)), upSliders.at(i), SLOT(setUpSliders(Vector3D)));
     }
     setMaximumHeight(170);
     //    setMaximumWidth(600);
@@ -146,4 +152,24 @@ void SliderGroup::setUp()
     m_Camera->setUp(upSliders.at(0)->getDoubleValue(), 0);
     m_Camera->setUp(upSliders.at(1)->getDoubleValue(), 1);
     m_Camera->setUp(upSliders.at(2)->getDoubleValue(), 2);
+}
+void SliderGroup::setPosSliders(Vec3 newValue)
+{
+    eyeSliders.at(0)->setValue(newValue.getX());
+    eyeSliders.at(1)->setValue(newValue.getY());
+    eyeSliders.at(2)->setValue(newValue.getZ());
+}
+
+void SliderGroup::setTarSliders(Vec3 newValue)
+{
+    atSliders.at(0)->setValue(newValue.getX());
+    atSliders.at(1)->setValue(newValue.getY());
+    atSliders.at(2)->setValue(newValue.getZ());
+}
+
+void SliderGroup::setUpSliders(Vec3 newValue)
+{
+    upSliders.at(0)->setValue(newValue.getX());
+    upSliders.at(1)->setValue(newValue.getY());
+    upSliders.at(2)->setValue(newValue.getZ());
 }
