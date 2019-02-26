@@ -2,9 +2,9 @@
 #define VECTOR4D_H
 #include "vector3d.h"
 #include <vector>
-
 namespace jl
 {
+class Matrix4x4;
 class Vector4D
 {
 public:

@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "plane.h"
+#include <QDebug>
 #include <algorithm>
 #include <cmath>
 Collision::Collision()
@@ -281,6 +282,17 @@ void Collision::checkTriangle(CollisionPacket *colPackage, const Vec3 &p1, const
                 colPackage->intersectionPoint = collisionPoint;
                 colPackage->foundCollision = true;
             }
+            qDebug() << "Found collision with triangle of these coordinates: P1: (" +
+                            QString::number(p1.getX() * colPackage->eRadius.at(0)) + ", " + QString::number(p1.getY() * colPackage->eRadius.at(1)) +
+                            ", " + QString::number(p1.getZ() * colPackage->eRadius.at(2)) + ") P2: (" +
+                            QString::number(p2.getX() * colPackage->eRadius.at(0)) + ", " + QString::number(p2.getY() * colPackage->eRadius.at(1)) +
+                            ", " + QString::number(p2.getZ() * colPackage->eRadius.at(2)) + ") P3: (" +
+                            QString::number(p3.getX() * colPackage->eRadius.at(0)) + ", " + QString::number(p3.getY() * colPackage->eRadius.at(1)) +
+                            ", " + QString::number(p3.getZ() * colPackage->eRadius.at(2)) + ")";
+            qDebug() << "Collision occurred at: (" +
+                            QString::number(collisionPoint.getX() * colPackage->eRadius.at(0)) +
+                            ", " + QString::number(collisionPoint.getY() * colPackage->eRadius.at(1)) +
+                            ", " + QString::number(collisionPoint.getZ() * colPackage->eRadius.at(2)) + ")";
         }
     }
 }

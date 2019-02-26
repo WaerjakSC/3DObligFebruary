@@ -6,12 +6,13 @@
 #include "octahedronball.h"
 #include "sceneone.h"
 #include "scenetwo.h"
+
 Game::Game()
 {
-    ball = new OctahedronBall(3, 0.2, this);
+    ball = new OctahedronBall(3, 0.5, this);
     // Move these plus the gameObjects vector into the levels class once we get more objects.
     sceneOne = new Sceneone;
-    sceneTwo = new Scenetwo;
+    //    sceneTwo = new Scenetwo;
 
     collision = new Collision;
 }
@@ -21,18 +22,26 @@ void Game::CheckCollisions(CollisionPacket *collisionPackage)
     // the current position of the player...
     for (GameObject *object : sceneOne->objects)
     {
-        eSpaceTriangle = object->getObjectTriangles();
+        // getTriangles() returns the object's array of triangles.
+        eSpaceTriangle = object->getTriangles();
         // Convert the triangle points into ellipsoid space (aka the character collider's local space)
+        for (unsigned int i = 0; i < eSpaceTriangle.size(); i++)
+        {
+            for (unsigned int j = 0; j < 3; j++)
+            {
+                //                eSpaceTriangle.at(i).at(j) = object->getModelMatrix() * eSpaceTriangle.at(i).at(j);
+
+                eSpaceTriangle.at(i).at(j) = Vec3(eSpaceTriangle.at(i).at(j).at(0) / collisionPackage->eRadius.at(0),
+                                                  eSpaceTriangle.at(i).at(j).at(1) / collisionPackage->eRadius.at(1),
+                                                  eSpaceTriangle.at(i).at(j).at(2) / collisionPackage->eRadius.at(2));
+            }
+        }
         for (unsigned int i = 0; i < eSpaceTriangle.size() - 1; i++)
         {
-            eSpaceTriangle.at(i).at(0) = eSpaceTriangle.at(i).at(0) / collisionPackage->eRadius.at(0);
-            eSpaceTriangle.at(i).at(1) = eSpaceTriangle.at(i).at(1) / collisionPackage->eRadius.at(1);
-            eSpaceTriangle.at(i).at(2) = eSpaceTriangle.at(i).at(2) / collisionPackage->eRadius.at(2);
-        }
-        for (unsigned int i = 0; i < eSpaceTriangle.size() / 3; i++)
-        {
-            collision->checkTriangle(collisionPackage, eSpaceTriangle.at(i * 3),
-                                     eSpaceTriangle.at((i * 3) + 1), eSpaceTriangle.at((i * 3) + 2));
+            // first at() selects a tuple from a vector of three points (Vec3).
+            // second at() selects one of those points
+            collision->checkTriangle(collisionPackage, eSpaceTriangle.at(i).at(0),
+                                     eSpaceTriangle.at(i).at(1), eSpaceTriangle.at(i).at(2));
         }
     }
 }
@@ -42,16 +51,13 @@ void Game::init(GLint matrixUniform)
     mMatrixUniform = matrixUniform;
 
     ball->init(mMatrixUniform);
-    //    for (GameObject *object : gameObjects)
-    //        object->init(mMatrixUniform);
     sceneOne->init(mMatrixUniform);
     //    sceneTwo->init(mMatrixUniform);
 }
 
 void Game::Tick()
 {
-    //    for (GameObject *object : gameObjects)
-    //        object->draw();
+
     ball->draw();
     sceneOne->draw();
     //    sceneTwo->draw();

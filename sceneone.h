@@ -13,16 +13,16 @@ public:
     ~Sceneone();
     void init(GLint matrixUniform);
     void draw();
-    std::vector<Vector3D> getSceneTriangles() const;
+    TriangleArray getSceneTriangles() const;
     std::vector<GameObject *> objects;
 
 private:
-    std::vector<Vector3D> sceneTriangles;
-    std::vector<Vertex> drawPlane();
-    std::vector<Vertex> drawRightWall();
-    std::vector<Vertex> drawLeftWall();
-    std::vector<Vertex> drawBackWall();
-    std::vector<Vertex> drawFrontWall();
+    TriangleArray sceneTriangles;
+    TriangleArray drawPlane();
+    TriangleArray drawRightWall();
+    TriangleArray drawLeftWall();
+    TriangleArray drawBackWall();
+    TriangleArray drawFrontWall();
     GameObject *plane, *rWall, *lWall, *bWall, *fWall;
 };
 #endif // SCENEONE_H

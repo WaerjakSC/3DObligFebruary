@@ -3,10 +3,10 @@
 Scenetwo::Scenetwo()
 {
     // Create separate gameobjects of each item, turning Scenetwo into a level class instead
-    floor = new GameObject(drawFloor());
-    house = new GameObject(drawHouse());
-    table = new GameObject(drawTable());
-    door = new GameObject(drawDoor());
+    //    floor = new GameObject(drawFloor());
+    //    house = new GameObject(drawHouse());
+    //    table = new GameObject(drawTable());
+    //    door = new GameObject(drawDoor());
 }
 // Change to a function of 2 variables!
 std::vector<Vertex> Scenetwo::drawFloor()

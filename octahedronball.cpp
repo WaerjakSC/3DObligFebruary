@@ -30,7 +30,7 @@ OctahedronBall::OctahedronBall(int n, float radius, Game *game)
     mVertices.reserve(3 * 8 * pow(4, m_rekursjoner));
     oktaederUnitBall();
     collisionPackage = new CollisionPacket;
-    thisObject = new GameObject(mVertices, Vec3(0, radius, 0), Vec3(1, 1, 1));
+    thisObject = new GameObject(triArray, "Ball", Vec3(0, 0.55, 0), Vec3(radius, radius, radius));
 }
 
 //!//! \brief OctahedronBall::~OctahedronBall() virtual destructor
@@ -60,20 +60,22 @@ Vec3 OctahedronBall::velocity() const
 // added a radius modifier, super messy though, should probably do it in a different way
 void OctahedronBall::lagTriangel(const Vec3 &v1, const Vec3 &v2, const Vec3 &v3)
 {
-    Vertex v{};
+    Vertex vert1{};
+    Vertex vert2{};
+    Vertex vert3{};
 
-    v.set_xyz(v1.getX() * mRadius, v1.getY() * mRadius, v1.getZ() * mRadius);    // koordinater v.x = v1.x, v.y=v1.y, v.z=v1.z
-    v.set_normal(v1.getX() * mRadius, v1.getY() * mRadius, v1.getZ() * mRadius); // rgb
-                                                                                 // v.set_st(0.0f, 0.0f);            // kan utelates
-    mVertices.push_back(v);
-    v.set_xyz(v2.getX() * mRadius, v2.getY() * mRadius, v2.getZ() * mRadius);
-    v.set_normal(v2.getX() * mRadius, v2.getY() * mRadius, v2.getZ() * mRadius);
+    vert1.set_xyz(v1.getX() * mRadius, v1.getY() * mRadius, v1.getZ() * mRadius);    // koordinater v.x = v1.x, v.y=v1.y, v.z=v1.z
+    vert1.set_normal(v1.getX() * mRadius, v1.getY() * mRadius, v1.getZ() * mRadius); // rgb
+                                                                                     // v.set_st(0.0f, 0.0f);            // kan utelates
+    vert2.set_xyz(v2.getX() * mRadius, v2.getY() * mRadius, v2.getZ() * mRadius);
+    vert2.set_normal(v2.getX() * mRadius, v2.getY() * mRadius, v2.getZ() * mRadius);
     // v.set_st(1.0f, 0.0f);
-    mVertices.push_back(v);
-    v.set_xyz(v3.getX() * mRadius, v3.getY() * mRadius, v3.getZ() * mRadius);
-    v.set_normal(v3.getX() * mRadius, v3.getY() * mRadius, v3.getZ() * mRadius);
+    vert3.set_xyz(v3.getX() * mRadius, v3.getY() * mRadius, v3.getZ() * mRadius);
+    vert3.set_normal(v3.getX() * mRadius, v3.getY() * mRadius, v3.getZ() * mRadius);
     // v.set_st(0.5f, 1.0f);
-    mVertices.push_back(v);
+    std::tuple<Vertex, Vertex, Vertex> Triangles;
+    Triangles = std::make_tuple(vert1, vert2, vert3);
+    triArray.push_back(Triangles);
 }
 
 // Rekursiv subdivisjon av triangel
@@ -192,6 +194,11 @@ void OctahedronBall::collideAndSlide(const Vec3 &vel /*, const Vec3 &gravity*/)
     }
     // Do the final movement here
     MoveTo(finalPosition);
+}
+
+Vec3 OctahedronBall::position()
+{
+    return thisObject->position();
 }
 
 Vec3 OctahedronBall::collideWithWorld(const Vec3 &pos, const Vec3 &vel)

@@ -24,7 +24,8 @@ private:
     int collisionRecursionDepth;
     GameObject *thisObject;
     std::vector<Vertex> mVertices;
-    const float unitsPerMeter = 100.0f;
+    TriangleArray triArray;
+    const float unitsPerMeter = 0.10f;
 
     void lagTriangel(const Vec3 &v1, const Vec3 &v2, const Vec3 &v3);
     void subDivide(const Vec3 &a, const Vec3 &b, const Vec3 &c, int n);
@@ -42,5 +43,6 @@ public:
     void strafe(float speed);
     Vec3 velocity() const;
     float radius() const;
+    Vec3 position();
 };
 #endif

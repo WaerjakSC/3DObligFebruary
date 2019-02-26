@@ -1,116 +1,138 @@
 #include "sceneone.h"
+#include "trianglesurface.h"
+#include <tuple>
+
 Sceneone::Sceneone()
 {
-    plane = new GameObject(drawPlane());
-    rWall = new GameObject(drawRightWall());
-    lWall = new GameObject(drawLeftWall());
-    fWall = new GameObject(drawFrontWall());
-    bWall = new GameObject(drawBackWall());
-    objects.push_back(plane);
-    objects.push_back(rWall);
-    objects.push_back(lWall);
-    objects.push_back(fWall);
-    objects.push_back(bWall);
+    //    objects.push_back(new GameObject(drawPlane(), "Floor"));
+    objects.push_back(new GameObject(drawRightWall(), "Right Wall"));
+    objects.push_back(new GameObject(drawLeftWall(), "Left Wall"));
+    objects.push_back(new GameObject(drawBackWall(), "Back Wall"));
+    objects.push_back(new GameObject(drawFrontWall(), "Front Wall"));
 }
 
 Sceneone::~Sceneone()
 {
-    delete plane;
-    delete rWall;
-    delete lWall;
-    delete fWall;
-    delete bWall;
+    for (GameObject *object : objects)
+        delete object;
 }
 
 void Sceneone::init(GLint matrixUniform)
 {
-    plane->init(matrixUniform);
-    rWall->init(matrixUniform);
-    lWall->init(matrixUniform);
-    fWall->init(matrixUniform);
-    bWall->init(matrixUniform);
+    for (GameObject *object : objects)
+        object->init(matrixUniform);
 }
 
 void Sceneone::draw()
 {
-    plane->draw();
-    rWall->draw();
-    lWall->draw();
-    fWall->draw();
-    bWall->draw();
+    for (GameObject *object : objects)
+        object->draw();
 }
 
-std::vector<Vector3D> Sceneone::getSceneTriangles() const
+TriangleArray Sceneone::getSceneTriangles() const
 {
     return sceneTriangles;
 }
 
-std::vector<Vertex> Sceneone::drawPlane()
+TriangleArray Sceneone::drawPlane()
 {
-    std::vector<Vertex> vertices;
     // Plane
-    vertices.push_back(Vertex{-0.8, 0, 0.8, 0.5, 1, 1});
-    vertices.push_back(Vertex{-0.8, 0, -0.8, 0.5, 1, 1});
-    vertices.push_back(Vertex{0.8, 0, -0.8, 0.5, 1, 1});
+    TriangleArray triangleArr;
+    std::tuple<Vertex, Vertex, Vertex> Triangle;
+    Vertex vert1 = Vertex{-0.8, 0, 0.8, 0.5, 1, 1};
+    Vertex vert2 = Vertex{-0.8, 0, -0.8, 0.5, 1, 1};
+    Vertex vert3 = Vertex{0.8, 0, -0.8, 0.5, 1, 1};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
 
-    vertices.push_back(Vertex{-0.8, 0, 0.8, 0.5, 1, 1});
-    vertices.push_back(Vertex{0.8, 0, 0.8, 0.5, 1, 1});
-    vertices.push_back(Vertex{0.8, 0, -0.8, 0.5, 1, 1});
-    return vertices;
+    triangleArr.push_back(Triangle);
+
+    vert1 = Vertex{-0.8, 0, 0.8, 0.5, 1, 1};
+    vert2 = Vertex{0.8, 0, 0.8, 0.5, 1, 1};
+    vert3 = Vertex{0.8, 0, -0.8, 0.5, 1, 1};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
+
+    triangleArr.push_back(Triangle);
+    return triangleArr;
 }
 
-std::vector<Vertex> Sceneone::drawRightWall()
+TriangleArray Sceneone::drawRightWall()
 {
-    std::vector<Vertex> vertices;
     // Right Wall
-    vertices.push_back(Vertex{0.8, 0, 0.8, 1, 1, 0});
-    vertices.push_back(Vertex{0.8, 0.4, 0.8, 1, 0, 1});
-    vertices.push_back(Vertex{0.8, 0, -0.8, 0, 1, 1});
+    TriangleArray triangleArr;
+    std::tuple<Vertex, Vertex, Vertex> Triangle;
+    Vertex vert1 = Vertex{0.8, 0, 0.8, 1, 1, 0};
+    Vertex vert2 = Vertex{0.8, 0.4, 0.8, 1, 0, 1};
+    Vertex vert3 = Vertex{0.8, 0, -0.8, 0, 1, 1};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
 
-    vertices.push_back(Vertex{0.8, 0.4, 0.8, 1, 1, 0});
-    vertices.push_back(Vertex{0.8, 0.4, -0.8, 1, 0, 1});
-    vertices.push_back(Vertex{0.8, 0, -0.8, 0, 1, 1});
-    return vertices;
+    triangleArr.push_back(Triangle);
+
+    vert1 = Vertex{0.8, 0.4, 0.8, 1, 1, 0};
+    vert2 = Vertex{0.8, 0.4, -0.8, 1, 0, 1};
+    vert3 = Vertex{0.8, 0, -0.8, 0, 1, 1};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
+
+    triangleArr.push_back(Triangle);
+    return triangleArr;
 }
 
-std::vector<Vertex> Sceneone::drawLeftWall()
+TriangleArray Sceneone::drawLeftWall()
 {
-    std::vector<Vertex> vertices;
     // Left Wall
-    vertices.push_back(Vertex{-0.8, 0, 0.8, 1, 0, 1});
-    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 1, 0});
-    vertices.push_back(Vertex{-0.8, 0, -0.8, 0, 1, 1});
+    TriangleArray triangleArr;
+    std::tuple<Vertex, Vertex, Vertex> Triangle;
+    Vertex vert1 = Vertex{-0.8, 0, 0.8, 1, 0, 1};
+    Vertex vert2 = Vertex{-0.8, 0.4, 0.8, 1, 1, 0};
+    Vertex vert3 = Vertex{-0.8, 0, -0.8, 0, 1, 1};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
 
-    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 1});
-    vertices.push_back(Vertex{-0.8, 0.4, -0.8, 1, 1, 0});
-    vertices.push_back(Vertex{-0.8, 0, -0.8, 0, 1, 1});
-    return vertices;
+    triangleArr.push_back(Triangle);
+
+    vert1 = Vertex{-0.8, 0.4, 0.8, 1, 0, 1};
+    vert2 = Vertex{-0.8, 0.4, -0.8, 1, 1, 0};
+    vert3 = Vertex{-0.8, 0, -0.8, 0, 1, 1};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
+
+    triangleArr.push_back(Triangle);
+    return triangleArr;
 }
 
-std::vector<Vertex> Sceneone::drawBackWall()
+TriangleArray Sceneone::drawBackWall()
 {
-    std::vector<Vertex> vertices;
+    TriangleArray triangleArr;
+    std::tuple<Vertex, Vertex, Vertex> Triangle;
     // Back Wall
-    vertices.push_back(Vertex{0.8, 0, 0.8, 0, 0, 1});
-    vertices.push_back(Vertex{0.8, 0.4, 0.8, 0, 0, 1});
-    vertices.push_back(Vertex{-0.8, 0, 0.8, 0, 0, 1});
+    Vertex vert1 = Vertex{0.8, 0, 0.8, 0, 0, 1};
+    Vertex vert2 = Vertex{0.8, 0.4, 0.8, 0, 0, 1};
+    Vertex vert3 = Vertex{-0.8, 0, 0.8, 0, 0, 1};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
 
-    vertices.push_back(Vertex{0.8, 0.4, 0.8, 0, 0, 1});
-    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 0, 0, 1});
-    vertices.push_back(Vertex{-0.8, 0, 0.8, 0, 0, 1});
-    return vertices;
+    triangleArr.push_back(Triangle);
+
+    vert1 = Vertex{0.8, 0.4, 0.8, 0, 0, 1};
+    vert2 = Vertex{-0.8, 0.4, 0.8, 0, 0, 1};
+    vert3 = Vertex{-0.8, 0, 0.8, 0, 0, 1};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
+
+    triangleArr.push_back(Triangle);
+    return triangleArr;
 }
 
-std::vector<Vertex> Sceneone::drawFrontWall()
+TriangleArray Sceneone::drawFrontWall()
 {
-    std::vector<Vertex> vertices;
+    TriangleArray triangleArr;
+    std::tuple<Vertex, Vertex, Vertex> Triangle;
     // Front Wall
-    vertices.push_back(Vertex{-0.8, 0, 0.8, 1, 0, 0});
-    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 0});
-    vertices.push_back(Vertex{-0.8, 0, -0.8, 1, 0, 0});
+    Vertex vert1 = Vertex{-0.8, 0, 0.8, 1, 0, 0};
+    Vertex vert2 = Vertex{-0.8, 0.4, 0.8, 1, 0, 0};
+    Vertex vert3 = Vertex{-0.8, 0, -0.8, 1, 0, 0};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
+    triangleArr.push_back(Triangle);
 
-    vertices.push_back(Vertex{-0.8, 0.4, 0.8, 1, 0, 0});
-    vertices.push_back(Vertex{-0.8, 0.4, -0.8, 1, 0, 0});
-    vertices.push_back(Vertex{-0.8, 0, -0.8, 1, 0, 0});
-    return vertices;
+    vert1 = Vertex{-0.8, 0.4, 0.8, 1, 0, 0};
+    vert2 = Vertex{-0.8, 0.4, -0.8, 1, 0, 0};
+    vert3 = Vertex{-0.8, 0, -0.8, 1, 0, 0};
+    Triangle = std::make_tuple(vert1, vert2, vert3);
+    triangleArr.push_back(Triangle);
+    return triangleArr;
 }

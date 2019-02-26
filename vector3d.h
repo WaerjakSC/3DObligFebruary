@@ -5,6 +5,7 @@
 
 namespace jl
 {
+class Matrix4x4;
 class Vector4D;
 
 class Vector3D
@@ -25,6 +26,7 @@ public:
     float squaredlLength() const;                 // Squared length
     void normalize();                             // Normalize to unit length
     Vector3D operator*(float c) const;            // Scaling
+    Vector3D operator*(Matrix4x4 &m) const;       // Left-multiply with matrix
 
     float size();
 

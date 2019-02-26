@@ -3,12 +3,16 @@
 
 #include "gameobject.h"
 #include "levels.h"
-
+#include "vector3d.h"
 class Sceneone;
 class OctahedronBall;
 class CollisionPacket;
 class Collision;
-
+typedef jl::Vector3D Vec3;
+/**
+ * @brief The Game class is the game instance used for level switching
+ * and initialization of scenes.
+ */
 class Game
 {
 public:
@@ -18,9 +22,9 @@ public:
     void Tick();
     void init(GLint matrixUniform);
     OctahedronBall *getPawn();
+    TriangleArray eSpaceTriangle;
 
     void switchLevels();
-    std::vector<Vector3D> eSpaceTriangle;
 
 private:
     OctahedronBall *ball;

@@ -1,93 +1,95 @@
 #include "trianglesurface.h"
+#include "vector3d.h"
 #include <fstream>
-TriangleSurface::TriangleSurface() : VisualObject()
-{
-    Vertex v{};
-    v.set_xyz(0, 0, 0);
-    v.set_normal(1, 0, 0);
-    mVertices.push_back(v);
-    v.set_xyz(0.5, 0, 0);
-    v.set_normal(0, 1, 0);
-    mVertices.push_back(v);
-    v.set_xyz(0.5, 0.5, 0);
-    v.set_normal(0, 0, 1);
-    mVertices.push_back(v);
-    v.set_xyz(0, 0, 0);
-    v.set_normal(0, 1, 0);
-    mVertices.push_back(v);
-    v.set_xyz(0.5, 0.5, 0);
-    v.set_normal(1, 0, 0);
-    mVertices.push_back(v);
-    v.set_xyz(0, 0.5, 0);
-    v.set_normal(0, 0, 1);
-    mVertices.push_back(v);
-
-    mMatrix.setToIdentity();
-}
-
-TriangleSurface::TriangleSurface(std::string filnavn)
-{
-    readFile(filnavn);
-    mMatrix.setToIdentity();
-}
-
-TriangleSurface::~TriangleSurface()
+#include <tuple>
+TriangleArray::TriangleArray()
 {
 }
 
-void TriangleSurface::init(GLint shader)
+TriangleArray::TriangleArray(std::tuple<Vertex, Vertex, Vertex> vertices)
 {
-    mMatrixUniform = shader;
-
-    initializeOpenGLFunctions();
-
-    //Vertex Array Object - VAO
-    glGenVertexArrays(1, &mVAO);
-    glBindVertexArray(mVAO);
-
-    //Vertex Buffer Object to hold vertices - VBO
-    glGenBuffers(1, &mVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-
-    glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(Vertex), mVertices.data(), GL_STATIC_DRAW);
-
-    // 1rst attribute buffer : vertices
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)0);
-    glEnableVertexAttribArray(0);
-
-    // 2nd attribute buffer : colors
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)(3 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
-
-    //enable the matrixUniform
-    // mMatrixUniform = glGetUniformLocation( matrixUniform, "matrix" );
-
-    glBindVertexArray(0);
+    mVertices.push_back(std::get<0>(vertices));
+    mVertices.push_back(std::get<1>(vertices));
+    mVertices.push_back(std::get<2>(vertices));
 }
 
-void TriangleSurface::draw()
+TriangleArray::TriangleArray(std::vector<std::tuple<Vertex, Vertex, Vertex>> vertices)
 {
-    glBindVertexArray(mVAO);
-    glUniformMatrix4fv(mMatrixUniform, 1, GL_FALSE, mMatrix.constData());
-    glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
+    for (std::tuple<Vertex, Vertex, Vertex> vert : vertices)
+    {
+        mVertices.push_back(std::get<0>(vert));
+        mVertices.push_back(std::get<1>(vert));
+        mVertices.push_back(std::get<2>(vert));
+    }
 }
-void TriangleSurface::construct()
+
+TriangleArray::~TriangleArray()
 {
-    float xmin = 0.0f, xmax = 1.0f, ymin = 0.0f, ymax = 1.0f, h = 0.25f;
-    for (auto x = xmin; x < xmax; x += h)
-        for (auto y = ymin; y < ymax; y += h)
-        {
-            float z = sin(M_PI * x) * sin(M_PI * y);
-            mVertices.push_back(Vertex{x, y, z, x, y, z});
-            z = sin(M_PI * (x + h)) * sin(M_PI * y);
-            mVertices.push_back(Vertex{x + h, y, z, x, y, z});
-            z = sin(M_PI * x) * sin(M_PI * (y + h));
-            mVertices.push_back(Vertex{x, y + h, z, x, y, z});
-            mVertices.push_back(Vertex{x, y + h, z, x, y, z});
-            z = sin(M_PI * (x + h) * sin(M_PI * y));
-            mVertices.push_back(Vertex{x + h, y, z, x, y, z});
-            z = sin(M_PI * (x + h) * sin(M_PI * (y + h)));
-            mVertices.push_back(Vertex{x + h, y + h, z, x, y, z});
-        }
+}
+/**
+ * @brief TriangleArray::push_back Add another triangle to the array
+ * @param vertices
+ */
+void TriangleArray::push_back(std::tuple<Vertex, Vertex, Vertex> vertices)
+{
+    TriPoints.push_back(vertexToVec3(vertices));
+    mVertices.push_back(std::get<0>(vertices));
+    mVertices.push_back(std::get<1>(vertices));
+    mVertices.push_back(std::get<2>(vertices));
+}
+/**
+ * @brief TriangleArray::vertexToVec3 Only saves the first three coordinates in the vertex
+ * @param vertices
+ * @return
+ */
+std::tuple<Vec3, Vec3, Vec3> TriangleArray::vertexToVec3(std::tuple<Vertex, Vertex, Vertex> vertices)
+{
+    Vec3 point1 = Vec3(std::get<0>(vertices).at(0),
+                       std::get<0>(vertices).at(1),
+                       std::get<0>(vertices).at(2));
+    Vec3 point2 = Vec3(std::get<1>(vertices).at(0),
+                       std::get<1>(vertices).at(1),
+                       std::get<1>(vertices).at(2));
+    Vec3 point3 = Vec3(std::get<2>(vertices).at(0),
+                       std::get<2>(vertices).at(1),
+                       std::get<2>(vertices).at(2));
+    std::tuple<Vec3, Vec3, Vec3> Tri;
+    Tri = std::make_tuple(point1, point2, point3);
+    return Tri;
+}
+/**
+ * @brief TriangleArray::size
+ * @return How many tuples (triangles) are in the array
+ */
+unsigned int TriangleArray::size()
+{
+    return TriPoints.size();
+}
+
+std::vector<Vertex> TriangleArray::getVertices()
+{
+    return mVertices;
+}
+
+/**
+ * @brief TriangleArray::at
+ * @param index
+ * @return Returns a vector of three Vec3 points constituting one triangle.
+ * Easier than getting stuff from the tuple itself.
+ */
+std::vector<Vec3> TriangleArray::at(unsigned int index)
+{
+    std::vector<Vec3> triangleVector;
+    triangleVector.push_back(std::get<0>(TriPoints.at(index)));
+    triangleVector.push_back(std::get<1>(TriPoints.at(index)));
+    triangleVector.push_back(std::get<2>(TriPoints.at(index)));
+    return triangleVector;
+}
+/**
+ * @brief TriangleArray::getTriangles
+ * @return Returns the tuple if you absolutely must have it for some reason.
+ */
+std::vector<std::tuple<Vec3, Vec3, Vec3>> TriangleArray::getTriangles() const
+{
+    return TriPoints;
 }

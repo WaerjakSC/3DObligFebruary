@@ -1,13 +1,14 @@
 #include "gameobject.h"
 
-GameObject::GameObject(std::vector<Vertex> vertices, Vec3 position, Vec3 scale, Vec3 rotateAxis,
+GameObject::GameObject(TriangleArray triangles, std::string actorName, Vec3 position, Vec3 scale, Vec3 rotateAxis,
                        float angles)
-    : VisualObject(), mPosition(position), mScale(scale)
+    : VisualObject(), mPosition(position), mScale(scale), name(actorName)
 {
-    // Get the vertices of the object
-    mVertices = vertices;
-    // Should probably also save each set of 3 vertices
-    // into a Vector3D for recovery later.
+    objectTriangles = triangles;
+
+    // Get all the vertices in the triangle array
+    mVertices = objectTriangles.getVertices();
+
     // Perform initial transformations
     mMatrix.translate(mPosition);
     mMatrix.rotate(rotateAxis, angles);
@@ -16,26 +17,26 @@ GameObject::GameObject(std::vector<Vertex> vertices, Vec3 position, Vec3 scale, 
     // ObjectTriangles contains (vertices.size() / 3) amount of std::vectors
     // of type Vector3D.
     // Each Vector3D constitutes the three points of a single triangle.
-    if (vertices.size() % 3 == 0)
-    {
-        // vertices should always be divisible by 3 since it's a collection of triangles.
-        for (unsigned int i = 0; i < vertices.size() / 3; i++)
-        {
-            for (unsigned int j = 0; j < 3; j++)
-            {
-                // Temporarily transform into Vector4D for multiplication with model matrix
-                Vector4D tempVec = Vector3D(mVertices.at(j + i * 3).at(0),
-                                            mVertices.at(j + i * 3).at(1),
-                                            mVertices.at(j + i * 3).at(2));
-                // (Hopefully) convert the vector into scene space
-                tempVec = mMatrix * tempVec;
-                objectTriangles.push_back(Vector3D(tempVec));
-            }
-        }
-    }
-    else
-        qDebug() << "Something went wrong, "
-                    "the object doesn't have the required amount of vertices!";
+    //    if (vertices.size() % 3 == 0)
+    //    {
+    //        // vertices should always be divisible by 3 since it's a collection of triangles.
+    //        for (unsigned int i = 0; i < vertices.size() / 3; i++)
+    //        {
+    //            for (unsigned int j = 0; j < 3; j++)
+    //            {
+    //                // Temporarily transform into Vector4D for multiplication with model matrix
+    //                Vector4D tempVec = Vector3D(mVertices.at(j + i * 3).at(0),
+    //                                            mVertices.at(j + i * 3).at(1),
+    //                                            mVertices.at(j + i * 3).at(2));
+    //                // (Hopefully) convert the vector into scene space
+    //                tempVec = mMatrix * tempVec;
+    //                objectTriangles.push_back(Vector3D(tempVec));
+    //            }
+    //        }
+    //    }
+    //    else
+    //        qDebug() << "Something went wrong, "
+    //                    "the object doesn't have the required amount of vertices!";
 }
 void GameObject::init(GLint matrixUniform)
 {
@@ -91,10 +92,11 @@ void GameObject::scale(Vec3 newScale)
     UpdateTRS();
 }
 
-std::vector<Vector3D> GameObject::getObjectTriangles() const
+TriangleArray GameObject::getTriangles() const
 {
     return objectTriangles;
 }
+
 Vec3 GameObject::position() const
 {
     return mPosition;
@@ -109,6 +111,17 @@ void GameObject::setIsMovable(bool value)
 {
     IsMovable = value;
 }
+
+Matrix4x4 GameObject::getModelMatrix()
+{
+    return mMatrix;
+}
+/**
+ * @brief GameObject::getTriangle
+ * @param triangle
+ * @param point
+ * @return Returns the desired triangle multiplied into the model matrix
+ */
 
 /**
  * @brief GameObject::UpdateTRS

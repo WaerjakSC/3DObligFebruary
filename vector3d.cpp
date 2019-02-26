@@ -1,4 +1,5 @@
 #include "vector3d.h"
+#include "matrix4x4.h"
 #include "vector4d.h"
 #include <algorithm>
 #include <cmath>
@@ -106,6 +107,18 @@ Vector3D Vector3D::operator*(float c) const // Scaling
     return temp;
 }
 
+Vector3D Vector3D::operator*(Matrix4x4 &m) const
+{
+
+    Vector4D a{x * m.at(0, 0) + y * m.at(1, 0) + z * m.at(2, 0) + 1 * m.at(3, 0),
+               x * m.at(0, 1) + y * m.at(1, 1) + z * m.at(2, 1) + 1 * m.at(3, 1),
+               x * m.at(0, 2) + y * m.at(1, 2) + z * m.at(2, 2) + 1 * m.at(3, 2),
+               x * m.at(0, 3) + y * m.at(1, 3) + z * m.at(2, 3) + 1 * m.at(3, 3)};
+    Vector3D temp = a;
+
+    return temp;
+}
+
 float Vector3D::size()
 {
     return 3;
@@ -154,7 +167,7 @@ float &Vector3D::at(unsigned int index)
     case 2:
         return z;
     default:
-        throw std::out_of_range{"Vector4d only has 4 datavalues."};
+        throw std::out_of_range{"Vector3d only has 3 datavalues."};
         return x;
     }
 }

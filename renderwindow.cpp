@@ -130,7 +130,7 @@ void RenderWindow::setFOV(float FOV)
 //The actual frame rate on your monitor is limited by the vsync and is probably 60Hz
 void RenderWindow::calculateFramerate()
 {
-    long nsecElapsed = mTimeStart.nsecsElapsed();
+    //    long nsecElapsed = mTimeStart.nsecsElapsed();
     static int frameCount{0}; //counting actual frames for a quick "timer" for the statusbar
 
     if (mMainWindow) //if no mainWindow, something is really wrong...
@@ -139,9 +139,17 @@ void RenderWindow::calculateFramerate()
         if (frameCount > 30) //once pr 30 frames = update the message twice pr second (on a 60Hz monitor)
         {
             //showing some statistics in status bar
-            mMainWindow->statusBar()->showMessage(" Time pr FrameDraw: " +
-                                                  QString::number(nsecElapsed / 1000000.f, 'g', 4) + " ms  |  " +
-                                                  "FPS (approximated): " + QString::number(1E9 / nsecElapsed, 'g', 7));
+            //            mMainWindow->statusBar()->showMessage(" Time pr FrameDraw: " +
+            //                                                  QString::number(nsecElapsed / 1000000.f, 'g', 4) + " ms  |  " +
+            //                                                  "FPS (approximated): " + QString::number(1E9 / nsecElapsed, 'g', 7));
+            if (gameInstance->getPawn() != nullptr)
+            {
+                mMainWindow->statusBar()->showMessage("Location of Pawn:    X: " +
+                                                      QString::number(gameInstance->getPawn()->position().getX()) +
+                                                      " | Y: " + QString::number(gameInstance->getPawn()->position().getY()) +
+                                                      " | Z: " +
+                                                      QString::number(gameInstance->getPawn()->position().getZ()));
+            }
             frameCount = 0; //reset to show a new message in 60 frames
         }
     }
