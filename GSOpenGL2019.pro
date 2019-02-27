@@ -14,11 +14,8 @@ SOURCES += main.cpp \
     matrix4x4.cpp \
     vertex.cpp \
     visualobject.cpp \
-    xyz.cpp \
     trianglesurface.cpp \
-    cube.cpp \
     camera.cpp \
-    interactiveobject.cpp \
     octahedronball.cpp \
     sceneone.cpp \
     scenetwo.cpp \
@@ -42,11 +39,8 @@ HEADERS += \
     matrix4x4.h \
     vertex.h \
     visualobject.h \
-    xyz.h \
     trianglesurface.h \
-    cube.h \
     camera.h \
-    interactiveobject.h \
     octahedronball.h \
     sceneone.h \
     scenetwo.h \

@@ -7,7 +7,6 @@
 #include "scenetwo.h"
 #include "trianglesurface.h"
 #include "vertex.h"
-#include "xyz.h"
 #include <QElapsedTimer>
 #include <QOpenGLFunctions_4_1_Core>
 #include <QTimer>
