@@ -10,7 +10,7 @@ typedef Vector3D Vec3;
 class GameObject : public VisualObject
 {
 public:
-    GameObject(TriangleArray triangles, std::string actorName,
+    GameObject(TriangleArray triangles, QString actorName,
                Vec3 position = Vec3(0, 0, 0),
                Vec3 scale = Vec3(1, 1, 1),
                Vec3 rotateAxis = Vec3(0, 0, 0), float angles = 0);

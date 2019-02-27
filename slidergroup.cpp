@@ -26,11 +26,6 @@ SliderGroup::SliderGroup(Qt::Orientation orientation, const QString &title, QWid
         connect(eyeSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setPosition()));
         connect(atSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setTarget()));
         connect(upSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setUp()));
-
-        // I'll do this later. Need to update the eye, at and up sliders if the values are changed outside of them
-        //        connect(cam, SIGNAL(cam->lookAtChanged(Vector3D)), eyeSliders.at(i), SLOT(setPosSliders(Vector3D)));
-        //        connect(cam, SIGNAL(cam->lookAtChanged(Vector3D)), atSliders.at(i), SLOT(setTarSliders(Vector3D)));
-        //        connect(cam, SIGNAL(cam->lookAtChanged(Vector3D)), upSliders.at(i), SLOT(setUpSliders(Vector3D)));
     }
     setMaximumHeight(170);
     //    setMaximumWidth(600);

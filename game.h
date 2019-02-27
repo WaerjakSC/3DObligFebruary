@@ -15,7 +15,7 @@ typedef jl::Vector3D Vec3;
  * @brief The Game class is the game instance used for level switching
  * and initialization of scenes.
  */
-class Game
+class Game : public QObject
 {
     Q_OBJECT
 public:
@@ -31,6 +31,7 @@ public:
     void switchLevels();
 
     int getCurrentLevel() const;
+public slots:
 
 private:
     OctahedronBall *ball;
