@@ -12,6 +12,7 @@ ObjectSelect::ObjectSelect(QWidget *parent, Camera *mCam, Game *game)
     grid->addWidget(createLocGroup(Qt::Orientation::Horizontal));
     grid->addWidget(createRotGroup(Qt::Orientation::Horizontal));
     grid->addWidget(createScaleGroup(Qt::Orientation::Horizontal));
+    grid->addWidget(createTransformLayout());
     grid->addWidget(objectList);
 
     // Connect all the sliders to the labels, converting them from int to double in the process (see qdoubleslider.h)
@@ -27,6 +28,8 @@ ObjectSelect::ObjectSelect(QWidget *parent, Camera *mCam, Game *game)
         connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setAll()));
         connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setAll()));
     }
+    for (GameObject *object : gamePtr->getGameObjects())
+        connect(object, SIGNAL(updatedTransforms()), this, SLOT(updateTransformLabels()));
 
     connect(objectList, SIGNAL(currentIndexChanged(QString)), this, SLOT(updateWidget()));
     setMaximumHeight(170);
@@ -155,15 +158,16 @@ void ObjectSelect::updateWidget()
     for (int i = 0; i < 3; i++)
     {
         // Update the sliders
-        locSliders.at(i)->setDoubleValue(object->position().at(i));
-        rotSliders.at(i)->setDoubleValue(object->GetEulerRotation().at(i));
-        scaleSliders.at(i)->setDoubleValue(object->scale().at(i));
+        locSliders.at(i)->setDoubleValue(object->position().at(i) / 10);
+        rotSliders.at(i)->setDoubleValue(object->GetEulerRotation().at(i) / 10);
+        scaleSliders.at(i)->setDoubleValue(object->scale().at(i) / 10);
 
         // Update the labels
         locNum.at(i)->setNum(object->position().at(i));
         rotNum.at(i)->setNum(object->GetEulerRotation().at(i));
         scaleNum.at(i)->setNum(object->scale().at(i));
     }
+    updateTransformLabels();
 }
 
 void ObjectSelect::setAll()
@@ -205,4 +209,99 @@ void ObjectSelect::setRotation()
     object->rotate(Vector3D(1, 0, 0), rotSliders.at(0)->getDoubleValue());
     object->rotate(Vector3D(0, 1, 0), rotSliders.at(1)->getDoubleValue());
     object->rotate(Vector3D(0, 0, 1), rotSliders.at(2)->getDoubleValue());
+}
+
+QGroupBox *ObjectSelect::createTransformLayout()
+{
+    QGridLayout *gridBox = new QGridLayout;
+    QGroupBox *hbox = new QGroupBox(tr("Transform:"));
+    hbox->setAlignment(Qt::AlignCenter);
+    gridBox->setAlignment(Qt::AlignCenter);
+
+    std::vector<QLabel *> x;
+
+    std::vector<QLabel *> y;
+
+    std::vector<QLabel *> z;
+
+    transformValues.push_back(new QLabel("Location: "));
+    gridBox->addWidget(transformValues.at(0), 0, 0);
+    transformValues.at(0)->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+
+    transformValues.push_back(new QLabel("Rotation: "));
+    gridBox->addWidget(transformValues.at(1), 1, 0);
+    transformValues.at(1)->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+
+    transformValues.push_back(new QLabel("Scale: "));
+    gridBox->addWidget(transformValues.at(2), 2, 0);
+    transformValues.at(2)->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+
+    for (int i = 0; i < 3; i++)
+    {
+        x.push_back(new QLabel("X:"));
+        x.at(i)->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+        y.push_back(new QLabel("Y:"));
+        y.at(i)->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+        z.push_back(new QLabel("Z:"));
+        z.at(i)->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+        gridBox->addWidget(x.at(i), i, 1);
+        gridBox->addWidget(y.at(i), i, 3);
+        gridBox->addWidget(z.at(i), i, 5);
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            float vM;
+            switch (i)
+            {
+            case 0:
+                vM = getIndexObject()->position().at(j);
+                break;
+            case 1:
+                vM = getIndexObject()->rotation().at(j);
+                break;
+            case 2:
+                vM = getIndexObject()->scale().at(j);
+                break;
+            }
+            transformValues.push_back(new QLabel(QString::number(vM, 'f', 3)));
+            transformValues.at((j + (i * 3) + 3))->setFrameStyle(QFrame::Box | QFrame::Plain);
+            gridBox->addWidget(transformValues.at(j + (i * 3) + 3), i, (j * 2) + 2);
+        }
+    }
+    gridBox->setColumnMinimumWidth(2, 55);
+    gridBox->setColumnMinimumWidth(4, 55);
+    gridBox->setColumnMinimumWidth(6, 55);
+
+    gridBox->setContentsMargins(10, 10, 10, 10);
+    gridBox->setSpacing(13);
+    hbox->setMaximumHeight(170);
+
+    hbox->setLayout(gridBox);
+    return hbox;
+}
+void ObjectSelect::updateTransformLabels()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            float vM;
+            switch (i)
+            {
+            case 0:
+                vM = getIndexObject()->position().at(j);
+                break;
+            case 1:
+                vM = getIndexObject()->GetEulerRotation().at(j);
+                break;
+            case 2:
+                vM = getIndexObject()->scale().at(j);
+                break;
+            }
+            // Update the labels with 3 decimal precision.
+            transformValues.at(j + (i * 3) + 3)->setText(QString::number(vM, 'f', 3));
+        }
+    }
 }

@@ -18,11 +18,6 @@ class ObjectSelect : public QGroupBox
 public:
     explicit ObjectSelect(QWidget *parent = nullptr, Camera *mCam = nullptr, Game *game = nullptr);
 
-    QGroupBox *createMatrix(Camera *cam);
-    QGroupBox *createLocGroup(Qt::Orientation orientation);
-    GameObject *getIndexObject();
-    QGroupBox *createRotGroup(Qt::Orientation orientation);
-    QGroupBox *createScaleGroup(Qt::Orientation orientation);
 signals:
     void valueChanged(int value);
 
@@ -31,6 +26,7 @@ public slots:
     //    void setRotation();
     //    void setScale();
     void updateWidget();
+    void updateTransformLabels();
     void setPosition();
     void setScale();
     void setRotation();
@@ -53,6 +49,15 @@ private:
     std::vector<QDoubleSlider *> scaleSliders;
     std::vector<QLabel *> scaleNum;
     std::vector<QLabel *> scaleXYZ;
+
+    std::vector<QLabel *> transformValues;
+
+    QGroupBox *createMatrix(Camera *cam);
+    QGroupBox *createLocGroup(Qt::Orientation orientation);
+    GameObject *getIndexObject();
+    QGroupBox *createRotGroup(Qt::Orientation orientation);
+    QGroupBox *createScaleGroup(Qt::Orientation orientation);
+    QGroupBox *createTransformLayout();
 };
 
 #endif // OBJECTSELECT_H

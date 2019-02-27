@@ -3,12 +3,14 @@
 #include "trianglesurface.h"
 #include "vector3d.h"
 #include "visualobject.h"
+#include <QObject>
 
 using namespace jl;
 typedef Vector3D Vec3;
 
-class GameObject : public VisualObject
+class GameObject : public QObject, public VisualObject
 {
+    Q_OBJECT
 public:
     GameObject(TriangleArray triangles, QString actorName,
                Vec3 position = Vec3(0, 0, 0),
@@ -44,6 +46,8 @@ public:
     Vec3 getTriangle(int triangle, int point);
 
     QString getName() const;
+signals:
+    void updatedTransforms();
 
 private:
     Vec3 mPosition, mScale, mRotation;

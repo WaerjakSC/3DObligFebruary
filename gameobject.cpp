@@ -1,4 +1,5 @@
 #include "gameobject.h"
+#include <QObject>
 
 GameObject::GameObject(TriangleArray triangles, QString actorName, Vec3 position, Vec3 scale, Vec3 rotateAxis,
                        float angles)
@@ -225,6 +226,8 @@ void GameObject::UpdateTRS()
                                   std::pow(trans.at(1, 2), 2) +
                                   std::pow(trans.at(2, 2), 2))));
     mRotation.setZ(std::atan2(trans.at(0, 1), trans.at(0, 0)));
+
+    emit updatedTransforms();
 }
 /**
  * @brief GameObject::GetEulerRotation converts the mRotation vector from radians to degrees.
