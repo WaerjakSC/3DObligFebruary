@@ -74,8 +74,8 @@ void RenderWindow::init()
     glClearColor(0.4f, 0.4f, 0.4f, 1.0f); //color used in glClear GL_COLOR_BUFFER_BIT
 
     // Make sure these two files are in the main folder, or update this if you move them
-    mShaderProgram = new Shader("plainvertex.vert",
-                                "plainfragment.frag");
+    mShaderProgram = new Shader("../3DObligFebruary/plainvertex.vert",
+                                "../3DObligFebruary/plainfragment.frag");
 
     //Vertex Array Object - VAO
     glGenVertexArrays(1, &mVAO);
@@ -97,6 +97,11 @@ void RenderWindow::init()
     setFOV(FOV);
 
     glUniformMatrix4fv(mPMatrixUniform, 1, GL_FALSE, mCamera->GetPMatrix()->constData());
+}
+
+Game *RenderWindow::getGameInstance() const
+{
+    return gameInstance;
 }
 
 ///Called each frame - doing the rendering

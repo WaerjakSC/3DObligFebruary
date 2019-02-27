@@ -13,8 +13,12 @@ Game::Game()
     // Move these plus the gameObjects vector into the levels class once we get more objects.
     sceneOne = new Sceneone;
     sceneTwo = new Scenetwo;
-
     collision = new Collision;
+    // This could probably be a lot more dynamic
+    for (GameObject *object : sceneOne->objects)
+        gameObjects.push_back(object);
+    for (GameObject *object : sceneTwo->objects)
+        gameObjects.push_back(object);
 }
 void Game::CheckCollisions(CollisionPacket *collisionPackage)
 {
@@ -97,4 +101,9 @@ void Game::switchLevels()
 int Game::getCurrentLevel() const
 {
     return currentLevel;
+}
+
+std::vector<GameObject *> Game::getGameObjects() const
+{
+    return gameObjects;
 }

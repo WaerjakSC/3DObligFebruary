@@ -3,8 +3,6 @@
 #include "shader.h"
 #include <QTimer>
 #include <QtMath>
-namespace jl
-{
 
 Camera::Camera(const Vector3D &position, float pitch, float yaw) : mPosition{position}, mPitch{pitch}, mYaw{yaw}
 {
@@ -117,4 +115,3 @@ void Camera::PrintView()
 {
     std::cout << mVMatrix;
 }
-} // namespace jl

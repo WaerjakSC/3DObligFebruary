@@ -31,6 +31,8 @@ public:
     void switchLevels();
 
     int getCurrentLevel() const;
+    std::vector<GameObject *> getGameObjects() const;
+
 public slots:
 
 private:

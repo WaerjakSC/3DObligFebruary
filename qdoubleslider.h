@@ -7,8 +7,9 @@ class QDoubleSlider : public QSlider
     Q_OBJECT
 
 public:
-    QDoubleSlider(QWidget *parent, Qt::Orientation orientation, float value);
+    QDoubleSlider(QWidget *parent, Qt::Orientation orientation, float value, int min = -100, int max = 100);
     double getDoubleValue();
+    void setDoubleValue(int value);
 signals:
     void doubleValueChanged(double value);
 

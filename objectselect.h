@@ -16,24 +16,27 @@ class ObjectSelect : public QGroupBox
 {
     Q_OBJECT
 public:
-    explicit ObjectSelect(QWidget *parent = nullptr, jl::Camera *mCam = nullptr, Game *game = nullptr);
+    explicit ObjectSelect(QWidget *parent = nullptr, Camera *mCam = nullptr, Game *game = nullptr);
 
-    QGroupBox *createMatrix(jl::Camera *cam);
-    QGroupBox *createManipGroup(Qt::Orientation orientation);
+    QGroupBox *createMatrix(Camera *cam);
+    QGroupBox *createLocGroup(Qt::Orientation orientation);
+    GameObject *getIndexObject();
+    QGroupBox *createRotGroup(Qt::Orientation orientation);
+    QGroupBox *createScaleGroup(Qt::Orientation orientation);
 signals:
     void valueChanged(int value);
 
 public slots:
-    void setPosition();
-    void setRotation();
-    void setScale();
+    //    void setPosition();
+    //    void setRotation();
+    //    void setScale();
+    void updateWidget();
 
 private:
-    jl::Camera *m_Camera;
+    Camera *m_Camera;
     Game *gamePtr;
-    std::vector<QLabel> *names;
     QComboBox *objectList;
-    QComboBox populateList(std::vector<GameObject *> objects);
+    QComboBox *populateList(std::vector<GameObject *> objects);
 
     std::vector<QDoubleSlider *> locSliders;
     std::vector<QLabel *> locNum;

@@ -10,9 +10,6 @@
 
 class Shader;
 
-namespace jl
-{
-
 class Camera : public QObject, public QOpenGLFunctions_4_1_Core
 {
     Q_OBJECT
@@ -65,5 +62,4 @@ private:
     float mPitch, mYaw;
     QElapsedTimer mTimer; //timer that drives the gameloop
 };
-} // namespace jl
 #endif // CAMERA_H

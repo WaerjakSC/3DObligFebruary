@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "objectselect.h"
 #include "renderwindow.h"
 #include "slidergroup.h"
 #include "ui_mainwindow.h"
@@ -57,21 +58,31 @@ void MainWindow::init()
         return;
     }
 
-    // Creating the slider setup
-    SliderGroup *sliders = new SliderGroup(Qt::Orientation::Horizontal, "LookAt", 0, mRenderWindow->getCamera());
     //The OpenGL RenderWindow got made, so continuing the setup:
     //We put the RenderWindow inside a QWidget so we can put in into a
     //layout that is made in the .ui-file
     mRenderWindowContainer = QWidget::createWindowContainer(mRenderWindow);
-    QHBoxLayout *topBox = new QHBoxLayout; // Horizontal Box to contain LookAt sliders and grid
+
     QWidget *firstTab = new QWidget;
-    QGroupBox *grid = createMatrix(mRenderWindow->getCamera()); // Grid to contain LookAt matrix
-    QTabWidget *tabs = new QTabWidget;
+    QHBoxLayout *topBox = new QHBoxLayout; // Horizontal Box to contain LookAt sliders and grid
     firstTab->setLayout(topBox);
+
+    // Creating the slider setup
+    SliderGroup *sliders = new SliderGroup(Qt::Orientation::Horizontal, "LookAt", 0, mRenderWindow->getCamera());
     topBox->addWidget(sliders, Qt::AlignTop);
+    QGroupBox *grid = createMatrix(mRenderWindow->getCamera()); // Grid to contain LookAt matrix
     topBox->addWidget(grid);
 
+    QWidget *secondTab = new QWidget;
+    QHBoxLayout *topBox2 = new QHBoxLayout;
+    secondTab->setLayout(topBox2);
+    // Creating the object selection tab
+    ObjectSelect *objectselect = new ObjectSelect(nullptr, mRenderWindow->getCamera(), mRenderWindow->getGameInstance());
+    topBox2->addWidget(objectselect);
+
+    QTabWidget *tabs = new QTabWidget;
     tabs->addTab(firstTab, QString("LookAt"));
+    tabs->addTab(secondTab, QString("Object Select"));
     ui->OpenGLLayout->addWidget(tabs);
 
     // Update the lookAt grid with new values each time the camera is moved

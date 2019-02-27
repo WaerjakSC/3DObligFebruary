@@ -38,6 +38,8 @@ public:
 
     //    void error(const QString &msg);
 
+    Game *getGameInstance() const;
+
 private slots:
     void render();
 
@@ -57,7 +59,7 @@ private:
     GLuint mVBO;
 
     float FOV{45.f}; // Field Of View. Need to recalculate projection matrix whenever this changes.
-    jl::Camera *mCamera;
+    Camera *mCamera;
     Game *gameInstance;
 
     void setFOV(float FOV = 60.f);

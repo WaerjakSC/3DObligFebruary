@@ -1,11 +1,11 @@
 #include "qdoubleslider.h"
 
-QDoubleSlider::QDoubleSlider(QWidget *parent, Qt::Orientation orientation, float value) : QSlider(orientation, parent)
+QDoubleSlider::QDoubleSlider(QWidget *parent, Qt::Orientation orientation, float value, int min, int max) : QSlider(orientation, parent)
 {
     connect(this, SIGNAL(valueChanged(int)),
             this, SLOT(notifyValueChanged(int)));
-    setMinimum(-100);
-    setMaximum(100);
+    setMinimum(min);
+    setMaximum(max);
     setValue(value * 10);
 }
 
@@ -18,6 +18,11 @@ double QDoubleSlider::getDoubleValue()
     }
     else
         return 0;
+}
+
+void QDoubleSlider::setDoubleValue(int value)
+{
+    setValue(value * 10);
 }
 
 void QDoubleSlider::notifyValueChanged(int value)
