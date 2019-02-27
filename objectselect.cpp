@@ -2,6 +2,7 @@
 #include "camera.h"
 #include "game.h"
 #include "gameobject.h"
+#include "vector3d.h"
 ObjectSelect::ObjectSelect(QWidget *parent, Camera *mCam, Game *game)
     : QGroupBox(parent), m_Camera(mCam), gamePtr(game)
 {
@@ -21,10 +22,10 @@ ObjectSelect::ObjectSelect(QWidget *parent, Camera *mCam, Game *game)
         connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), rotNum.at(i), SLOT(setNum(double)));
         connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), scaleNum.at(i), SLOT(setNum(double)));
 
-        //        // Set up the connections between the camera class and sliders
-        //        connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setPosition()));
-        //        connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setTarget()));
-        //        connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setUp()));
+        // Set up the connections between the gameobject and sliders
+        connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setAll()));
+        connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setAll()));
+        connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setAll()));
     }
 
     connect(objectList, SIGNAL(currentIndexChanged(QString)), this, SLOT(updateWidget()));
@@ -32,9 +33,6 @@ ObjectSelect::ObjectSelect(QWidget *parent, Camera *mCam, Game *game)
     //    setMaximumWidth(600);
     setMinimumSize(600, 180);
     setLayout(grid);
-
-    // Index changed -> update all sliders and labels with new object information
-    // SIGNAL(changedCurrentIndex(QString), this, updateWidget()
 }
 
 QGroupBox *ObjectSelect::createLocGroup(Qt::Orientation orientation)
@@ -139,6 +137,18 @@ GameObject *ObjectSelect::getIndexObject()
     qDebug() << "No object with that name found, something is very wrong.";
     return nullptr;
 }
+QComboBox *ObjectSelect::populateList(std::vector<GameObject *> objects)
+{
+    QComboBox *box = new QComboBox;
+    int index{0};
+    for (GameObject *object : objects)
+    {
+        box->insertItem(index, object->getName());
+        index++;
+    }
+    return box;
+}
+
 void ObjectSelect::updateWidget()
 {
     GameObject *object = getIndexObject();
@@ -155,14 +165,44 @@ void ObjectSelect::updateWidget()
         scaleNum.at(i)->setNum(object->scale().at(i));
     }
 }
-QComboBox *ObjectSelect::populateList(std::vector<GameObject *> objects)
+
+void ObjectSelect::setAll()
 {
-    QComboBox *box = new QComboBox;
-    int index{0};
-    for (GameObject *object : objects)
-    {
-        box->insertItem(index, object->getName());
-        index++;
-    }
-    return box;
+    setPosition();
+    setScale();
+    setRotation();
+}
+void ObjectSelect::setPosition()
+{
+    GameObject *object = getIndexObject();
+    Vector3D newPos;
+
+    object->resetPosition();
+    newPos.setX(locSliders.at(0)->getDoubleValue() / object->scale().getX());
+    newPos.setY(locSliders.at(1)->getDoubleValue() / object->scale().getY());
+    newPos.setZ(locSliders.at(2)->getDoubleValue() / object->scale().getZ());
+
+    object->move(newPos);
+}
+
+void ObjectSelect::setScale()
+{
+    GameObject *object = getIndexObject();
+    Vector3D newScale;
+
+    object->resetScale();
+    newScale.setX(scaleSliders.at(0)->getDoubleValue());
+    newScale.setY(scaleSliders.at(1)->getDoubleValue());
+    newScale.setZ(scaleSliders.at(2)->getDoubleValue());
+
+    object->scale(newScale);
+}
+
+void ObjectSelect::setRotation()
+{
+    GameObject *object = getIndexObject();
+    object->resetRotation();
+    object->rotate(Vector3D(1, 0, 0), rotSliders.at(0)->getDoubleValue());
+    object->rotate(Vector3D(0, 1, 0), rotSliders.at(1)->getDoubleValue());
+    object->rotate(Vector3D(0, 0, 1), rotSliders.at(2)->getDoubleValue());
 }

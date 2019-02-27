@@ -88,6 +88,8 @@ void GameObject::rotate(Vec3 axis, float angle)
 
 void GameObject::scale(Vec3 newScale)
 {
+    if (newScale.getX() == 0 || newScale.getY() == 0 || newScale.getZ() == 0)
+        return;
     mMatrix.scale(newScale);
     // Update the object's variables with the new values.
     UpdateTRS();
@@ -96,7 +98,40 @@ void GameObject::scale(Vec3 newScale)
 void GameObject::resetPosition()
 {
     mMatrix.setToIdentity();
+    // Reset position but don't touch the scale and rotation
     mMatrix.scale(mScale);
+    mMatrix.rotate(Vec3(1, 0, 0), mRotation.getX());
+    mMatrix.rotate(Vec3(0, 1, 0), mRotation.getY());
+    mMatrix.rotate(Vec3(0, 0, 1), mRotation.getZ());
+
+    UpdateTRS();
+}
+
+void GameObject::resetScale()
+{
+    mMatrix.setToIdentity();
+    // Reset scale but nothing else
+    mMatrix.translate(mPosition);
+    mMatrix.rotate(Vec3(1, 0, 0), mRotation.getX());
+    mMatrix.rotate(Vec3(0, 1, 0), mRotation.getY());
+    mMatrix.rotate(Vec3(0, 0, 1), mRotation.getZ());
+
+    UpdateTRS();
+}
+
+void GameObject::resetRotation()
+{
+    mMatrix.setToIdentity();
+    // Reset rotation but keep the scale and position
+    mMatrix.scale(mScale);
+    mMatrix.translate(mPosition);
+
+    UpdateTRS();
+}
+// Reset the object fully
+void GameObject::reset()
+{
+    mMatrix.setToIdentity();
     UpdateTRS();
 }
 
@@ -108,6 +143,11 @@ TriangleArray GameObject::getTriangles() const
 QString GameObject::getName() const
 {
     return name;
+}
+
+Vec3 GameObject::rotation() const
+{
+    return mRotation;
 }
 
 Vec3 GameObject::position() const

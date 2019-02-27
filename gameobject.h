@@ -23,6 +23,8 @@ public:
 
     Vec3 scale() const;
 
+    Vec3 rotation() const;
+
     void setIsMovable(bool value);
 
     Matrix4x4 getModelMatrix();
@@ -33,6 +35,9 @@ public:
     void rotate(Vec3 axis, float angle);
     void scale(Vec3 newScale);
     void resetPosition();
+    void resetScale();
+    void resetRotation();
+    void reset();
 
     TriangleArray getTriangles() const;
 

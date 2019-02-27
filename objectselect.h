@@ -31,6 +31,10 @@ public slots:
     //    void setRotation();
     //    void setScale();
     void updateWidget();
+    void setPosition();
+    void setScale();
+    void setRotation();
+    void setAll();
 
 private:
     Camera *m_Camera;
