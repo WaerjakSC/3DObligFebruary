@@ -80,14 +80,10 @@ void GameObject::move(Vec3 distanceToMove)
     // Update the object's variables with the new values.
     UpdateTRS();
 }
-void GameObject::setPosition(Vec3 newPos)
+void GameObject::setPosition(Matrix4x4 transformation)
 {
     mMatrix.setToIdentity();
-    mMatrix.scale(mScale);
-    mMatrix.rotate(Vec3(1, 0, 0), GetEulerRotation().getX());
-    mMatrix.rotate(Vec3(0, 1, 0), GetEulerRotation().getY());
-    mMatrix.rotate(Vec3(0, 0, 1), GetEulerRotation().getZ());
-    mMatrix.translate(newPos);
+    mMatrix = mMatrix * transformation;
 }
 void GameObject::rotate(Vec3 axis, float angle)
 {

@@ -2,6 +2,7 @@
 #include "camera.h"
 #include "game.h"
 #include "gameobject.h"
+#include "matrix4x4.h"
 #include "vector3d.h"
 ObjectSelect::ObjectSelect(QWidget *parent, Camera *mCam, Game *game)
     : QGroupBox(parent), m_Camera(mCam), gamePtr(game)
@@ -19,14 +20,14 @@ ObjectSelect::ObjectSelect(QWidget *parent, Camera *mCam, Game *game)
     for (int i = 0; i < 3; i++)
     {
         // Connect sliders to the numbers underneath
-        connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(updateLocNums(double)));
+        connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), locNum.at(i), SLOT(setNum(double)));
         connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), rotNum.at(i), SLOT(setNum(double)));
         connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), scaleNum.at(i), SLOT(setNum(double)));
 
         // Set up the connections between the gameobject and sliders
         connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setPosition()));
-        connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setScale()));
-        connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setRotation()));
+        //        connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setScale()));
+        //        connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setRotation()));
     }
     for (GameObject *object : gamePtr->getGameObjects())
         connect(object, SIGNAL(updatedTransforms()), this, SLOT(updateTransformLabels()));
@@ -207,25 +208,31 @@ void ObjectSelect::setAll()
 {
     setPosition();
 
-    setRotation();
+    //    setRotation();
 
-    setScale();
+    //    setScale();
 }
 void ObjectSelect::setPosition()
 {
     GameObject *object = getIndexObject();
     Vector3D newPos;
-    //    Vector3D oldScale = object->scale();
-    //    Vector3D oldRot = object->GetEulerRotation();
+
+    Matrix4x4 scaleMat(1);
+    Matrix4x4 rot(1);
+    Matrix4x4 trans(1);
+
+    scaleMat.scale(object->scale());
+    rot.rotate(Vector3D(1, 0, 0), object->GetEulerRotation().getX());
+    rot.rotate(Vector3D(0, 1, 0), object->GetEulerRotation().getY());
+    rot.rotate(Vector3D(0, 0, 1), object->GetEulerRotation().getZ());
 
     newPos.setX((locSliders.at(0)->getDoubleValue() / object->scale().at(0)) /* / 10*/);
     newPos.setY((locSliders.at(1)->getDoubleValue() / object->scale().at(1)) /* / 10*/);
     newPos.setZ((locSliders.at(2)->getDoubleValue() / object->scale().at(2)) /* / 10*/);
-    qDebug() << newPos.getX();
-    qDebug() << newPos.getY();
-    qDebug() << newPos.getZ();
+    trans.translate(newPos);
+    Matrix4x4 transformation = scaleMat * rot * trans;
 
-    object->setPosition(newPos);
+    object->setPosition(transformation);
 }
 
 void ObjectSelect::setScale()
