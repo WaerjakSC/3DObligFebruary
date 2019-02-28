@@ -19,25 +19,33 @@ ObjectSelect::ObjectSelect(QWidget *parent, Camera *mCam, Game *game)
     for (int i = 0; i < 3; i++)
     {
         // Connect sliders to the numbers underneath
-        connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), locNum.at(i), SLOT(setNum(double)));
+        connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(updateLocNums(double)));
         connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), rotNum.at(i), SLOT(setNum(double)));
         connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), scaleNum.at(i), SLOT(setNum(double)));
 
         // Set up the connections between the gameobject and sliders
-        connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setAll()));
-        connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setAll()));
-        connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setAll()));
+        connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setPosition()));
+        connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setScale()));
+        connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setRotation()));
     }
     for (GameObject *object : gamePtr->getGameObjects())
         connect(object, SIGNAL(updatedTransforms()), this, SLOT(updateTransformLabels()));
 
     connect(objectList, SIGNAL(currentIndexChanged(QString)), this, SLOT(updateWidget()));
+    connect(gamePtr, SIGNAL(levelChanged(std::vector<GameObject *>)), this, SLOT(rePopulateList(std::vector<GameObject *>)));
     setMaximumHeight(170);
     //    setMaximumWidth(600);
     setMinimumSize(600, 180);
     setLayout(grid);
 }
-
+void ObjectSelect::updateLocNums(double value)
+{
+    GameObject *object = getIndexObject();
+    for (int i = 0; i < 3; i++)
+    {
+        locNum.at(i)->setNum(value / object->scale().at(i));
+    }
+}
 QGroupBox *ObjectSelect::createLocGroup(Qt::Orientation orientation)
 {
     QGroupBox *groupBox = new QGroupBox(tr("Location:"));
@@ -151,21 +159,46 @@ QComboBox *ObjectSelect::populateList(std::vector<GameObject *> objects)
     }
     return box;
 }
+void ObjectSelect::rePopulateList(std::vector<GameObject *> objects)
+{
+    int index{0};
+    // Temporarily disconnect the indexchanged signal so it doesn't try to update with a non-existing object.
+    disconnect(objectList, SIGNAL(currentIndexChanged(QString)), this, SLOT(updateWidget()));
+    objectList->clear(); // Clear the combobox
+    // Re-populate it
+    for (GameObject *object : objects)
+    {
+        objectList->insertItem(index, object->getName());
+        index++;
+    }
+    // Connect it to the signal again:
+    connect(objectList, SIGNAL(currentIndexChanged(QString)), this, SLOT(updateWidget()));
+}
 
 void ObjectSelect::updateWidget()
 {
     GameObject *object = getIndexObject();
+
     for (int i = 0; i < 3; i++)
     {
+        // Don't try to set anything while it's changing to a new object.
+        disconnect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setPosition()));
+        disconnect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setScale()));
+        disconnect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setRotation()));
         // Update the sliders
-        locSliders.at(i)->setDoubleValue(object->position().at(i) / 10);
-        rotSliders.at(i)->setDoubleValue(object->GetEulerRotation().at(i) / 10);
-        scaleSliders.at(i)->setDoubleValue(object->scale().at(i) / 10);
+        locSliders.at(i)->setDoubleValue(object->position().at(i));
+        rotSliders.at(i)->setDoubleValue(object->GetEulerRotation().at(i));
+        scaleSliders.at(i)->setDoubleValue(object->scale().at(i));
 
         // Update the labels
         locNum.at(i)->setNum(object->position().at(i));
         rotNum.at(i)->setNum(object->GetEulerRotation().at(i));
         scaleNum.at(i)->setNum(object->scale().at(i));
+
+        // Set up the connections between the gameobject and sliders
+        connect(locSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setPosition()));
+        //        connect(scaleSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setScale()));
+        //        connect(rotSliders.at(i), SIGNAL(doubleValueChanged(double)), this, SLOT(setRotation()));
     }
     updateTransformLabels();
 }
@@ -173,20 +206,26 @@ void ObjectSelect::updateWidget()
 void ObjectSelect::setAll()
 {
     setPosition();
-    setScale();
+
     setRotation();
+
+    setScale();
 }
 void ObjectSelect::setPosition()
 {
     GameObject *object = getIndexObject();
     Vector3D newPos;
+    //    Vector3D oldScale = object->scale();
+    //    Vector3D oldRot = object->GetEulerRotation();
 
-    object->resetPosition();
-    newPos.setX(locSliders.at(0)->getDoubleValue() / object->scale().getX());
-    newPos.setY(locSliders.at(1)->getDoubleValue() / object->scale().getY());
-    newPos.setZ(locSliders.at(2)->getDoubleValue() / object->scale().getZ());
+    newPos.setX((locSliders.at(0)->getDoubleValue() / object->scale().at(0)) /* / 10*/);
+    newPos.setY((locSliders.at(1)->getDoubleValue() / object->scale().at(1)) /* / 10*/);
+    newPos.setZ((locSliders.at(2)->getDoubleValue() / object->scale().at(2)) /* / 10*/);
+    qDebug() << newPos.getX();
+    qDebug() << newPos.getY();
+    qDebug() << newPos.getZ();
 
-    object->move(newPos);
+    object->setPosition(newPos);
 }
 
 void ObjectSelect::setScale()

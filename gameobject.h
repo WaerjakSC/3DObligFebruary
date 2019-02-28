@@ -46,6 +46,7 @@ public:
     Vec3 getTriangle(int triangle, int point);
 
     QString getName() const;
+    void setPosition(Vec3 newPos);
 signals:
     void updatedTransforms();
 

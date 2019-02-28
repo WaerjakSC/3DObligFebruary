@@ -9,8 +9,8 @@ Sceneone::Sceneone()
     objects.push_back(new GameObject(drawLeftWall(), "Left Wall", Vec3(-1.6, 0, 0), Vec3(1, 2, 3)));
     objects.push_back(new GameObject(drawBackWall(), "Back Wall", Vec3(0, 0.7, 2), Vec3(2, 2, 2)));
     objects.push_back(new GameObject(drawFrontWall(), "Front Wall", Vec3(3.2, 0, 0), Vec3(3, 2, 1), Vec3(0, 1, 0), 90));
-    objects.push_back(new GameObject(drawFrontWall(), "Front Wall", Vec3(-1.61, 0, 3.2), Vec3(0.6, 2, 1), Vec3(0, 1, 0), 90));
-    objects.push_back(new GameObject(drawFrontWall(), "Front Wall", Vec3(-1.61, 0, -4), Vec3(0.5, 2, 1), Vec3(0, 1, 0), 90));
+    objects.push_back(new GameObject(drawFrontWall(), "Front Wall 2", Vec3(-1.61, 0, 3.2), Vec3(0.6, 2, 1), Vec3(0, 1, 0), 90));
+    objects.push_back(new GameObject(drawFrontWall(), "Front Wall 3", Vec3(-1.61, 0, -4), Vec3(0.5, 2, 1), Vec3(0, 1, 0), 90));
     door = new GameObject(drawDoor(), "Door", Vec3(0, 0.7, 2), Vec3(2, 2, 2));
     objects.push_back(door);
 }

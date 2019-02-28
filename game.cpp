@@ -17,8 +17,6 @@ Game::Game()
     // This could probably be a lot more dynamic
     for (GameObject *object : sceneOne->objects)
         gameObjects.push_back(object);
-    for (GameObject *object : sceneTwo->objects)
-        gameObjects.push_back(object);
 }
 void Game::CheckCollisions(CollisionPacket *collisionPackage)
 {
@@ -92,9 +90,13 @@ void Game::switchLevels()
     else
     {
         ball->MoveTo(Vec3(0, -2.8, 2));
+        gameObjects.clear();
+        for (GameObject *object : sceneTwo->objects)
+            gameObjects.push_back(object);
         currentLevel++;
     }
 
+    emit levelChanged(gameObjects);
     // Do extra stuff here to reset the ball etc.
 }
 

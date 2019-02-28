@@ -34,6 +34,8 @@ public:
     std::vector<GameObject *> getGameObjects() const;
 
 public slots:
+signals:
+    void levelChanged(std::vector<GameObject *> objects);
 
 private:
     OctahedronBall *ball;

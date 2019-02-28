@@ -27,10 +27,14 @@ public slots:
     //    void setScale();
     void updateWidget();
     void updateTransformLabels();
+
     void setPosition();
+
     void setScale();
     void setRotation();
     void setAll();
+    void rePopulateList(std::vector<GameObject *> objects);
+    void updateLocNums(double value);
 
 private:
     Camera *m_Camera;
